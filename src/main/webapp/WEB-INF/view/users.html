@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Users</title>
+    <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/jquery.form.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/users.js}"></script>
+    <link rel="stylesheet" th:href="@{/resources/css/users.css}"/>
+
+</head>
+<body>
+<ul>
+    <li th:each="user: ${usersList}">
+        <p th:text="${user.username}"/>
+        <table>
+            <tr>
+                <td>Друзья:</td>
+                <td>
+                    <ul>
+                        <li th:each="friend: ${user.friends}" th:text="${friend.username}"></li>
+                        <div>Подружить с:
+                            <form class="set_friend" method='post' action='/setFriend'>
+                                <input name="friend" type="text" value=""/>
+                                <input name="userId" type="hidden" th:value="${user.id}"/>
+                                <button id="add_friend"><span>Добавить</span></button>
+                            </form>
+                        </div>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Маршруты</td>
+                <td>
+                    <ul>
+                        <li th:each="itin: ${user.itineraries}">
+                            <a th:href="'/points?userRoutId='+${itin.id}"><p th:text="${itin.name}"></p></a>
+                        </li>
+                    </ul>
+                    <br/>
+                    <form class="set_itineraries" method='post' action='/setItineraries'>
+                        Название: <input name="name" type="text" value=""/><br/>
+                        Длительность в формата "XX:XX:XX" <input name="duration" type="text" value=""/>
+                        <input name="userId" type="hidden" th:value="${user.id}"/>
+                        <button id="add_it"><span>Добавить</span></button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </li>
+</ul>
+<hr/>
+<form id="addPerson" method="post" action="/addUser">
+    User's name: <input type="text" name="userName"/>
+    <input type="submit" value="Add"/>
+</form>
+</body>
+</html>
