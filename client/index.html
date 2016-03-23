@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="myApp" class="ng-cloak">
+<html lang="en" ng-app="App" class="ng-cloak">
 
 <head>
     <meta charset="utf-8">
@@ -19,8 +19,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-    <script src="https://rawgit.com/angular-ui/angular-google-maps/2.3.2/dist/angular-google-maps.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="libs/angular-google-maps.min.js"></script>
+    <script src="libs/lodash.core.min.js"></script>
+    <script src="libs/angular-simple-logger.js"></script>
     <!-- jQuery -->
     <script src="libs/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
@@ -101,7 +104,7 @@
                     <button id="clear" class="btn-clear fa fa-times fa-4x" ng-click="clearPath()"></button>
                 </div>
                 <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
-                <div my-map=""></div>
+                <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
             </div>
         </div>
         <!-- /#page-content-wrapper -->
@@ -113,15 +116,17 @@
     <script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
+        var wrapper = $("#wrapper");
 
-        if ($("#wrapper").hasClass("toggled")) {
-            $("#menu-toggle").removeClass("fa-arrow-left");
-            $("#menu-toggle").addClass("fa-arrow-right");
+        wrapper.toggleClass("toggled");
+
+        if (wrapper.hasClass("toggled")) {
+            wrapper.removeClass("fa-arrow-left");
+            wrapper.addClass("fa-arrow-right");
         }
         else {
-            $("#menu-toggle").removeClass("fa-arrow-right");
-            $("#menu-toggle").addClass("fa-arrow-left");
+            wrapper.removeClass("fa-arrow-right");
+            wrapper.addClass("fa-arrow-left");
         }
     });
     </script>

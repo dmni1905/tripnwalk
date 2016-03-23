@@ -1,102 +1,75 @@
-var app = angular.module('myApp', []);
+var app = angular.module('App', ['uiGmapgoogle-maps']).config(
+  ['uiGmapGoogleMapApiProvider', function(GoogleMapApiProviders) {
+    GoogleMapApiProviders.configure({
+      libraries: 'weather,geometry,visualization'
+    });
+  }]
+);
 
-app.controller('MapCtrl', function($scope, $element, $attrs) {
-    $scope.addPath = function() {
-        this.createPath();
-    };
+app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
+  $scope.map = {
+    center: { latitude: 59.938600, longitude: 30.31410 },
+    zoom: 11,
+    options: {
+      disableDefaultUI: true
+    }
+  };
 
-    $scope.clearPath = function() {
-        this.removePath();
-    };
+  var map = uiGmapIsReady.promise(1).then(function(instances) {
+    return instances[0].map;
+  });
 
-    $scope.undoPath = function() {
-        this.undoPath();
-    };
-});
+  map
+    .then(map => {
+      var connector;
+      var connectors = [];
+      var setPolyline = () => {
+        connector = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
 
-app.directive('myMap', function() {
-    // directive link function
-    var link = function(scope, element, attrs) {
-        var self = this;
-        var map;
-        var connector;
-        var connectors = [];
-        
-        // map config
-        var mapOptions = {
-            center: new google.maps.LatLng(59.938600, 30.31410),
-            zoom: 11,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: true
-        };
-        
-        // init the map
-        function initMap() {
-            if (map === void 0) {
-                map = new google.maps.Map(element[0], mapOptions);
-            }
+        connector.setMap(map);
+      };
 
-            self.setPolyline();
+      map.addListener('click', setMarker);
 
-            map.addListener('click', setMarker);
-        }    
-    
-        //TODO Fix map not rerendering on container resize.
-        $('map-wraper').change('resize', function() {
-            var center = map.getCenter();
-            google.maps.event.trigger(map, 'resize');
-            map.setCenter(center); 
-        })
+      // Handles click events on a map, and adds a new point to the Polyline.
+      function setMarker(evt) {
+        !connector && setPolyline();
 
-        // Handles click events on a map, and adds a new point to the Polyline.
-        function setMarker(evt) {
-            var position = evt.latLng;
-            var path = connector.getPath();
+        var position = evt.latLng;
+        var path = connector.getPath();
 
-            // Because path is an MVCArray, we can simply append a new coordinate
-            // and it will automatically appear.
-            path.push(position);
-        }
+        // Because path is an MVCArray, we can simply append a new coordinate
+        // and it will automatically appear.
+        path.push(position);
+      }
 
-        setPolyline = function() {
-            connector = new google.maps.Polyline({
-                strokeColor: '#000000',
-                strokeOpacity: 1.0,
-                strokeWeight: 3
-            })
+      $scope.addPath = function() {
+        connectors.push(connector);
+        setPolyline();
+      };
 
-            connector.setMap(map);
-        }
+      $scope.clearPath = function() {
+        connector.getPath().clear();
+        setPolyline();
+      };
 
-        scope.createPath = function() {
-            connectors.push(connector);
+      $scope.undoPath = function() {
+        var path = connector.getPath();
 
-            self.setPolyline();
+        path.length > 0 && path.pop();
+      };
 
-            return connectors;
-        }
-
-        scope.removePath = function() {
-            connector.getPath().clear()
-
-            self.setPolyline();
-        }
-
-        scope.undoPath = function() {
-            var path = connector.getPath();
-
-            path.length > 0 && path.pop();
-        }
-
-        // show the map
-        initMap();
-    };
-    
-    return {
-        restrict: 'A',
-        template: '<div id="gmaps"></div>',
-        replace: true,
-        controller: 'MapCtrl',
-        link: link
-    };
+      // Special hack for map to be resized on slider toggle.
+      $('#menu-toggle').on('click', function() {
+        setTimeout(() => {
+          var center = map.getCenter();
+          google.maps.event.trigger(map, 'resize');
+          map.setCenter(center);
+        }, 320);
+      });
+    });
 });

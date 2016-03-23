@@ -66,8 +66,16 @@ html, body {
 	cursor: pointer;
 }
 
-#gmaps {
+#gmap {
+	width: 100%;
+	height: 100%;
+}
+.angular-google-map {
+	width: 100%;
+	height: 100%;
+}
+.angular-google-map-container {
 	margin: auto;
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
