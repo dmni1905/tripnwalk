@@ -15,15 +15,13 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
     }
   };
 
-  var map = uiGmapIsReady.promise(1).then(function(instances) {
-    return instances[0].map;
-  });
-
-  map
+  uiGmapIsReady.promise(1)
+    .then(instances => instances[0].map)
     .then(map => {
       var connector;
       var connectors = [];
-      var setPolyline = () => {
+
+      function setPolyline() {
         connector = new google.maps.Polyline({
           strokeColor: '#000000',
           strokeOpacity: 1.0,
@@ -31,10 +29,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
         });
 
         connector.setMap(map);
-      };
-
-      map.addListener('click', setMarker);
-
+      }
       // Handles click events on a map, and adds a new point to the Polyline.
       function setMarker(evt) {
         !connector && setPolyline();
@@ -46,6 +41,16 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
         // and it will automatically appear.
         path.push(position);
       }
+
+      map.addListener('click', setMarker);
+      // Special hack for map to be resized on slider toggle.
+      $('#menu-toggle').on('click', function() {
+        setTimeout(() => {
+          var center = map.getCenter();
+          google.maps.event.trigger(map, 'resize');
+          map.setCenter(center);
+        }, 320);
+      });
 
       $scope.addPath = function() {
         connectors.push(connector);
@@ -62,14 +67,5 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
 
         path.length > 0 && path.pop();
       };
-
-      // Special hack for map to be resized on slider toggle.
-      $('#menu-toggle').on('click', function() {
-        setTimeout(() => {
-          var center = map.getCenter();
-          google.maps.event.trigger(map, 'resize');
-          map.setCenter(center);
-        }, 320);
-      });
     });
 });

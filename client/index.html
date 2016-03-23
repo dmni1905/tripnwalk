@@ -117,16 +117,17 @@
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         var wrapper = $("#wrapper");
+        var btn = $("#menu-toggle");
 
         wrapper.toggleClass("toggled");
 
         if (wrapper.hasClass("toggled")) {
-            wrapper.removeClass("fa-arrow-left");
-            wrapper.addClass("fa-arrow-right");
+            btn.removeClass("fa-arrow-left");
+            btn.addClass("fa-arrow-right");
         }
         else {
-            wrapper.removeClass("fa-arrow-right");
-            wrapper.addClass("fa-arrow-left");
+            btn.removeClass("fa-arrow-right");
+            btn.addClass("fa-arrow-left");
         }
     });
     </script>
