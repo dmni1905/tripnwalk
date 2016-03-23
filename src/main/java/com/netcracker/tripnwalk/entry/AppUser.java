@@ -24,10 +24,10 @@ public class AppUser {
     )
     private Set<AppUser> friends = new HashSet<>();
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="user_routs",
-            joinColumns=@JoinColumn(name="itineraries_id"),
-            inverseJoinColumns=@JoinColumn(name="user_id"))
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_routs",
+            joinColumns = { @JoinColumn(name = "itineraries_id") },
+            inverseJoinColumns = { @JoinColumn(name = "user_id") })
     private Set<Itineraries> itineraries = new HashSet<>();
 
 

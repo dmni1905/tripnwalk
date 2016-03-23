@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="photo")
-public class ItinerariesPointPhoto {
+public class ItinerariesPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -13,11 +13,19 @@ public class ItinerariesPointPhoto {
     @Column(name = "url", nullable = false)
     private String url;
 
-    public ItinerariesPointPhoto(String url) {
+    @Column(name = "x", nullable = false)
+    private float x;
+
+    @Column(name = "y", nullable = false)
+    private float y;
+
+    public ItinerariesPhoto(String url, float x, float y) {
         this.url = url;
+        this.x = x;
+        this.y = y;
     }
 
-    public ItinerariesPointPhoto() {
+    public ItinerariesPhoto() {
     }
 
     public Long getId() {
@@ -34,5 +42,21 @@ public class ItinerariesPointPhoto {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
