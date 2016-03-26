@@ -34,7 +34,6 @@ public class AuthController {
                 "&response_type=" + RESPONSE_TYPE;
         HttpGet httpGet = new HttpGet(reqUrl);
 
-
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet);
              BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
@@ -49,6 +48,7 @@ public class AuthController {
         } catch (Exception e) {
             logger.error(e);
         }
+
         return new ResponseEntity<>(result.toString(), HttpStatus.OK);
     }
 }
