@@ -37,12 +37,12 @@
     <!-- App -->
     <script src="static/js/app.js"></script>
     <script src="static/js/controllers/map-controller.js"></script>
+    <script src="static/js/controllers/user-controller.js"></script>
+    <script src="static/js/services/user-service.js"></script>
 </head>
 
 <body>
-
     <div id="wrapper" class="js-wrapper">
-
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -50,6 +50,11 @@
                     <a href="#">
                         Trip & Walk
                     </a>
+                </li>
+                <li>
+                    <div class="#auth" ng-controller="UserCtrl">
+                        <button class="fa fa-vk" ng-click="authorize()"></button>
+                    </div>
                 </li>
                 <li>
                     <a href="#profile" data-toggle="collapse">PROFILE</a>
