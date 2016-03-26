@@ -38,7 +38,7 @@ public class AuthController {
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet);
              BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
-            ;
+
             String line = reader.readLine();
 
             while (line != null) {
