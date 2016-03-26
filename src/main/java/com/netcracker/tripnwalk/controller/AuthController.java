@@ -1,18 +1,13 @@
 package com.netcracker.tripnwalk.controller;
 
-import com.netcracker.tripnwalk.entry.Itineraries;
-import org.apache.http.*;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.awt.*;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 @Controller
@@ -22,22 +17,32 @@ public class AuthController {
     private String display = "popup";
     private String response_type = "token";
     private String access_token;
+    private URL url;
+    private HttpURLConnection connection;
+    private BufferedReader reader;
+    private String line;
+    public String result = "";
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public void auth() throws IOException {
-//        HttpClient httpClient = new DefaultHttpClient();
+    public String auth() throws IOException {
         String reqUrl = "http://oauth.vk.com/authorize?" +
                 "client_id=" + client_id +
                 "&redirect_uri=" + redirect_uri +
                 "&display=" + display +
                 "&response_type=" + response_type;
-//        HttpResponse response = null;
 
         try {
-            Desktop.getDesktop().browse(new URL(reqUrl).toURI());
-        } catch (URISyntaxException ex) {
-            throw new IOException(ex);
+            url = new URL(reqUrl);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                result += line;
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-       // String HeaderLocation = response.getFirstHeader("location").getValue(); //а тут фейл, не может найти "location"
+        return result;
     }
 }
