@@ -1,3 +1,5 @@
+'use strict';
+
 app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady) {
   $scope.map = {
     center: { latitude: 59.938600, longitude: 30.31410 },
