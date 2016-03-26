@@ -1,4 +1,4 @@
-package com.netcracker.tripnwalk.auth;
+package com.netcracker.tripnwalk.controller;
 
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
@@ -9,14 +9,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-class Login {
+class AuthController {
     private String client_id = "5368462";
-    private String redirect_uri = "http://oauth.vk.com/blank.html";
+    private String redirect_uri = "http://localhost:9095/";
     private String display = "popup";
     private String response_type = "token";
     private String access_token;
 
-    Login() throws IOException {
+    AuthController() throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         String reqUrl = "http://oauth.vk.com/authorize?" +
                 "client_id=" + client_id +
