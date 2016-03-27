@@ -8,17 +8,18 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@Controller
+@RestController
 public class AuthController {
     private static final Logger logger = LogManager.getLogger(AuthController.class);
+
     private static final String CLIENT_ID = "5368462";
     private static final String REDIRECT_URL = "http://localhost:9095/";
     private static final String DISPLAY = "popup";
@@ -37,7 +38,6 @@ public class AuthController {
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet);
              BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
-
             String line = reader.readLine();
 
             while (line != null) {
