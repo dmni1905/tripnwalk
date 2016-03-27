@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "data")
 public class RouteData {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)

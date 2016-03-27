@@ -1,6 +1,6 @@
 package com.netcracker.tripnwalk.controller;
 
-import com.netcracker.tripnwalk.entry.Users;
+import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class UserController {
     @RequestMapping("/get-users")
     public ModelAndView getUsers() {
         ModelAndView model = new ModelAndView();
-        List<Users> userstList = new ArrayList<>();
-        Iterable<Users> all = userRepository.findAll();
+        List<User> userstList = new ArrayList<>();
+        Iterable<User> all = userRepository.findAll();
 
         all.forEach(userstList::add);
         model.setViewName("users");
@@ -31,14 +31,14 @@ public class UserController {
 
     @RequestMapping(value = "/add-user", method = RequestMethod.POST)
     public ResponseEntity<String> addUser(@RequestParam("userName") String userName) {
-        userRepository.save(new Users(userName));
+        userRepository.save(new User(userName));
 
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/set-friend", method = RequestMethod.POST)
     public String setFriend(@RequestParam("friend") String friendName, @RequestParam("userId") String userName) {
-        Users user = userRepository.findOne(Long.parseLong(userName));
+        User user = userRepository.findOne(Long.parseLong(userName));
 
         user.addFriend(userRepository.findByName(friendName));
         userRepository.save(user);

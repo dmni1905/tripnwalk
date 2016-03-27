@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "routes")
-public class Routes {
+public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -31,12 +31,12 @@ public class Routes {
             inverseJoinColumns = @JoinColumn(name = "data_id"))
     private Set<RouteData> data = new HashSet<>();
 
-    public Routes(String name, Time duration) {
+    public Route(String name, Time duration) {
         this.name = name;
         this.duration = duration;
     }
 
-    public Routes() {
+    public Route() {
     }
 
     public Long getId() {
@@ -95,7 +95,7 @@ public class Routes {
 
     @Override
     public String toString() {
-        return "Routes{" +
+        return "Route{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", duration='" + duration + '\'' +

@@ -7,8 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="users")
-public class Users {
-
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -38,48 +37,45 @@ public class Users {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id")
     )
-    private Set<Users> friends = new HashSet<>();
+    private Set<User> friends = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routs",
             joinColumns = { @JoinColumn(name = "itineraries_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_id") })
-    private Set<Routes> itineraries = new HashSet<>();
+    private Set<Route> itineraries = new HashSet<>();
 
 
 
-    public void addFriend(Users user){
+    public void addFriend(User user){
         if(!getFriends().contains(user)){
             getFriends().add(user);
             user.getFriends().add(this);
         }
     }
 
-
-    public void addItineraries(Routes it){
+    public void addItineraries(Route it){
         if(!getItineraries().contains(it)){
             getItineraries().add(it);
         }
     }
 
-    public Set<Users> getFriends() {
+    public Set<User> getFriends() {
         return friends;
     }
 
-    public void setFriends(Set<Users> friends) {
+    public void setFriends(Set<User> friends) {
         this.friends = friends;
     }
 
-
-
-    public Users() {
+    public User() {
     }
 
-    public Users(String username) {
+    public User(String username) {
         this.name = username;
     }
 
-    public Users(long id, String username) {
+    public User(long id, String username) {
         this.id = id;
         this.name = username;
     }
@@ -96,11 +92,11 @@ public class Users {
         return name;
     }
 
-    public Set<Routes> getItineraries() {
+    public Set<Route> getItineraries() {
         return itineraries;
     }
 
-    public void setItineraries(Set<Routes> itineraries) {
+    public void setItineraries(Set<Route> itineraries) {
         this.itineraries = itineraries;
     }
 

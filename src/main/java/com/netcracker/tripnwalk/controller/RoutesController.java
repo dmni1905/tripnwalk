@@ -1,6 +1,6 @@
 package com.netcracker.tripnwalk.controller;
 
-import com.netcracker.tripnwalk.entry.Routes;
+import com.netcracker.tripnwalk.entry.Route;
 import com.netcracker.tripnwalk.repository.RouteRepository;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class RoutesController {
     public ResponseEntity<Void> setItineraries(@RequestParam("name") String name,
                                                  @RequestParam("duration") String duration,
                                                  @RequestParam("userId") String userId) {
-        Routes itineraries = new Routes(name, java.sql.Time.valueOf(duration));
+        Route itineraries = new Route(name, java.sql.Time.valueOf(duration));
 
         userRepository.findOne(Long.parseLong(userId)).addItineraries(itineraries);
         itinerariesRepository.save(itineraries);
