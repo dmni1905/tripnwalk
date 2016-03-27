@@ -1,9 +1,0 @@
-table{
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-}
-td{
-    padding: 5px;
-    border: 1px solid black;
-}
