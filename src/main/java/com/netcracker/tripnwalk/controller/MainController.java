@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 
 @Controller
-public class HelloController {
+public class MainController {
     @Inject
     UserRepository userRepository;
 

@@ -1,12 +1,10 @@
 package com.netcracker.tripnwalk.entry;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "point")
-public class ItinerariesPoint {
+public class RoutePoint {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -18,12 +16,12 @@ public class ItinerariesPoint {
     @Column(name = "y", nullable = false)
     private float y;
 
-    public ItinerariesPoint(float x, float y) {
+    public RoutePoint(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public ItinerariesPoint() {
+    public RoutePoint() {
     }
 
     public Long getId() {

@@ -3,21 +3,34 @@ package com.netcracker.tripnwalk.entry;
 import javax.persistence.*;
 
 @Entity
-@Table(name="description")
-public class ItinerariesDescription {
+@Table(name = "data")
+public class RouteData {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "text", nullable = false)
-    private String text;
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @Column(name = "x", nullable = false)
     private float x;
 
     @Column(name = "y", nullable = false)
     private float y;
+
+    public RouteData(){}
+
+    public RouteData(String type, String content, float x, float y) {
+        this.type = type;
+        this.content = content;
+        this.x = x;
+        this.y = y;
+    }
 
     public Long getId() {
         return id;
@@ -27,12 +40,20 @@ public class ItinerariesDescription {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getType() {
+        return type;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public float getX() {
@@ -49,14 +70,5 @@ public class ItinerariesDescription {
 
     public void setY(float y) {
         this.y = y;
-    }
-
-    public ItinerariesDescription(String text, float x, float y) {
-        this.text = text;
-        this.x = x;
-        this.y = y;
-    }
-
-    public ItinerariesDescription() {
     }
 }
