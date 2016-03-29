@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import java.util.List;
 
 @RestController
 public class PointController {
@@ -36,4 +37,5 @@ public class PointController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
