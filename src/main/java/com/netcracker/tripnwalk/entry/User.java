@@ -2,11 +2,12 @@ package com.netcracker.tripnwalk.entry;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,8 +20,8 @@ public class User {
     @Column(name = "surname", unique = true)
     private String surname;
 
-    @Column(name = "birthday", unique = true, nullable = false)
-    private Date birthday;
+    @Column(name = "birth_date", unique = true, nullable = false)
+    private Date birthDate;
 
     @Column(name = "login", unique = true, nullable = false)
     private String login;
@@ -40,10 +41,10 @@ public class User {
     private Set<User> friends = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_routs",
-            joinColumns = { @JoinColumn(name = "itineraries_id") },
+    @JoinTable(name = "user_routes",
+            joinColumns = { @JoinColumn(name = "route_id") },
             inverseJoinColumns = { @JoinColumn(name = "user_id") })
-    private Set<Route> itineraries = new HashSet<>();
+    private Set<Route> routes = new HashSet<>();
 
 
 
@@ -54,29 +55,21 @@ public class User {
         }
     }
 
-    public void addItineraries(Route it){
-        if(!getItineraries().contains(it)){
-            getItineraries().add(it);
+    public void addItineraries(Route route){
+        if(!getRoutes().contains(route)){
+            getRoutes().add(route);
         }
     }
 
     public Set<User> getFriends() {
-        return friends;
+        return Collections.unmodifiableSet(friends);
     }
 
     public void setFriends(Set<User> friends) {
         this.friends = friends;
     }
 
-    public User() {
-    }
-
     public User(String username) {
-        this.name = username;
-    }
-
-    public User(long id, String username) {
-        this.id = id;
         this.name = username;
     }
 
@@ -92,12 +85,12 @@ public class User {
         return name;
     }
 
-    public Set<Route> getItineraries() {
-        return itineraries;
+    public Set<Route> getRoutes() {
+        return Collections.unmodifiableSet(routes);
     }
 
-    public void setItineraries(Set<Route> itineraries) {
-        this.itineraries = itineraries;
+    public void setRoutes(Set<Route> routes) {
+        this.routes = routes;
     }
 
     public void setName(String name) {
@@ -112,12 +105,12 @@ public class User {
         this.surname = surname;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setBirthDate(Date birthday) {
+        this.birthDate = birthday;
     }
 
     public String getLogin() {
@@ -150,7 +143,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", birthday='" + birthday + '\'' +
+                ", birthDate='" + birthDate + '\'' +
                 ", login='" + login + '\'' +
                 ", email='" + email + '\'' +
                 '}';

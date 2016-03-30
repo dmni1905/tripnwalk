@@ -34,8 +34,8 @@ public class PointDetermonant {
         float a = getLength(start, end),
                 b = getLength(start, point),
                 c = getLength(point, end);
-        if ((!isPointIn(start.getX(), end.getX(), point.getX()))
-                && (!isPointIn(start.getY(), end.getY(), point.getY())))
+        if ((!isPointIn(start.getLat(), end.getLat(), point.getLat()))
+                && (!isPointIn(start.getLng(), end.getLng(), point.getLng())))
             return Math.min(b, c);
 
         float s = getAreaBySides(a, b, c);
@@ -43,47 +43,47 @@ public class PointDetermonant {
         return h;
 
         //RoutePoint closest;
-        /*float dx = end.getX() - start.getX();
-        float dy = end.getY() - start.getY();
+        /*float dx = end.getLat() - start.getLat();
+        float dy = end.getLng() - start.getLng();
         if ((dx == 0) && (dy == 0))
         {
             // It's a point not a line segment.
             //closest = start;
-            dx = point.getX() - start.getX();
-            dy = point.getY() - start.getY();
+            dx = point.getLat() - start.getLat();
+            dy = point.getLng() - start.getLng();
             return (float)Math.sqrt(dx * dx + dy * dy);
         }
 
         // Calculate the t that minimizes the distance.
-        float t = ((point.getX() - start.getX()) * dx + (point.getY() - start.getY()) * dy) /
+        float t = ((point.getLat() - start.getLat()) * dx + (point.getLng() - start.getLng()) * dy) /
                 (dx * dx + dy * dy);
 
         // See if this represents one of the segment's
         // end points or a point in the middle.
         if (t < 0)
         {
-            //closest = new RoutePoint(start.getX(), start.getY());
-            dx = point.getX() - start.getX();
-            dy = point.getY() - start.getY();
+            //closest = new RoutePoint(start.getLat(), start.getLng());
+            dx = point.getLat() - start.getLat();
+            dy = point.getLng() - start.getLng();
         }
         else if (t > 1)
         {
-            //closest = new RoutePoint(end.getY(), end.getY());
-            dx = point.getX() - end.getX();
-            dy = point.getY() - end.getY();
+            //closest = new RoutePoint(end.getLng(), end.getLng());
+            dx = point.getLat() - end.getLat();
+            dy = point.getLng() - end.getLng();
         }
         else
         {
-            RoutePoint closest = new RoutePoint(start.getY() + t * dx, start.getY() + t * dy);
-            dx = point.getX() - closest.getX();
-            dy = point.getY() - closest.getY();
+            RoutePoint closest = new RoutePoint(start.getLng() + t * dx, start.getLng() + t * dy);
+            dx = point.getLat() - closest.getLat();
+            dy = point.getLng() - closest.getLng();
         }
 
         return (float)Math.sqrt(dx * dx + dy * dy);*/
     }
 
     private float getLength(RoutePoint a, RoutePoint b) {
-        return (float)Math.sqrt(Math.pow((a.getX() - b.getX()), 2) + Math.pow((a.getY() - b.getY()), 2));
+        return (float)Math.sqrt(Math.pow((a.getLat() - b.getLat()), 2) + Math.pow((a.getLng() - b.getLng()), 2));
     }
 
     private float getAreaBySides(double a, double b, double c) {

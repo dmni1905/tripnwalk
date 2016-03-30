@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
 @RestController
-public class RoutesController {
+public class RouteController {
     @Inject
-    RouteRepository itinerariesRepository;
+    RouteRepository routeRepository;
     @Inject
     UserRepository userRepository;
 
@@ -20,10 +20,10 @@ public class RoutesController {
     public ResponseEntity<Void> setItineraries(@RequestParam("name") String name,
                                                  @RequestParam("duration") String duration,
                                                  @RequestParam("userId") String userId) {
-        Route itineraries = new Route(name, java.sql.Time.valueOf(duration));
+        Route routes = new Route(name, java.sql.Time.valueOf(duration));
 
-        userRepository.findOne(Long.parseLong(userId)).addItineraries(itineraries);
-        itinerariesRepository.save(itineraries);
+        userRepository.findOne(Long.parseLong(userId)).addItineraries(routes);
+        routeRepository.save(routes);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

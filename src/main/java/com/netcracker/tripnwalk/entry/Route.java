@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "routes")
+@Table(name = "route")
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +34,6 @@ public class Route {
     public Route(String name, Time duration) {
         this.name = name;
         this.duration = duration;
-    }
-
-    public Route() {
     }
 
     public Long getId() {

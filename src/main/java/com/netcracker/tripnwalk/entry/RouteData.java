@@ -3,7 +3,7 @@ package com.netcracker.tripnwalk.entry;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "data")
+@Table(name = "route_data")
 public class RouteData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,19 +16,17 @@ public class RouteData {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "x", nullable = false)
-    private float x;
+    @Column(name = "lat", nullable = false)
+    private float lat;
 
-    @Column(name = "y", nullable = false)
-    private float y;
+    @Column(name = "lng", nullable = false)
+    private float lng;
 
-    public RouteData(){}
-
-    public RouteData(String type, String content, float x, float y) {
+    public RouteData(String type, String content, float lat, float lng) {
         this.type = type;
         this.content = content;
-        this.x = x;
-        this.y = y;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     public Long getId() {
@@ -55,19 +53,19 @@ public class RouteData {
         this.content = content;
     }
 
-    public float getX() {
-        return x;
+    public float getLat() {
+        return lat;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public void setLat(float lat) {
+        this.lat = lat;
     }
 
-    public float getY() {
-        return y;
+    public float getLng() {
+        return lng;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setLng(float lng) {
+        this.lng = lng;
     }
 }

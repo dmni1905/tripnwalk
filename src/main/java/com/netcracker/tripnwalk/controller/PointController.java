@@ -17,11 +17,11 @@ public class PointController {
     @Inject
     RoutePointRepository pointRepository;
     @Inject
-    RouteRepository itinerariesRepository;
+    RouteRepository routeRepository;
 
     @RequestMapping(value = "/points", method = RequestMethod.GET)
     public ModelAndView getPoints(@RequestParam("userRoutId") String userRoutId){
-        Route one = itinerariesRepository.findOne(Long.parseLong(userRoutId));
+        Route one = routeRepository.findOne(Long.parseLong(userRoutId));
 
         return new ModelAndView("point", "point", one.getPoints());
     }
@@ -32,7 +32,7 @@ public class PointController {
                            @RequestParam("Y") String y){
         RoutePoint point = new RoutePoint(Float.parseFloat(x), Float.parseFloat(y));
 
-        itinerariesRepository.findOne(Long.parseLong(userRoutId)).addPoint(point);
+        routeRepository.findOne(Long.parseLong(userRoutId)).addPoint(point);
         pointRepository.save(point);
 
         return new ResponseEntity<>(HttpStatus.OK);
