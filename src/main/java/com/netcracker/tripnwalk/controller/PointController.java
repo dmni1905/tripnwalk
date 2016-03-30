@@ -20,19 +20,19 @@ public class PointController {
     RouteRepository routeRepository;
 
     @RequestMapping(value = "/points", method = RequestMethod.GET)
-    public ModelAndView getPoints(@RequestParam("userRoutId") String userRoutId){
-        Route one = routeRepository.findOne(Long.parseLong(userRoutId));
+    public ModelAndView getPoints(@RequestParam("userRouteId") String userRouteId){
+        Route one = routeRepository.findOne(Long.parseLong(userRouteId));
 
         return new ModelAndView("point", "point", one.getPoints());
     }
 
     @RequestMapping(value = "/add-point", method = RequestMethod.POST)
-    public ResponseEntity<Void> addPoint(@RequestParam("userRoutId") String userRoutId,
-                           @RequestParam("X") String x,
-                           @RequestParam("Y") String y){
-        RoutePoint point = new RoutePoint(Float.parseFloat(x), Float.parseFloat(y));
+    public ResponseEntity<Void> addPoint(@RequestParam("userRouteId") String userRouteId,
+                           @RequestParam("lat") String lat,
+                           @RequestParam("lng") String lng){
+        RoutePoint point = new RoutePoint(Float.parseFloat(lat), Float.parseFloat(lng));
 
-        routeRepository.findOne(Long.parseLong(userRoutId)).addPoint(point);
+        routeRepository.findOne(Long.parseLong(userRouteId)).addPoint(point);
         pointRepository.save(point);
 
         return new ResponseEntity<>(HttpStatus.OK);

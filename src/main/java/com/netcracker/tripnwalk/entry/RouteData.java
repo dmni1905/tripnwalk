@@ -3,7 +3,7 @@ package com.netcracker.tripnwalk.entry;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "route_data")
+@Table(name = "data")
 public class RouteData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

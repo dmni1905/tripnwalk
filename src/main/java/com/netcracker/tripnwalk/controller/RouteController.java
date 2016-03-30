@@ -16,14 +16,14 @@ public class RouteController {
     @Inject
     UserRepository userRepository;
 
-    @RequestMapping(value = "/set-itineraries", method = RequestMethod.POST)
-    public ResponseEntity<Void> setItineraries(@RequestParam("name") String name,
+    @RequestMapping(value = "/set-route", method = RequestMethod.POST)
+    public ResponseEntity<Void> setRoute(@RequestParam("name") String name,
                                                  @RequestParam("duration") String duration,
                                                  @RequestParam("userId") String userId) {
-        Route routes = new Route(name, java.sql.Time.valueOf(duration));
+        Route route = new Route(name, java.sql.Time.valueOf(duration));
 
-        userRepository.findOne(Long.parseLong(userId)).addItineraries(routes);
-        routeRepository.save(routes);
+        userRepository.findOne(Long.parseLong(userId)).addRoute(route);
+        routeRepository.save(route);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

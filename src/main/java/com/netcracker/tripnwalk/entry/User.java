@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,7 +55,7 @@ public class User {
         }
     }
 
-    public void addItineraries(Route route){
+    public void addRoute(Route route){
         if(!getRoutes().contains(route)){
             getRoutes().add(route);
         }

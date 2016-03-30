@@ -19,12 +19,12 @@ public class UserController {
     @RequestMapping("/get-users")
     public ModelAndView getUsers() {
         ModelAndView model = new ModelAndView();
-        List<User> userstList = new ArrayList<>();
+        List<User> usersList = new ArrayList<>();
         Iterable<User> all = userRepository.findAll();
 
-        all.forEach(userstList::add);
+        all.forEach(usersList::add);
         model.setViewName("users");
-        model.addObject("usersList", userstList);
+        model.addObject("usersList", usersList);
 
         return model;
     }
