@@ -14,20 +14,26 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "surname", unique = true)
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "birth_date", unique = true, nullable = false)
+    @Column(name = "birth_date")
     private Date birthDate;
 
-    @Column(name = "login", unique = true, nullable = false)
+    @Column(name = "login", unique = true)
     private String login;
 
-    @Column(name = "password", unique = true, nullable = false)
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "source_type")
+    private String sourceType;
+
+    @Column(name = "source_id")
+    private String sourceId;
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
@@ -109,8 +115,8 @@ public class User {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthday) {
-        this.birthDate = birthday;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getLogin() {
@@ -135,6 +141,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override
