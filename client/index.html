@@ -38,6 +38,7 @@
     <script src="static/js/app.js"></script>
     <script src="static/js/controllers/map-controller.js"></script>
     <script src="static/js/controllers/user-controller.js"></script>
+    <script src="static/js/services/map-service.js"></script>
     <script src="static/js/services/user-service.js"></script>
 </head>
 
@@ -105,9 +106,9 @@
         <div id="main">
             <div id="map-wrapper" class="wrap" ng-controller="MapCtrl">
                 <div id="map-controls">
-                    <button id="add" class="btn-add fa fa-plus fa-4x" ng-click="addPath()"></button>
+                    <button id="add" class="btn-add fa fa-plus fa-4x" ng-click="createRoute()"></button>
                     <button id="undo" class="btn-undo fa fa-undo fa-4x" ng-click="undoPath()"></button>
-                    <button id="clear" class="btn-clear fa fa-times fa-4x" ng-click="clearPath()"></button>
+                    <button id="clear" class="btn-clear fa fa-times fa-4x" ng-click="clearRoute()"></button>
                 </div>
                 <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
                 <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
