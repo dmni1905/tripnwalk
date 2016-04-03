@@ -40,7 +40,7 @@ public class UserController {
     public String setFriend(@RequestParam("friend") String friendName, @RequestParam("userId") String userName) {
         User user = userRepository.findOne(Long.parseLong(userName));
 
-        user.addFriend(userRepository.findByName(friendName));
+        user.addFriend(userRepository.findByLogin(friendName));
         userRepository.save(user);
 
         return friendName;
