@@ -48,11 +48,11 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
-            joinColumns = { @JoinColumn(name = "route_id") },
-            inverseJoinColumns = { @JoinColumn(name = "user_id") })
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "route_id") })
     private Set<Route> routes = new HashSet<>();
 
-
+    public User(){}
 
     public void addFriend(User user){
         if(!getFriends().contains(user)){

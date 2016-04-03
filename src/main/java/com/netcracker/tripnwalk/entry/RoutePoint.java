@@ -16,6 +16,8 @@ public class RoutePoint {
     @Column(name = "lng", nullable = false)
     private float lng;
 
+    public RoutePoint(){}
+
     public RoutePoint(float lat, float lng) {
         this.lat = lat;
         this.lng = lng;

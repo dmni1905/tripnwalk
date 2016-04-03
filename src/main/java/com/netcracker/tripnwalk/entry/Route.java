@@ -31,6 +31,8 @@ public class Route {
             inverseJoinColumns = @JoinColumn(name = "data_id"))
     private Set<RouteData> data = new HashSet<>();
 
+    public Route(){}
+
     public Route(String name, Time duration) {
         this.name = name;
         this.duration = duration;

@@ -22,6 +22,8 @@ public class RouteData {
     @Column(name = "lng", nullable = false)
     private float lng;
 
+    public RouteData(){}
+
     public RouteData(String type, String content, float lat, float lng) {
         this.type = type;
         this.content = content;
