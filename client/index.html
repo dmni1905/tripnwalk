@@ -29,6 +29,8 @@
     <script src="bower_components/angular/angular.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <!-- Angular-google-maps -->
     <!-- Play with versions of angular-google-map or lodash to remove "_.includes is not a function" error -->
     <script src="bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
@@ -40,10 +42,11 @@
     <script src="static/js/controllers/user-controller.js"></script>
     <script src="static/js/services/map-service.js"></script>
     <script src="static/js/services/user-service.js"></script>
+    <script src="static/js/directives/route-form.js"></script>
 </head>
 
 <body>
-    <div id="wrapper" class="js-wrapper">
+    <div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -89,7 +92,13 @@
                 <li>
                     <a href="#routes" data-toggle="collapse">ROUTES</a>
                     <div id="routes" class="collapse">
-                        My routes. Coming soon...
+                      <add-route-form></add-route-form>
+
+                      <ul style="list-style-type:none; padding-left: 0;">
+                        <li ng-repeat="route in routes">
+                          <label class="route-element id-{{route.id}}">{{route.name}}</label>
+                        </li>
+                      </ul>
                     </div>
                 </li>
                 <li>
@@ -104,13 +113,12 @@
 
         <!-- Page Content -->
         <div id="main">
-            <div id="map-wrapper" class="wrap" ng-controller="MapCtrl">
-                <div id="map-controls">
-                    <button id="add" class="btn-add fa fa-plus fa-4x" ng-click="createRoute()"></button>
-                    <button id="undo" class="btn-undo fa fa-undo fa-4x" ng-click="undoPath()"></button>
-                    <button id="clear" class="btn-clear fa fa-times fa-4x" ng-click="clearRoute()"></button>
-                </div>
+            <div id="map-wrapper" class="wrap">
+                <button id="add" class="btn-add fa fa-plus fa-4x" ng-click="createRoute()"></button>
                 <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
+
+                <div class="route-form-place"></div>
+
                 <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
             </div>
         </div>

@@ -2,8 +2,76 @@
 
 app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService) {
   var map;
-  var routes = {};
+  var routes = [];
   var curRoute;
+
+  //TODO
+  var simpleRoute = {
+    id: 1,
+    name: 'Test Route',
+    duration: '0',
+    points: [
+      {
+        id: '1',
+        position: '0',
+        lat: 59.938600,
+        lng: 30.31410
+      },
+      {
+        id: '2',
+        position: '1',
+        lat: 59.938,
+        lng: 30.38
+      },
+      {
+        id: '3',
+        position: '2',
+        lat: 59.94,
+        lng: 30.45
+      }
+    ],
+    data: [
+      {
+        id: '1',
+        type: 'discription',
+        content: 'some text.',
+        lat: 59.93863,
+        lng: 30.31413
+      }
+    ]
+  };
+
+  var newRoute = {
+    id: 2,
+    name: 'New Route',
+    duration: '0',
+    points: [
+      {
+        id: '1',
+        position: '0',
+        lat: 58.938600,
+        lng: 29.31410
+      },
+      {
+        id: '2',
+        position: '1',
+        lat: 58.938,
+        lng: 29.38
+      },
+      {
+        id: '3',
+        position: '2',
+        lat: 58.94,
+        lng: 29.45
+      }
+    ]
+  }
+
+  //TODO
+  routes.push(simpleRoute);
+  routes.push(newRoute);
+
+  $scope.routes = [];
 
   $scope.map = {
     center: { latitude: 59.938600, longitude: 30.31410 },
@@ -22,7 +90,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     curRoute.setMap(map);
   }
-  // Handles click events on a map, and adds a new point to the Polyline.
+// Handles click events on a map, and adds a new point to the Polyline.
   function setMarker(evt) {
     !curRoute && setPolyline();
 
@@ -38,26 +106,34 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     return _.map(route.getPath().j, (latLng, index) => _.extend(latLng.toJSON(), { position: index }));
   }
 
-  function renderRoute(latLngArray) {
-    var polyLine = _.map(latLngArray, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
-    var Path = new google.maps.Polyline({
+  function renderRoute(route) {
+    var polyLine = _.map(route.points, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
+    var path = new google.maps.Polyline({
       path: polyLine,
       strokeColor: '#000000',
       strokeOpacity: 1.0,
       strokeWeight: 3
     });
 
-    Path.setMap(map);
+    path.setMap(map);
 
+    return _.extend(route, { path: path });
   }
 
+  //TODO
   $scope.createRoute = function() {
+    renderRoute(simpleRoute);
+
+
+  };
+
+  $scope.saveRoute = function() {
     var points = JSON.stringify(routeToArray(curRoute));
 
     MapService.create(points)
       .then(route => {
-        routes[route.id] = route;
-
+        routes[route.id] = curRoute;
+        //TODO handle created route fields.
         setPolyline();
       });
   };
@@ -78,7 +154,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.clearRoute = function() {
     curRoute.getPath().clear();
 
-    setPolyline();
+    curRoute = undefined;
   };
 
   $scope.removeRoute = function(route) {
@@ -90,7 +166,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       });
   };
 
-  //Initialize map.
+  //Renders map.
   uiGmapIsReady.promise(1)
     .then(instances => instances[0].map)
     .then(loadedMap => {
@@ -106,11 +182,12 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
         }, 320);
       });
 
+      //TODO
+      $scope.routes = routes;
+
       MapService.fetchAll()
         .then(res => {
-          routes = res;
-
-          _.each(routes, route => renderRoute(route));
+          routes = _.map(res, route => renderRoute(route));
         });
     });
 });

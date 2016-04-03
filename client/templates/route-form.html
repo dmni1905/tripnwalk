@@ -1,0 +1,52 @@
+<div id="route-edit-window">
+  <label style="margin-top: 5px; margin-left: 10px">Route Add/Edit form</label>
+
+  <form id="point-input" class="form-inline">
+    <input type="text" class="route-name form-control input-sm" placeholder="Enter address or coordinates">
+    <button id="add-point">ADD</button>
+  </form>
+
+  <div id="points-list-wrapper">
+    <uib-tabset active="activeJustified" justified="true">
+      <uib-tab heading="Points">
+        <div id="points-list">
+          <uib-accordion close-others="true">
+            <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in points">
+              <ul style="list-style-type:none">
+                <li>
+                  <button>Add after</button>
+                </li>
+                <li>
+                  <button>Delete</button>
+                </li>
+                <li>
+                  <button>Add content</button>
+                </li>
+              </ul>
+            </uib-accordion-group>
+          </uib-accordion>
+        </div>
+      </uib-tab>
+      <uib-tab heading="POI">
+        <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in points">
+          <ul style="list-style-type:none">
+            <li>
+              <button>Add after</button>
+            </li>
+            <li>
+              <button>Delete</button>
+            </li>
+            <li>
+              <button>Add content</button>
+            </li>
+          </ul>
+        </uib-accordion-group>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+
+  <form id="route-controls" class="form-inline">
+    <button id="save-route" ng-click="saveRoute()">SAVE</button>
+    <button id="clear-route" ng-click="clearRoute()">CANCEL</button>
+  </form>
+</div>

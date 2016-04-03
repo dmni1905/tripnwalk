@@ -43,27 +43,44 @@ html, body {
 	z-index: 99;
 }
 
-#map-controls {
-	position: fixed;
-	display: inline-block;
-	top: 91.4%;
-	left: 82%;
-	z-index: 99;
-}
-
 .btn-add {
+	position: fixed;
+	top: 91.4%;
+	left: 90%;
+	z-index: 99;
 	color: #00AA00;
 	cursor: pointer;
 }
 
-.btn-undo {
-	color: #00AA00;
-	cursor: pointer;
+#route-edit-window {
+	position: fixed;
+	top: 15%;
+	left: 75%;
+	z-index: 99;
+	background-color: white;
+	border: 2px solid #CCCCCC;
+	display: block;
+	height: 500px;
+	width: 280px;
 }
 
-.btn-clear {
-	color: #EE0000;
-	cursor: pointer;
+#point-input {
+	position: relative;
+	margin-top: 10px;
+	margin-left: 10px;
+	width: auto;
+}
+
+#points-list-wrapper {
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 90%;
+	height: 75%;
+	overflow: hidden;
+}
+
+#route-controls {
+	margin-left: 20%;
 }
 
 #gmap {
