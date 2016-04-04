@@ -65,7 +65,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
         lng: 29.45
       }
     ]
-  }
+  };
 
   //TODO
   routes.push(simpleRoute);
@@ -77,6 +77,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     center: { latitude: 59.938600, longitude: 30.31410 },
     zoom: 11,
     options: {
+      minZoom: 3,
+      maxZoom: 18,
       disableDefaultUI: true
     }
   };
