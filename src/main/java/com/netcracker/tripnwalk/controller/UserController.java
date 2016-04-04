@@ -2,47 +2,107 @@ package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
+import com.sun.org.apache.regexp.internal.RE;
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class UserController {
     @Inject
     UserRepository userRepository;
 
-    @RequestMapping("/get-users")
-    public ModelAndView getUsers() {
-        ModelAndView model = new ModelAndView();
-        List<User> usersList = new ArrayList<>();
-        Iterable<User> all = userRepository.findAll();
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    public void getAuth(@RequestBody User user) {
+        User userFind = userRepository.findByLogin(user.getLogin());
+        if (userFind.getPassword().equals(user.getPassword())) {
+            System.out.println("Такой пользователь в БД есть");
+        } else {
 
-        all.forEach(usersList::add);
-        model.setViewName("users");
-        model.addObject("usersList", usersList);
-
-        return model;
+        }
+        System.out.println(user.getLogin());
     }
 
-    @RequestMapping(value = "/add-user", method = RequestMethod.POST)
-    public ResponseEntity<String> addUser(@RequestParam("userName") String userName) {
-        userRepository.save(new User(userName));
-
-        return new ResponseEntity<String>(HttpStatus.OK);
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ResponseBody
+    public String getUser() {
+        Long id = 1L;
+        return userRepository.findOne(id).toString();
     }
 
-    @RequestMapping(value = "/set-friend", method = RequestMethod.POST)
-    public String setFriend(@RequestParam("friend") String friendName, @RequestParam("userId") String userName) {
-        User user = userRepository.findOne(Long.parseLong(userName));
+    @RequestMapping(value = "/", method = RequestMethod.PATCH, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> modifyUser(@RequestBody User user) {
+        User userDb = userRepository.findOne(user.getId());
 
-        user.addFriend(userRepository.findByLogin(friendName));
-        userRepository.save(user);
+        Arrays.stream(User.class.getDeclaredFields()).forEach(f -> {
+            mergeUserByField(userDb, user, f.getName());
+        });
+        userRepository.save(userDb);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        return friendName;
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteUser() {
+        Long id = 1L;
+        userRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Set<String> getFriend() {
+        Long id = 1L;
+        Set<String> friend = new HashSet();
+        userRepository.findOne(id).getFriends().stream().forEach(f -> {
+            friend.add(f.toString());
+        });
+        return friend;
+    }
+
+//    @RequestMapping(value = "/friends", method = RequestMethod.POST, produces = "application/json")
+//    @ResponseBody
+//    public ResponseEntity<String> modifyFriend(@RequestBody User user){
+//        Long id = 1L;
+//        User userDB = userRepository.findOne(id);
+//        userDB.addFriend(user);
+//        userRepository.save(userDB);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
+    private void mergeUserByField(User userDb, User userReq, String field) {
+        switch (field) {
+            case "name":
+                if (!userDb.getName().equals(userReq.getName())) {
+                    userDb.setName(userReq.getName());
+                }
+                break;
+            case "surname":
+                if (!userDb.getSurname().equals(userReq.getSurname())) {
+                    userDb.setSurname(userReq.getSurname());
+                }
+                break;
+            case "login":
+                if (!userDb.getLogin().equals(userReq.getLogin())) {
+                    userDb.setLogin(userReq.getLogin());
+                }
+                break;
+            case "birthDate":
+                if (!userDb.getBirthDate().equals(userReq.getBirthDate())) {
+                    userDb.setBirthDate(userReq.getBirthDate());
+                }
+                break;
+            case "email":
+                if (!userDb.getEmail().equals(userReq.getEmail())) {
+                    userDb.setEmail(userReq.getEmail());
+                }
+                break;
+        }
     }
 }

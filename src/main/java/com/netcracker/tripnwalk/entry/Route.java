@@ -16,7 +16,7 @@ public class Route {
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "duration", nullable = false)
+    @Column(name = "duration")
     private Time duration;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -32,6 +32,10 @@ public class Route {
     private Set<RouteData> data = new HashSet<>();
 
     public Route(){}
+
+    public Route(String name) {
+        this.name = name;
+    }
 
     public Route(String name, Time duration) {
         this.name = name;

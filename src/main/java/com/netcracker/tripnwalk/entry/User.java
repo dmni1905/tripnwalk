@@ -1,5 +1,7 @@
 package com.netcracker.tripnwalk.entry;
 
+import org.json.simple.JSONObject;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collections;
@@ -7,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,27 +50,39 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "route_id") })
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "route_id")})
     private Set<Route> routes = new HashSet<>();
 
-    public User(){}
+    public User() {
+    }
 
-    public void addFriend(User user){
-        if(!getFriends().contains(user)){
+    public User(String name, String surname, Date birthDate, String login, String password, String sourceType, String sourceId, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.login = login;
+        this.password = password;
+        this.sourceType = sourceType;
+        this.sourceId = sourceId;
+        this.email = email;
+    }
+
+    public void addFriend(User user) {
+        if (!getFriends().contains(user)) {
             getFriends().add(user);
             user.getFriends().add(this);
         }
     }
 
-    public void addRoute(Route route){
-        if(!getRoutes().contains(route)){
+    public void addRoute(Route route) {
+        if (!getRoutes().contains(route)) {
             getRoutes().add(route);
         }
     }
 
     public Set<User> getFriends() {
-        return Collections.unmodifiableSet(friends);
+        return friends;
     }
 
     public void setFriends(Set<User> friends) {
@@ -159,15 +173,19 @@ public class User {
         this.sourceId = sourceId;
     }
 
+//    public User getProfile(){
+//        return new User(this.name, surname, birthDate, login, password, sourceType, sourceId, email);
+//    }
+
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", login='" + login + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", id);
+        jsonObject.put("name", name);
+        jsonObject.put("surname", surname);
+        jsonObject.put("birthDate", birthDate.toString());
+        jsonObject.put("login", login);
+        jsonObject.put("email", email);
+        return jsonObject.toString();
     }
 }
