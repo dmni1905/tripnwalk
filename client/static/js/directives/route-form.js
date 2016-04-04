@@ -13,7 +13,7 @@ app.directive('routeForm', function($compile, $templateRequest) {
       //TODO look at controllers to handle route-form.
       element.bind('click', function(evt){
         var route = _.find(scope.routes, route => {
-          return route.id == evt.target.getAttribute('class').match(/id-(.+)/)[1]
+          return route.id == evt.target.getAttribute('class').match(/id-(.+)/)[1];
         });
 
         $templateRequest('templates/route-form.html').then(html => {
