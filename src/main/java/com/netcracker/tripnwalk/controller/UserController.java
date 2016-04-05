@@ -66,6 +66,18 @@ public class UserController {
         return friend;
     }
 
+    @RequestMapping(value = "/friends", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Set<String> deleteFriend() {
+        Long id = 1L;
+        Set<String> friend = new HashSet();
+        userRepository.findOne(id).getFriends().stream().forEach(f -> {
+            friend.add(f.toString());
+        });
+
+        return friend;
+    }
+
 //    @RequestMapping(value = "/friends", method = RequestMethod.POST, produces = "application/json")
 //    @ResponseBody
 //    public ResponseEntity<String> modifyFriend(@RequestBody User user){
