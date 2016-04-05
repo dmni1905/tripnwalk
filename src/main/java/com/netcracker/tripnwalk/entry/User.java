@@ -183,7 +183,7 @@ public class User {
         jsonObject.put("id", id);
         jsonObject.put("name", name);
         jsonObject.put("surname", surname);
-        jsonObject.put("birthDate", birthDate.toString());
+//        jsonObject.put("birthDate", birthDate.toString());
         jsonObject.put("login", login);
         jsonObject.put("email", email);
         return jsonObject.toString();
