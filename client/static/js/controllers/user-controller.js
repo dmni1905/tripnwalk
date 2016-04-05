@@ -4,7 +4,8 @@ app.controller('UserCtrl', ['$scope', '$window', function($scope, w) {
   $scope.authorize = function () {
       window.location.href = 'http://oauth.vk.com/authorize?' +
             'client_id=5368462' +
-            '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+            //'&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+            '&redirect_uri=http://localhost:63342/trip-n-walk/client/auth.html' +
             '&display=popup' +
             '&response_type=token';
   };
