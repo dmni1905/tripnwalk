@@ -10,6 +10,9 @@ public class RoutePoint {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @Column(name = "postion", nullable = false)
+    private Integer position;
+
     @Column(name = "lat", nullable = false)
     private float lat;
 
@@ -18,7 +21,8 @@ public class RoutePoint {
 
     public RoutePoint(){}
 
-    public RoutePoint(float lat, float lng) {
+    public RoutePoint(Integer position, float lat, float lng) {
+        this.position = position;
         this.lat = lat;
         this.lng = lng;
     }
@@ -47,4 +51,11 @@ public class RoutePoint {
         this.lng = lng;
     }
 
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
 }

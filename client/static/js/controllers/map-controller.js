@@ -124,9 +124,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
   //TODO
   $scope.createRoute = function() {
-    renderRoute(simpleRoute);
-
-
+    _.each(routes, route => renderRoute(route));
   };
 
   $scope.saveRoute = function() {

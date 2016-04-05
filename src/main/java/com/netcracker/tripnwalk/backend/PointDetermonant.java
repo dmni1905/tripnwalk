@@ -94,9 +94,9 @@ public class PointDetermonant {
     public static void main (String[] args) {
 
         PointDetermonant pointDetermonant = new PointDetermonant(10);
-        RoutePoint a = new RoutePoint(0, 5),
-                b = new RoutePoint(1, 0),
-                point = new RoutePoint(5, 8);
+        RoutePoint a = new RoutePoint(0, 0, 5),
+                b = new RoutePoint(1, 1, 0),
+                point = new RoutePoint(2, 5, 8);
 
         double ab = pointDetermonant.getLength(a, b),
                 ap = pointDetermonant.getLength(a, point),

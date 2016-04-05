@@ -51,7 +51,7 @@
 
     <div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+        <div id="sidebar-wrapper" ng-controller="UserCtrl">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <div class="#auth" id="auth" ng-controller="UserCtrl">
+                    <div id="auth">
                         <label style="display: initial; color: snow">Log in:</label>
                         <button class="fa fa-vk" ng-click="authorize()"></button>
                     </div>
@@ -80,8 +80,8 @@
                                 <dd id="bday">{{bday}}</dd>
                                 <dt>E-mail</dt>
                                 <dd id="email">{{email}}</dd>
-                                <dt>Отверстайте</dt>
-                                <dd>меня нормально, пожалуйста </dd>
+                                <dt>Profession</dt>
+                                <dd>Developer</dd>
                             </dl>
                         </p>
                     </div>
