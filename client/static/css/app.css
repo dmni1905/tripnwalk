@@ -43,15 +43,6 @@ html, body {
 	z-index: 99;
 }
 
-.btn-add {
-	position: fixed;
-	top: 91.4%;
-	left: 90%;
-	z-index: 99;
-	color: #00AA00;
-	cursor: pointer;
-}
-
 #route-edit-window {
 	position: fixed;
 	top: 15%;
@@ -59,9 +50,17 @@ html, body {
 	z-index: 99;
 	background-color: white;
 	border: 2px solid #CCCCCC;
+	border-radius: 20px;
 	display: block;
 	height: 500px;
 	width: 280px;
+}
+
+#route-edit-window .route-name {
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
 }
 
 #point-input {
@@ -75,12 +74,36 @@ html, body {
 	margin-top: 10px;
 	margin-left: 10px;
 	width: 90%;
-	height: 75%;
+	height: 71%;
 	overflow: hidden;
+}
+
+#points-list {
+	height: 302px;
+	overflow: auto;
 }
 
 #route-controls {
 	margin-left: 20%;
+}
+
+.point-controls {
+	display: table-caption;
+}
+
+.point-controls label {
+	margin-bottom: 5px;
+	width: 120px;
+}
+
+#routes label {
+	display: block;
+	color: #CCCCCC;
+}
+
+.add-route {
+	width: 120px;
+	margin-left: 20px;
 }
 
 #gmap {
