@@ -91,7 +91,7 @@ class AuthController {
         String email = (String) strJson.get("email");
 
         String reqUrl = "https://api.vk.com/method/users.get?" +
-                "user_ids=" + VKUSER_ID +
+                "user_ids=" + userIDOauth +
                 "&fields=" + FIELDS +
                 "&name_case=" + NAME_CASE +
                 "&v=" + VERSION;
