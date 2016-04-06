@@ -1,78 +1,11 @@
 'use strict';
 
 app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService) {
+  var routeMode = false;
   var map;
-  var routes = [];
+
   $scope.curRoute = {};
-
-  //TODO
-  var simpleRoute = {
-    id: 1,
-    name: 'Test Route',
-    duration: '0',
-    points: [
-      {
-        id: '1',
-        position: '0',
-        lat: 59.938600,
-        lng: 30.31410
-      },
-      {
-        id: '2',
-        position: '1',
-        lat: 59.938,
-        lng: 30.38
-      },
-      {
-        id: '3',
-        position: '2',
-        lat: 59.94,
-        lng: 30.45
-      }
-    ],
-    data: [
-      {
-        id: '1',
-        type: 'discription',
-        content: 'some text.',
-        lat: 59.93863,
-        lng: 30.31413
-      }
-    ]
-  };
-
-  var newRoute = {
-    id: 2,
-    name: 'New Route',
-    duration: '0',
-    points: [
-      {
-        id: '1',
-        position: '0',
-        lat: 58.938600,
-        lng: 29.31410
-      },
-      {
-        id: '2',
-        position: '1',
-        lat: 58.938,
-        lng: 29.38
-      },
-      {
-        id: '3',
-        position: '2',
-        lat: 58.94,
-        lng: 29.45
-      }
-    ]
-  };
-
-  //TODO
-  //routes.push(simpleRoute);
-  //routes.push(newRoute);
-
   $scope.routes = [];
-
   $scope.map = {
     center: { latitude: 59.938600, longitude: 30.31410 },
     zoom: 13,
@@ -82,6 +15,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       disableDefaultUI: true
     }
   };
+
+  $scope.toggleRouteMode = state => routeMode = state;
 
   function setPolyline() {
     $scope.curRoute = {
@@ -96,6 +31,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   }
 // Handles click events on a map, and adds a new point to the Polyline.
   function setMarker(evt) {
+    if (!routeMode) return;
+
     !$scope.curRoute.path && setPolyline();
 
     var position = evt.latLng;
@@ -104,10 +41,20 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     // Because path is an MVCArray, we can simply append a new coordinate
     // and it will automatically appear.
     path.push(position);
+
+    $scope.curRoute.points = routeToArray($scope.curRoute.path);
+
+    $scope.$apply();
   }
 
   function routeToArray(route) {
-    return _.map(route.getPath().j, (latLng, index) => _.extend(latLng.toJSON(), { position: index }));
+    return _.map(route.getPath().j, (latLng, index) => {
+      return {
+        position: index,
+        lat: latLng.lat().toFixed(6),
+        lng: latLng.lng().toFixed(6)
+      };
+    });
   }
 
   function renderRoute(route) {
@@ -125,32 +72,27 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     return _.extend(route, { path: path });
   }
 
-  //TODO
-  $scope.createRoute = function() {
-    _.each(routes, route => renderRoute(route));
-  };
-
   $scope.saveRoute = function() {
-    var points = JSON.stringify(routeToArray($scope.curRoute.path));
+    //TODO validation.
+    var route = _.omit($scope.curRoute, 'path');
+    route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
-    MapService.create(points)
+    MapService.create(route)
       .then(route => {
-        routes[route.id] = $scope.curRoute;
-        //TODO handle created route fields.
-        setPolyline();
+        $scope.routes[route.id] = $scope.curRoute;
+
+        $scope.$apply();
       });
   };
 
-  $scope.updateRoute = function(route) {
-    var points = JSON.stringify(routeToArray(route));
+  $scope.updateRoute = function() {
+    var route = _.omit($scope.curRoute, 'path');
 
-    MapService.update(points)
+    MapService.update(route)
       .then(route => {
-        routes[route.id] = route;
+        $scope.routes[route.id] = route;
 
-        renderRoute(route);
-
-        setPolyline();
+        $scope.$apply();
       });
   };
 
@@ -165,7 +107,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       .then(() => {
         route.getPath().clear();
 
-        delete routes[route.id];
+        delete $scope.routes[route.id];
+
+        $scope.$apply();
       });
   };
 
@@ -185,14 +129,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
         }, 320);
       });
 
-      //TODO
-      $scope.routes = routes;
-
       MapService.fetchAll()
         .then(res => {
-          routes = _.map(res, route => renderRoute(route));
-
-          $scope.routes = routes;
+          $scope.routes = _.map(res, route => renderRoute(route));
         });
     });
 });

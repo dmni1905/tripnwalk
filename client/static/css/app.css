@@ -56,8 +56,13 @@ html, body {
 	width: 280px;
 }
 
-#route-edit-window .route-name {
+.route-form-header {
+	margin-left: 28%;
 	margin-top: 10px;
+}
+
+#route-edit-window .route-name {
+	margin-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
@@ -70,11 +75,15 @@ html, body {
 	width: auto;
 }
 
+#add-point {
+	width: 75px;
+}
+
 #points-list-wrapper {
 	margin-top: 10px;
 	margin-left: 10px;
 	width: 90%;
-	height: 71%;
+	height: 66%;
 	overflow: hidden;
 }
 
@@ -83,8 +92,12 @@ html, body {
 	overflow: auto;
 }
 
-#route-controls {
-	margin-left: 20%;
+#save-route {
+	margin-left: 18%;
+}
+
+#clear-route {
+	margin-left: 10%;
 }
 
 .point-controls {
@@ -99,11 +112,16 @@ html, body {
 #routes label {
 	display: block;
 	color: #CCCCCC;
+	width: 80%;
+	text-align: left;
 }
 
-.add-route {
-	width: 120px;
-	margin-left: 20px;
+.add-route-btn {
+	width: 120px!important;
+	margin-left: 32px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 0;
 }
 
 #gmap {
