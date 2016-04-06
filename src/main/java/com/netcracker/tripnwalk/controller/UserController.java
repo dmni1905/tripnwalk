@@ -17,17 +17,6 @@ public class UserController {
     @Inject
     UserRepository userRepository;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-    public void getAuth(@RequestBody User user) {
-        User userFind = userRepository.findByLogin(user.getLogin());
-        if (userFind.getPassword().equals(user.getPassword())) {
-            System.out.println("Такой пользователь в БД есть");
-        } else {
-
-        }
-        System.out.println(user.getLogin());
-    }
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getUser() {
         Long id = 1L;
@@ -73,7 +62,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/friends/{id}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<String> geleteFriend(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteFriend(@PathVariable("id") Long id){
         Long id_user = 1L;
         User user = userRepository.findOne(id_user);
         user.getFriends().remove(userRepository.findOne(id));
