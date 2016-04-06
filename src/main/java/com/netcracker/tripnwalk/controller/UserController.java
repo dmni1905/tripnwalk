@@ -29,14 +29,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
     public String getUser() {
         Long id = 1L;
         return userRepository.findOne(id).toString();
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PATCH, produces = "application/json")
-    @ResponseBody
     public ResponseEntity<String> modifyUser(@RequestBody User user) {
         User userDb = userRepository.findOne(user.getId());
 
@@ -48,7 +46,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    @ResponseBody
     public ResponseEntity<String> deleteUser() {
         Long id = 1L;
         userRepository.delete(id);
@@ -56,8 +53,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public Set<String> getFriend() {
+    public Set<String> getFriends() {
         Long id = 1L;
         Set<String> friend = new HashSet();
         userRepository.findOne(id).getFriends().stream().forEach(f -> {
@@ -66,15 +62,24 @@ public class UserController {
         return friend;
     }
 
-//    @RequestMapping(value = "/friends", method = RequestMethod.POST, produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<String> modifyFriend(@RequestBody User user){
-//        Long id = 1L;
-//        User userDB = userRepository.findOne(id);
-//        userDB.addFriend(user);
-//        userRepository.save(userDB);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/friends", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<String> modifyFriend(@RequestBody User user){
+        userRepository.save(user);
+        Long id = 1L;
+        User userDB = userRepository.findOne(id);
+        userDB.addFriend(user);
+        userRepository.save(userDB);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/friends/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseEntity<String> geleteFriend(@PathVariable("id") Long id){
+        Long id_user = 1L;
+        User user = userRepository.findOne(id_user);
+        user.getFriends().remove(userRepository.findOne(id));
+        userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     private void mergeUserByField(User userDb, User userReq, String field) {
         switch (field) {

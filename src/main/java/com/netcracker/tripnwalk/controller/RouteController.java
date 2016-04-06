@@ -19,7 +19,6 @@ public class RouteController {
     UserRepository userRepository;
 
     @RequestMapping(value = "/routes", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
     public Set getRoutes() {
         User user = userRepository.findByLogin("user_test");
         return user.getRoutes();
@@ -32,13 +31,11 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
     public Route getRouteById(@PathVariable("id") Long id) {
         return routeRepository.findOne(id);
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.PATCH, produces = "application/json")
-    @ResponseBody
     public ResponseEntity<String> modifyById(@PathVariable("id") Long id, @RequestBody Route route) {
         if (id == route.getId()) {
             routeRepository.save(route);
@@ -49,7 +46,6 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
     public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
         routeRepository.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);

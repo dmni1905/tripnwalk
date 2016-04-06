@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -28,7 +29,7 @@ public class User {
     @Column(name = "login", unique = true)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "source_type")
@@ -55,17 +56,6 @@ public class User {
     private Set<Route> routes = new HashSet<>();
 
     public User() {
-    }
-
-    public User(String name, String surname, Date birthDate, String login, String password, String sourceType, String sourceId, String email) {
-        this.name = name;
-        this.surname = surname;
-        this.birthDate = birthDate;
-        this.login = login;
-        this.password = password;
-        this.sourceType = sourceType;
-        this.sourceId = sourceId;
-        this.email = email;
     }
 
     public void addFriend(User user) {
@@ -173,17 +163,13 @@ public class User {
         this.sourceId = sourceId;
     }
 
-//    public User getProfile(){
-//        return new User(this.name, surname, birthDate, login, password, sourceType, sourceId, email);
-//    }
-
     @Override
     public String toString() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", id);
         jsonObject.put("name", name);
         jsonObject.put("surname", surname);
-        jsonObject.put("birthDate", birthDate.toString());
+        jsonObject.put("birthDate", birthDate);
         jsonObject.put("login", login);
         jsonObject.put("email", email);
         return jsonObject.toString();
