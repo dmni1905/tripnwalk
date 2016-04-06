@@ -3,7 +3,7 @@
 app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService) {
   var map;
   var routes = [];
-  var curRoute;
+  $scope.curRoute = {};
 
   //TODO
   var simpleRoute = {
@@ -68,14 +68,14 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   //TODO
-  routes.push(simpleRoute);
-  routes.push(newRoute);
+  //routes.push(simpleRoute);
+  //routes.push(newRoute);
 
   $scope.routes = [];
 
   $scope.map = {
     center: { latitude: 59.938600, longitude: 30.31410 },
-    zoom: 11,
+    zoom: 13,
     options: {
       minZoom: 3,
       maxZoom: 18,
@@ -84,20 +84,22 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   function setPolyline() {
-    curRoute = new google.maps.Polyline({
-      strokeColor: '#000000',
-      strokeOpacity: 1.0,
-      strokeWeight: 3
-    });
+    $scope.curRoute = {
+      path: new google.maps.Polyline({
+        strokeColor: '#000000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3
+      })
+    };
 
-    curRoute.setMap(map);
+    $scope.curRoute.path.setMap(map);
   }
 // Handles click events on a map, and adds a new point to the Polyline.
   function setMarker(evt) {
-    !curRoute && setPolyline();
+    !$scope.curRoute.path && setPolyline();
 
     var position = evt.latLng;
-    var path = curRoute.getPath();
+    var path = $scope.curRoute.path.getPath();
 
     // Because path is an MVCArray, we can simply append a new coordinate
     // and it will automatically appear.
@@ -109,7 +111,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   }
 
   function renderRoute(route) {
-    var polyLine = _.map(route.points, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
+    var points = _.sortBy(route.points, point => point.position);
+    var polyLine = _.map(points, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
     var path = new google.maps.Polyline({
       path: polyLine,
       strokeColor: '#000000',
@@ -124,17 +127,15 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
   //TODO
   $scope.createRoute = function() {
-    renderRoute(simpleRoute);
-
-
+    _.each(routes, route => renderRoute(route));
   };
 
   $scope.saveRoute = function() {
-    var points = JSON.stringify(routeToArray(curRoute));
+    var points = JSON.stringify(routeToArray($scope.curRoute.path));
 
     MapService.create(points)
       .then(route => {
-        routes[route.id] = curRoute;
+        routes[route.id] = $scope.curRoute;
         //TODO handle created route fields.
         setPolyline();
       });
@@ -154,9 +155,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   $scope.clearRoute = function() {
-    curRoute.getPath().clear();
+    $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
 
-    curRoute = undefined;
+    $scope.curRoute = {};
   };
 
   $scope.removeRoute = function(route) {
@@ -190,6 +191,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       MapService.fetchAll()
         .then(res => {
           routes = _.map(res, route => renderRoute(route));
+
+          $scope.routes = routes;
         });
     });
 });

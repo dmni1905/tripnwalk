@@ -1,13 +1,17 @@
 'use strict';
 
-app.controller('UserCtrl', ['$scope', 'UserService', function($scope, AuthService) {
-  var authorize = () => {
-    window.location.href = "http://oauth.vk.com/authorize?" +
-      "client_id=5368462" +
-      "&redirect_uri=http://localhost/docs/tmp/client/index.html" +
-      "&display=popup" +
-      "&response_type=token";
+app.controller('UserCtrl', ['$scope', '$window', function($scope, w) {
+  $scope.authorize = function () {
+      window.location.href = 'http://oauth.vk.com/authorize?' +
+            'client_id=5368462' +
+            //'&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+            '&redirect_uri=http://localhost:63342/trip-n-walk/client/auth.html' +
+            '&display=popup' +
+            '&response_type=token';
   };
 
-  $scope.authorize = authorize;
+  $scope.nickname = 'DesiresDesigner';
+  $scope.bday = '16/11/93';
+  $scope.country = 'Russia';
+  $scope.email = 'desiresdesigner@gmail.com';
 }]);

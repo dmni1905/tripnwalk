@@ -45,10 +45,13 @@
     <script src="static/js/directives/route-form.js"></script>
 </head>
 
+
 <body>
+
+
     <div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
         <!-- Sidebar -->
-        <div id="sidebar-wrapper">
+        <div id="sidebar-wrapper" ng-controller="UserCtrl">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
                     <a href="#">
@@ -56,15 +59,15 @@
                     </a>
                 </li>
                 <li>
-                    <div class="#auth" ng-controller="UserCtrl">
+                    <div id="auth">
                         <label style="display: initial; color: snow">Log in:</label>
                         <button class="fa fa-vk" ng-click="authorize()"></button>
                     </div>
                 </li>
                 <li>
                     <a href="#profile" data-toggle="collapse">PROFILE</a>
-                    <div id="profile" class="collapse in">
-                        <label>DesiresDesigner</label>
+                    <div id="profile" ng-controller="UserCtrl" class="collapse in">
+                        <label>{{nickname}}</label>
                         <p style="margin: 0">
                             <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
                               style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;">
@@ -72,11 +75,11 @@
                         <p>
                             <dl style="list-style-type:none">
                                 <dt>Country</dt>
-                                <dd>Russia</dd>
+                                <dd id="country">{{country}}</dd>
                                 <dt>Birth date</dt>
-                                <dd>16/11/93</dd>
+                                <dd id="bday">{{bday}}</dd>
                                 <dt>E-mail</dt>
-                                <dd>desiresdesigner@gmail.com</dd>
+                                <dd id="email">{{email}}</dd>
                                 <dt>Profession</dt>
                                 <dd>Developer</dd>
                             </dl>
@@ -114,7 +117,6 @@
         <!-- Page Content -->
         <div id="main">
             <div id="map-wrapper" class="wrap">
-                <button id="add" class="btn-add fa fa-plus fa-4x" ng-click="createRoute()"></button>
                 <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
 
                 <div class="route-form-place"></div>

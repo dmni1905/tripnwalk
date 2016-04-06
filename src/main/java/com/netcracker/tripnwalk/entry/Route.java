@@ -17,7 +17,7 @@ public class Route {
     private String name;
 
     @Column(name = "duration")
-    private Time duration;
+    private Integer duration;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "route_point",
@@ -37,7 +37,7 @@ public class Route {
         this.name = name;
     }
 
-    public Route(String name, Time duration) {
+    public Route(String name, Integer duration) {
         this.name = name;
         this.duration = duration;
     }
@@ -59,11 +59,11 @@ public class Route {
         this.name = name;
     }
 
-    public Time getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Time duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
