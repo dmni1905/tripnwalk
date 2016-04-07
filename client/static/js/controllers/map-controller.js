@@ -43,8 +43,6 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     path.push(position);
 
     $scope.curRoute.points = routeToArray($scope.curRoute.path);
-
-    $scope.$apply();
   }
 
   function routeToArray(route) {
@@ -80,8 +78,6 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     MapService.create(route)
       .then(route => {
         $scope.routes[route.id] = $scope.curRoute;
-
-        $scope.$apply();
       });
   };
 
@@ -91,8 +87,6 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     MapService.update(route)
       .then(route => {
         $scope.routes[route.id] = route;
-
-        $scope.$apply();
       });
   };
 
@@ -108,8 +102,6 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
         route.getPath().clear();
 
         delete $scope.routes[route.id];
-
-        $scope.$apply();
       });
   };
 
