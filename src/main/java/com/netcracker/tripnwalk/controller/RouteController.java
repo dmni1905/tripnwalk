@@ -20,7 +20,8 @@ public class RouteController {
 
     @RequestMapping(value = "/routes", method = RequestMethod.GET, produces = "application/json")
     public Set getRoutes() {
-        User user = userRepository.findByLogin("user_test");
+        Long id_user = 1L;
+        User user = userRepository.findOne(id_user);
         return user.getRoutes();
     }
 
