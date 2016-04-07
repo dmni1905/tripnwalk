@@ -43,6 +43,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     path.push(position);
 
     $scope.curRoute.points = routeToArray($scope.curRoute.path);
+
+    $scope.$apply();
   }
 
   function routeToArray(route) {
