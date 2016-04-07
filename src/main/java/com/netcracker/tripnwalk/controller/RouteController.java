@@ -27,7 +27,11 @@ public class RouteController {
 
     @RequestMapping(value = "/routes", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> setRoute(@RequestBody Route route) {
+        Long id_user = 1L;
         routeRepository.save(route);
+        User user = userRepository.findOne(id_user);
+        user.addRoute(route);
+        userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
