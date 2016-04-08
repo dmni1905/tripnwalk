@@ -34,6 +34,8 @@ app.directive('routeForm', function($compile, $templateRequest) {
         $templateRequest('templates/route-form.html').then(html => {
           angular.element($('.route-form-place')).append($compile(html)($scope));
 
+          $('.js-route-form').draggable();
+
           $('#clear-route').on('click', () => removeForm());
         });
       });
