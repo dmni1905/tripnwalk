@@ -8,14 +8,15 @@ app.factory('UserService', ['$http', '$q', function($http, $q) {
           //TODO handle session id to Local Storage.
             console.log('Authorized!');
 
-            window.history.back(1);
+            location.hash = '';
         },
         err => {
           //TODO Handle unsuccessful auth.
           err;
           console.log('Authorization failed!');
 
-          window.history.back(1);
+          //TODO location.hash.replace('#',''); - extract params using this.
+          location.hash = '';
         });
     }
   };

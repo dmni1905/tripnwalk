@@ -4,15 +4,19 @@ app.controller('UserCtrl', function($scope, UserService) {
   function getTokenFromUrl() {
     var tokenObj = {};
 
-    _.each(['access_token', 'expires_in', 'user_id'], param => {
-      tokenObj[param] = new RegExp('[\\?#&]' + param.replace(/[\[]/,'\\\[').replace(/[\]]/,'\\\]') + '=([^&#]*)')
-        .exec(location.href)[1];
-    });
+    function getHashValue(key) {
+      var matches = location.hash.match(new RegExp(key + '=([^&]*)'));
+      return matches ? matches[1] : null;
+    }
+
+    _.each(['access_token', 'expires_in', 'user_id'], param => tokenObj[param] = getHashValue(param));
 
     return tokenObj;
   }
 
-  _.contains(window.location.href, '#access_token=') && UserService.getSession(getTokenFromUrl());
+  if (_.every(['access_token', 'expires_in', 'user_id'], param => _.contains(location.hash, param))) {
+    UserService.getSession(getTokenFromUrl());
+  }
 
   $scope.authorize = function () {
       window.location.href = 'http://oauth.vk.com/authorize?' +
