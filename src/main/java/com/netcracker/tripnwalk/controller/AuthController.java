@@ -47,7 +47,6 @@ class AuthController {
 
     @Inject
     UserRepository userRepository;
-    //String reqUrl = "https://api.vk.com/method/users.get?user_ids=99110631&fields=first_name,country,bdate,photo_200_orig&name_case=nom&v=5.50
 
     @Autowired
     private SessionController sessionController;
@@ -64,32 +63,6 @@ class AuthController {
 
         String result = sendHttpRequest(reqUrl).toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/getfriends", method = RequestMethod.GET) //TODO уточнить переадресацию
-    public void getfriends() throws IOException {
-        String reqUrl = "https://api.vk.com/method/friends.get?" +
-                "user_id=" + VKUSER_ID +
-                "&offset=" + OFFSET +
-                "&fields=" + FIELDS +
-                "&name_case=" + NAME_CASE +
-                "&v=" + VERSION + 5.50;
-
-        StringBuilder result = sendHttpRequest(reqUrl);
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
-            jsonObject = (JSONObject) jsonObject.get("response");
-            JSONObject obj;
-            JSONArray jsonArray = (JSONArray) jsonObject.get("items");
-            for (Object aJsonArray : jsonArray) {
-                obj = (JSONObject) aJsonArray;
-                System.out.println(obj.get("id"));
-            }
-
-        } catch (ParseException | NullPointerException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = "application/json")
@@ -124,7 +97,7 @@ class AuthController {
                 result = resultJson.toString();
             } else {
                 JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
                 JSONArray jsonArray = (JSONArray) jsonObject.get("response");
                 jsonObject = (JSONObject) jsonArray.get(0);
 
@@ -140,6 +113,32 @@ class AuthController {
                 userRepository.save(user);
             }
             return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/getfriends", method = RequestMethod.GET) //TODO уточнить переадресацию
+    public void getfriends() throws IOException {
+        String reqUrl = "https://api.vk.com/method/friends.get?" +
+                "user_id=" + VKUSER_ID +
+                "&offset=" + OFFSET +
+                "&fields=" + FIELDS +
+                "&name_case=" + NAME_CASE +
+                "&v=" + VERSION + 5.50;
+
+        StringBuilder result = sendHttpRequest(reqUrl);
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
+            jsonObject = (JSONObject) jsonObject.get("response");
+            JSONObject obj;
+            JSONArray jsonArray = (JSONArray) jsonObject.get("items");
+            for (Object aJsonArray : jsonArray) {
+                obj = (JSONObject) aJsonArray;
+                System.out.println(obj.get("id"));
+            }
+
+        } catch (ParseException | NullPointerException ex) {
+            ex.printStackTrace();
         }
     }
 

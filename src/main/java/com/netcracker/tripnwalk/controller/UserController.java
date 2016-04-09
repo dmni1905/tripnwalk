@@ -2,13 +2,10 @@ package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
-import com.sun.org.apache.regexp.internal.RE;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -48,7 +45,6 @@ public class UserController {
     @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
     public Set<String> getFriends() {
         Long id = 1L;
-        System.out.println(sessionController.getAccessToken());
         Set<String> friend = new HashSet();
         userRepository.findOne(id).getFriends().stream().forEach(f -> {
             friend.add(f.toString());
