@@ -1,5 +1,7 @@
 package com.netcracker.tripnwalk.controller;
 
+import com.netcracker.tripnwalk.entry.User;
+import com.netcracker.tripnwalk.repository.UserRepository;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -10,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 @RestController
 class AuthController {
@@ -35,9 +41,16 @@ class AuthController {
     // Для запроса списка друзей пользователя
     private static final String VKUSER_ID = "9911063";
     private static final String OFFSET = "100";
-    private static final String FIELDS = "first_name,country,bdate,photo_200_orig";
+    private static final String FIELDS = "bdate,photo_200_orig";
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
+
+    @Inject
+    UserRepository userRepository;
+    //String reqUrl = "https://api.vk.com/method/users.get?user_ids=99110631&fields=first_name,country,bdate,photo_200_orig&name_case=nom&v=5.50
+
+    @Autowired
+    private SessionController sessionController;
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public ResponseEntity<String> auth() throws IOException {
@@ -49,8 +62,7 @@ class AuthController {
                 "&response_type=" + RESPONSE_TYPE +
                 "&v=" + VERSION;
 
-        String result = sendHttpRequest(reqUrl);
-
+        String result = sendHttpRequest(reqUrl).toString();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -63,30 +75,30 @@ class AuthController {
                 "&name_case=" + NAME_CASE +
                 "&v=" + VERSION + 5.50;
 
-        String result = sendHttpRequest(reqUrl);
+        StringBuilder result = sendHttpRequest(reqUrl);
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
             jsonObject = (JSONObject) jsonObject.get("response");
             JSONObject obj;
             JSONArray jsonArray = (JSONArray) jsonObject.get("items");
-            for (int i = 0; i < jsonArray.size(); ++i) {
-                obj = (JSONObject) jsonArray.get(i);
+            for (Object aJsonArray : jsonArray) {
+                obj = (JSONObject) aJsonArray;
                 System.out.println(obj.get("id"));
             }
 
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        } catch (NullPointerException ex) {
+        } catch (ParseException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
 
     @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException {
+    public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
 
         String access_token = (String) strJson.get("access_token");
+        sessionController.setAccessToken(access_token);
         String expires_in = (String) strJson.get("expires_in");
+        sessionController.setExpiresIn(expires_in);
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
 
@@ -96,11 +108,42 @@ class AuthController {
                 "&name_case=" + NAME_CASE +
                 "&v=" + VERSION;
 
-        String result = sendHttpRequest(reqUrl);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        String result = sendHttpRequest(reqUrl).toString();
+
+        //Is user exist in VK
+        boolean isUserDeleted = result.contains("DELETED");
+        if (isUserDeleted) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            User user = userRepository.findByOauthID(userIDOauth);
+            if (user != null) {
+                JSONObject resultJson = new JSONObject();
+                resultJson.put("first_name", user.getName());
+                resultJson.put("last_name", user.getSurname());
+                resultJson.put("bdate", user.getBirthDate());
+                result = resultJson.toString();
+            } else {
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
+                JSONArray jsonArray = (JSONArray) jsonObject.get("response");
+                jsonObject = (JSONObject) jsonArray.get(0);
+
+                user.setName((String) jsonObject.get("first_name"));
+                user.setSurname((String) jsonObject.get("last_name"));
+                user.setEmail(email);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy");
+                java.util.Date date = sdf.parse((String) jsonObject.get("bdate"));
+                java.sql.Date sqlDate = new Date(date.getTime());
+                user.setBirthDate(sqlDate);
+
+                userRepository.save(user);
+            }
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
 
-    public String sendHttpRequest(String reqUrl) {
+    public StringBuilder sendHttpRequest(String reqUrl) {
         StringBuilder result = new StringBuilder();
         HttpGet httpGet = new HttpGet(reqUrl);
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -116,6 +159,6 @@ class AuthController {
         } catch (Exception e) {
             logger.error(e);
         }
-        return result.toString();
+        return result;
     }
 }

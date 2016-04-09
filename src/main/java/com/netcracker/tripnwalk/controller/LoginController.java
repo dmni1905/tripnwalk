@@ -25,7 +25,7 @@ public class LoginController extends HttpServlet {
     private SessionController sessionController;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> getAuth(HttpServletRequest request, @RequestBody User user, Model model) {
+    public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user, Model model) {
         User userBD = userRepository.findByLogin(user.getLogin());
         if (userBD.getPassword().equals(user.getPassword())) {
             System.out.println(userBD.getId().toString());

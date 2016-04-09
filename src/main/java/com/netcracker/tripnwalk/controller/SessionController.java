@@ -10,6 +10,25 @@ public class SessionController {
 
     private String sessionId = "";
 
+    private String accessToken = "";
+    private String expiresIn = "";
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String access_token) {
+        this.accessToken = access_token;
+    }
+
+    public String getExpiresIn() {
+        return expiresIn;
+    }
+
+    public void setExpiresIn(String expires_in) {
+        this.expiresIn = expires_in;
+    }
+
     public String getSessionId() {
         return sessionId;
     }
