@@ -96,7 +96,7 @@ public class User {
     }
 
     public Set<Route> getRoutes() {
-        return Collections.unmodifiableSet(routes);
+        return routes;
     }
 
     public void setRoutes(Set<Route> routes) {

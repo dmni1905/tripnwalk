@@ -19,9 +19,10 @@ public class UserController {
     private SessionController sessionController;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getUser() {
+    public ResponseEntity<String> getUser() {
         Long id = 1L;
-        return userRepository.findOne(id).toString();
+        String result = userRepository.findOne(id).toString();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PATCH, produces = "application/json")
@@ -43,27 +44,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
-    public Set<String> getFriends() {
+    public ResponseEntity<Set> getFriends() {
         Long id = 1L;
         Set<String> friend = new HashSet();
         userRepository.findOne(id).getFriends().stream().forEach(f -> {
             friend.add(f.toString());
         });
-        return friend;
+        return new ResponseEntity<>(friend, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/friends", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> modifyFriend(@RequestBody User user){
-        userRepository.save(user);
-        Long id = 1L;
-        User userDB = userRepository.findOne(id);
-        userDB.addFriend(user);
+    @RequestMapping(value = "/friends/{id}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity<String> modifyFriend(@PathVariable("id") Long id) {
+        Long idBd = 1L;
+        User userDB = userRepository.findOne(idBd);
+        userDB.addFriend(userRepository.findOne(id));
         userRepository.save(userDB);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/friends/{id}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<String> deleteFriend(@PathVariable("id") Long id){
+    public ResponseEntity<String> deleteFriend(@PathVariable("id") Long id) {
         Long id_user = 1L;
         User user = userRepository.findOne(id_user);
         user.getFriends().remove(userRepository.findOne(id));

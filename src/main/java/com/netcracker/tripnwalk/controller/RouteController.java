@@ -19,18 +19,17 @@ public class RouteController {
     UserRepository userRepository;
 
     @RequestMapping(value = "/routes", method = RequestMethod.GET, produces = "application/json")
-    public Set getRoutes() {
+    public ResponseEntity<Set> getRoutes() {
         Long id_user = 1L;
         User user = userRepository.findOne(id_user);
-        return user.getRoutes();
+        return new ResponseEntity(user.getRoutes(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/routes", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> setRoute(@RequestBody Route route) {
         Long id_user = 1L;
-        routeRepository.save(route);
         User user = userRepository.findOne(id_user);
-        user.addRoute(route);
+        user.addRoute(routeRepository.save(route));
         userRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
