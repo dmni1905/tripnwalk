@@ -108,7 +108,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   $scope.clearRoute = function() {
-    $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
+    if (_.contains($scope.routes, $scope.curRoute)) {
+      $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
+    }
 
     $scope.curRoute = {};
   };
