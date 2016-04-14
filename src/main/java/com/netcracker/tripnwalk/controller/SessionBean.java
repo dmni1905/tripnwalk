@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SessionController {
+public class SessionBean {
 
-    private String sessionId = "";
+    private Long sessionId;
 
     private String accessToken = "";
     private String expiresIn = "";
@@ -29,11 +29,11 @@ public class SessionController {
         this.expiresIn = expires_in;
     }
 
-    public String getSessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
 }

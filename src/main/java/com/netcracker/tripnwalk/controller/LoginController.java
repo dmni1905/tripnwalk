@@ -22,14 +22,14 @@ public class LoginController extends HttpServlet {
     UserRepository userRepository;
 
     @Autowired
-    private SessionController sessionController;
+    private SessionBean sessionBean;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user, Model model) {
         User userBD = userRepository.findByLogin(user.getLogin());
         if (userBD.getPassword().equals(user.getPassword())) {
             System.out.println(userBD.getId().toString());
-            sessionController.setSessionId(userBD.getId().toString()); //создание сессии
+            sessionBean.setSessionId(userBD.getId()); //создание сессии
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

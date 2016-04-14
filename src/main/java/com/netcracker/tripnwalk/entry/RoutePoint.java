@@ -1,6 +1,7 @@
 package com.netcracker.tripnwalk.entry;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "point")
@@ -10,12 +11,15 @@ public class RoutePoint {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "postion", nullable = false)
     private Integer position;
 
+    @NotNull
     @Column(name = "lat", nullable = false)
     private float lat;
 
+    @NotNull
     @Column(name = "lng", nullable = false)
     private float lng;
 

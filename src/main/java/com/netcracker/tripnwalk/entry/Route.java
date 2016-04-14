@@ -1,7 +1,8 @@
 package com.netcracker.tripnwalk.entry;
 
 import javax.persistence.*;
-import java.sql.Time;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,18 +14,23 @@ public class Route {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
     @Column(name = "duration")
     private Integer duration;
 
+    @NotNull
+    @Valid
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "route_point",
             joinColumns = @JoinColumn(name = "route_id"),
             inverseJoinColumns = @JoinColumn(name = "point_id"))
     private Set<RoutePoint> points = new HashSet<>();
 
+    @NotNull
+    @Valid
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "route_data",
             joinColumns = @JoinColumn(name = "route_id"),

@@ -49,7 +49,7 @@ class AuthController {
     UserRepository userRepository;
 
     @Autowired
-    private SessionController sessionController;
+    private SessionBean sessionBean;
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public ResponseEntity<String> auth() throws IOException {
@@ -69,9 +69,9 @@ class AuthController {
     public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
 
         String access_token = (String) strJson.get("access_token");
-        sessionController.setAccessToken(access_token);
+        sessionBean.setAccessToken(access_token);
         String expires_in = (String) strJson.get("expires_in");
-        sessionController.setExpiresIn(expires_in);
+        sessionBean.setExpiresIn(expires_in);
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
 

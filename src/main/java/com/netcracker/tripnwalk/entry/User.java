@@ -1,12 +1,11 @@
 package com.netcracker.tripnwalk.entry;
 
-import org.json.simple.JSONObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -17,6 +16,7 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -29,6 +29,7 @@ public class User {
     @Column(name = "login", unique = true)
     private String login;
 
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -38,9 +39,11 @@ public class User {
     @Column(name = "source_id")
     private String sourceId;
 
+    @NotNull
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "friends",
@@ -49,6 +52,7 @@ public class User {
     )
     private Set<User> friends = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -165,13 +169,16 @@ public class User {
 
     @Override
     public String toString() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("name", name);
-        jsonObject.put("surname", surname);
-        jsonObject.put("birthDate", birthDate);
-        jsonObject.put("login", login);
-        jsonObject.put("email", email);
-        return jsonObject.toString();
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate=" + birthDate +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", sourceType='" + sourceType + '\'' +
+                ", sourceId='" + sourceId + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
