@@ -3,7 +3,7 @@
 app.factory('UserService', ['$http', '$q', function($http, $q) {
   return {
     getSession: (tokenObj) => {
-      return $http.get('http://localhost:9095/session', tokenObj)
+      return $http.get('http://tripnwalk.tk/rest-api/session', tokenObj)
         .then(res => {
           //TODO handle session id to Local Storage.
             console.log('Authorized!');

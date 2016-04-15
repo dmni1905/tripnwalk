@@ -22,7 +22,7 @@ app.controller('UserCtrl', function($scope, UserService) {
       window.location.href = 'http://oauth.vk.com/authorize?' +
             'client_id=5368462' +
             '&display=popup' +
-            '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+            '&redirect_uri=http://tripnwalk.tk/rest-api' +
             '&scope=bdate,photo_200_orig' +
             '&response_type=token' +
             '&v=5.50';
