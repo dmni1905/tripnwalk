@@ -82,7 +82,9 @@ public class RouteController {
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteById(@PathVariable("id") Long id) {
+        Long id_user = 1L;
         try {
+            userRepository.findOne(id_user).getRoutes().remove(routeRepository.findOne(id));
             routeRepository.delete(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
