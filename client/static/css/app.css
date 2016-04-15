@@ -103,15 +103,11 @@ html, body {
 	width: auto;
 }
 
-#add-point {
-	width: 75px;
-}
-
 #points-list-wrapper {
 	margin-top: 10px;
 	margin-left: 10px;
-	width: 90%;
-	height: 66%;
+	width: 255px;
+	height: 370px;
 	overflow: hidden;
 }
 
