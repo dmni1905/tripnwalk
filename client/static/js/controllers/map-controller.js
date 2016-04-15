@@ -85,26 +85,25 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     });
   };
 
-  $scope.saveRoute = function(removeForm) {
+  $scope.saveRoute = function(route, cb) {
     //TODO validation.
-    var route = _.omit($scope.curRoute, 'path');
+    var route0 = _.omit(route, 'path');
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
-    MapService.create(route)
-      .then(route => {
-        $scope.routes.push(_.extend($scope.curRoute, { id: route.id }));
+    if (_.contains($scope.routes, route)) {
+      MapService.update(route0)
+        .then(route => {
+          _.extend(getRouteById(route.id), route);
+        });
+    }
+    else {
+      MapService.create(route0)
+        .then(route0 => {
+          $scope.routes.push(_.extend(route, { id: route0.id }));
 
-        removeForm();
-      });
-  };
-
-  $scope.updateRoute = function() {
-    var route = _.omit($scope.curRoute, 'path');
-
-    MapService.update(route)
-      .then(route => {
-        _.extend(getRouteById(route.id), route);
-      });
+          cb();
+        });
+    }
   };
 
   $scope.clearRoute = function() {
