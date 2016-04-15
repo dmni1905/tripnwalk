@@ -13,10 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.util.Set;
 
 @RestController
@@ -41,7 +38,7 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> setRoute(@Valid @RequestBody Route route, BindingResult bindingResult) {
+    public ResponseEntity<Route> setRoute(@Valid @RequestBody Route route, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -50,7 +47,7 @@ public class RouteController {
             User user = userRepository.findOne(id_user);
             user.addRoute(routeRepository.save(route));
             userRepository.save(user);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(route, HttpStatus.OK);
         } catch (NullPointerException e) {
             logger.error(e);
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -68,13 +65,13 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.PATCH, produces = "application/json")
-    public ResponseEntity<String> modifyById(@PathVariable("id") Long id, @Valid @RequestBody Route route, BindingResult bindingResult) {
+    public ResponseEntity<Route> modifyById(@PathVariable("id") Long id, @Valid @RequestBody Route route, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (id == route.getId()) {
             routeRepository.save(route);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(route, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

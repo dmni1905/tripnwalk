@@ -108,15 +108,15 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   $scope.clearRoute = function() {
-    if (_.contains($scope.routes, $scope.curRoute)) {
+    if (!_.contains($scope.routes, $scope.curRoute)) {
       $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
     }
 
     $scope.curRoute = {};
   };
 
-  $scope.removeRoute = function(route) {
-    MapService.remove(route.id)
+  $scope.removeRoute = function() {
+    MapService.remove($scope.curRoute.id)
       .then(() => {
         $scope.routes.splice($scope.routes.indexOf($scope.curRoute), 1);
         $scope.clearRoute();
