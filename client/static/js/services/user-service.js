@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('UserService', ['$http', '$q', function($http, $q) {
+app.factory('UserService', ['$http', '$q', function($http, $templateRequest, $compile) {
   return {
     getSession: (tokenObj) => {
       return $http.get('http://localhost:9095/session', tokenObj)
@@ -9,6 +9,9 @@ app.factory('UserService', ['$http', '$q', function($http, $q) {
             console.log('Authorized!');
 
             location.hash = '';
+
+            $('#auth').remove();
+            $templateRequest('templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
         },
         err => {
           //TODO Handle unsuccessful auth.

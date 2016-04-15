@@ -1,0 +1,96 @@
+<div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper" ng-controller="UserCtrl">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a href="#">
+          Trip & Walk
+        </a>
+      </li>
+      <li>
+        <a href="#profile" data-toggle="collapse">PROFILE</a>
+        <div id="profile" ng-controller="UserCtrl" class="collapse in">
+          <label>{{nickname}}</label>
+          <p style="margin: 0">
+            <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
+              style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;">
+          </p>
+          <p>
+          <dl style="list-style-type:none">
+            <dt>Country</dt>
+            <dd id="country">{{country}}</dd>
+            <dt>Birth date</dt>
+            <dd id="bday">{{bday}}</dd>
+            <dt>E-mail</dt>
+            <dd id="email">{{email}}</dd>
+            <dt>Profession</dt>
+            <dd>Developer</dd>
+          </dl>
+          </p>
+        </div>
+      </li>
+      <li>
+        <a href="#friends" data-toggle="collapse">FRIENDS</a>
+        <div id="friends" class="collapse">
+          Friends list. Coming soon...
+        </div>
+      </li>
+      <li>
+        <a href="#routes" data-toggle="collapse">ROUTES</a>
+        <div id="routes" class="collapse">
+          <add-route-form id="add-route" class="route-menu-controls"></add-route-form>
+
+          <ul style="list-style-type:none; padding-left: 0;">
+            <li ng-repeat="route in routes">
+              <div class="route-menu-controls route-element-id-{{route.id}}">
+                <label class="btn btn-link" route-form>{{route.name}}</label>
+                <i class="fa fa-times remove-route" ng-click="openDeletionModal(route.id)"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="#donate" data-toggle="collapse">DONATE</a>
+        <div id="donate" class="collapse">
+          <img src="https://33.media.tumblr.com/avatar_4f90587f6cba_128.png">
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div id="main">
+    <div id="map-wrapper" class="wrap">
+      <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
+
+      <div class="route-form-place"></div>
+
+      <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
+    </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Menu Toggle Script -->
+<script>
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    var wrapper = $("#wrapper");
+    var btn = $("#menu-toggle");
+
+    wrapper.toggleClass("toggled");
+
+    if (wrapper.hasClass("toggled")) {
+      btn.removeClass("fa-arrow-left");
+      btn.addClass("fa-arrow-right");
+    }
+    else {
+      btn.removeClass("fa-arrow-right");
+      btn.addClass("fa-arrow-left");
+    }
+  });
+</script>
