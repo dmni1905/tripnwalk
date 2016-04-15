@@ -1,11 +1,6 @@
-<div id="route-edit-window" class="ui-widget-content js-route-form">
+<form id="route-edit-window" class="ui-widget-content js-route-form">
   <label class="route-form-header">ADD/EDIT ROUTE</label>
   <input type="text" class="route-name form-control" placeholder="ROUTE NAME" ng-model="curRoute.name">
-
-  <form id="point-input" class="form-inline">
-    <input type="text" class="point-address form-control" placeholder="Enter address or coordinates">
-    <label id="add-point" class="btn btn-default">ADD</label>
-  </form>
 
   <div id="points-list-wrapper">
     <uib-tabset active="activeJustified" justified="true">
@@ -34,8 +29,8 @@
     </uib-tabset>
   </div>
 
-  <form id="route-controls" class="form-inline">
+  <div id="route-controls" class="form-inline">
     <label id="save-route" class="btn btn-link" ng-click="saveRoute(removeForm)">SAVE</label>
     <label id="clear-route" class="btn btn-link">CANCEL</label>
-  </form>
-</div>
+  </div>
+</form>
