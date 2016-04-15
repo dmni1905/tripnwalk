@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService) {
+app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService, $uibModal) {
   var routeMode = false;
   var map;
 
@@ -72,14 +72,29 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     return _.extend(route, { path: path });
   }
 
-  $scope.saveRoute = function() {
+  function getRouteById(id) {
+    return _.find($scope.routes, route => route.id == id);
+  }
+
+  $scope.openDeletionModal = id => {
+    $scope.curRoute = getRouteById(id);
+
+    $scope.modalInstance = $uibModal.open({
+      templateUrl: 'templates/deletion-modal.html',
+      scope: $scope
+    });
+  };
+
+  $scope.saveRoute = function(removeForm) {
     //TODO validation.
     var route = _.omit($scope.curRoute, 'path');
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
     MapService.create(route)
       .then(route => {
-        $scope.routes[route.id] = $scope.curRoute;
+        $scope.routes.push(_.extend($scope.curRoute, { id: route.id }));
+
+        removeForm();
       });
   };
 
@@ -88,12 +103,14 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     MapService.update(route)
       .then(route => {
-        $scope.routes[route.id] = route;
+        _.extend(getRouteById(route.id), route);
       });
   };
 
   $scope.clearRoute = function() {
-    $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
+    if (_.contains($scope.routes, $scope.curRoute)) {
+      $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
+    }
 
     $scope.curRoute = {};
   };
@@ -101,10 +118,22 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.removeRoute = function(route) {
     MapService.remove(route.id)
       .then(() => {
-        route.getPath().clear();
+        $scope.routes.splice($scope.routes.indexOf($scope.curRoute), 1);
+        $scope.clearRoute();
+        $scope.modalInstance.dismiss();
 
-        delete $scope.routes[route.id];
+        delete $scope.modalInstance;
       });
+  };
+
+  $scope.removePoint0 = (id, index) => {
+    var route = getRouteById(id);
+
+    route.path.getPath().clear();
+
+    route.points.splice(index, 1);
+
+    renderRoute(route);
   };
 
   //Renders map.

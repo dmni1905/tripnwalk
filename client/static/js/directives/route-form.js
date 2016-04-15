@@ -12,31 +12,41 @@ app.directive('routeForm', function($compile, $templateRequest) {
     link: function($scope, element, attrs){
       //TODO look at controllers to handle route-form.
       element.bind('click', function(evt){
-        function removeForm() {
+        $scope.removeForm = () => {
           //TODO proper clean-up.
           $('.route-form-place').empty();
           $scope.clearRoute();
 
           $scope.toggleRouteMode(false);
-        }
+        };
 
-        $('#route-edit-window').length > 0 && removeForm();
+        $('#route-edit-window').length > 0 && $scope.removeForm();
         $scope.toggleRouteMode(true);
 
-        if (_.contains(evt.target.getAttribute('class'), 'id-')) {
+        var existingRoute = evt.target.closest('.route-menu-controls').getAttribute('class');
+
+        if (_.contains(existingRoute, 'id-')) {
           $scope.curRoute =  _.find($scope.routes, route => {
-            return route.id == evt.target.getAttribute('class').match(/id-(.+)/)[1];
+            return route.id == existingRoute.match(/id-(.+)/)[1];
           });
 
           $scope.curRoute.points = _.sortBy($scope.curRoute.points, point => point.position);
         }
+
+        $scope.removePoint = $event => {
+          if ($scope.curRoute.points.length <= 2) return;
+
+          var index = $('.panel-group .panel').index($event.currentTarget.closest('.panel'));
+
+          $scope.removePoint0($scope.curRoute.id, index);
+        };
 
         $templateRequest('templates/route-form.html').then(html => {
           angular.element($('.route-form-place')).append($compile(html)($scope));
 
           $('.js-route-form').draggable();
 
-          $('#clear-route').on('click', () => removeForm());
+          $('#clear-route').on('click', () => $scope.removeForm());
         });
       });
     }

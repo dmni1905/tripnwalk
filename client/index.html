@@ -97,11 +97,14 @@
                 <li>
                     <a href="#routes" data-toggle="collapse">ROUTES</a>
                     <div id="routes" class="collapse">
-                      <add-route-form id="add-route"></add-route-form>
+                      <add-route-form id="add-route" class="route-menu-controls"></add-route-form>
 
                       <ul style="list-style-type:none; padding-left: 0;">
                         <li ng-repeat="route in routes">
-                          <label class="btn btn-link route-element id-{{route.id}}" route-form>{{route.name}}</label>
+                            <div class="route-menu-controls route-element-id-{{route.id}}">
+                                <label class="btn btn-link" route-form>{{route.name}}</label>
+                                <i class="fa fa-times remove-route" ng-click="openDeletionModal(route.id)"></i>
+                            </div>
                         </li>
                       </ul>
                     </div>

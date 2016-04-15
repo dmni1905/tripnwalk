@@ -16,7 +16,7 @@
               <div class="point-controls">
                 <label class="btn btn-default">ADD AFTER</label>
                 <label class="btn btn-default">ADD CONTENT</label>
-                <label class="btn btn-danger">DELETE</label>
+                <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
               </div>
             </uib-accordion-group>
           </uib-accordion>
@@ -27,7 +27,7 @@
           <div class="point-controls">
             <label class="btn btn-default">ADD AFTER</label>
             <label class="btn btn-default">ADD CONTENT</label>
-            <label class="btn btn-danger">DELETE</label>
+            <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
           </div>
         </uib-accordion-group>
       </uib-tab>
@@ -35,7 +35,7 @@
   </div>
 
   <form id="route-controls" class="form-inline">
-    <label id="save-route" class="btn btn-link" ng-click="saveRoute()">SAVE</label>
+    <label id="save-route" class="btn btn-link" ng-click="saveRoute(removeForm)">SAVE</label>
     <label id="clear-route" class="btn btn-link">CANCEL</label>
   </form>
 </div>

@@ -43,6 +43,16 @@ html, body {
 	z-index: 99;
 }
 
+.route-menu-controls {
+	display: flex;
+}
+
+.remove-route {
+	cursor: pointer;
+	color: red;
+	margin-top: 11px;
+}
+
 #route-edit-window {
 	position: fixed;
 	top: 15%;
@@ -54,6 +64,24 @@ html, body {
 	display: block;
 	height: 500px;
 	width: 280px;
+}
+
+.modal-content {
+	margin-top: 50%;
+}
+
+.deletion-modal {
+	height: 100px;
+}
+
+.deletion-modal > label {
+	margin-top: 20px;
+	margin-left: 50px;
+}
+
+.deletion-modal .modal-controls {
+	margin-top: 10px;
+	margin-left: 100px;
 }
 
 .route-form-header {

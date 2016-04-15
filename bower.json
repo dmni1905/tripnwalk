@@ -23,6 +23,6 @@
     "lodash": "3.8.0",
     "font-awesome": "4.5.0",
     "angular-bootstrap": "1.2.5",
-    "jquery-ui": "~1.11.4"
+    "jquery-ui": "1.11.4"
   }
 }
