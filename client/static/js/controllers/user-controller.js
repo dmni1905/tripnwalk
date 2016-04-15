@@ -21,9 +21,11 @@ app.controller('UserCtrl', function($scope, UserService) {
   $scope.authorize = function () {
       window.location.href = 'http://oauth.vk.com/authorize?' +
             'client_id=5368462' +
-            '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
             '&display=popup' +
-            '&response_type=token';
+            '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+            '&scope=bdate,photo_200_orig' +
+            '&response_type=token' +
+            '&v=5.50';
   };
 
   $scope.nickname = 'DesiresDesigner';
