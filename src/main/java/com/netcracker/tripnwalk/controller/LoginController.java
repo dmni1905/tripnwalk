@@ -79,7 +79,7 @@ class LoginController {
         }
     }
 
-    @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
 
         String access_token = (String) strJson.get("access_token");
@@ -98,21 +98,21 @@ class LoginController {
         String result = sendHttpRequest(reqUrl).toString();
 
         //Is user exist in VK
-        System.out.println(result);
+        JSONObject resultJson = new JSONObject();
         boolean isUserDeleted = result.contains("DELETED");
         boolean isUserExist = result.contains("error");
+
         if ((isUserDeleted) || (isUserExist)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             User user = userRepository.findByOauthID(userIDOauth);
             if (user != null) {
                 sessionBean.setSessionId(user.getId()); //создание сессии
-                JSONObject resultJson = new JSONObject();
                 resultJson.put("email", user.getEmail());
-                resultJson.put("bdate", user.getBirthDate());
+                resultJson.put("bdate", user.getBirthDate().toString());
                 resultJson.put("last_name", user.getSurname());
                 resultJson.put("first_name", user.getName());
-                result = resultJson.toString();
+                resultJson.put("session_id", sessionBean.getSessionId());
             } else {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
@@ -151,9 +151,11 @@ class LoginController {
                 user.setSourceType("VK");
 
                 userRepository.save(user);
-                sessionBean.getSessionId();
-                System.out.println(sessionBean.getSessionId());
+                sessionBean.setSessionId(user.getId());
+                resultJson.put("session_id", sessionBean.getSessionId());
             }
+
+            result = resultJson.toString();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }

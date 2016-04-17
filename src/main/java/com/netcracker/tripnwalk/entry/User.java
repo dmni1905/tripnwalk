@@ -30,7 +30,7 @@ public class User {
     private String login;
 
     @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "source_type")
