@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('AuthCtrl', function(UserService, $scope) {
+app.controller('AuthCtrl', function(UserService, $scope, $cookies) {
   function getTokenFromUrl() {
     var tokenObj = {};
 
@@ -15,7 +15,8 @@ app.controller('AuthCtrl', function(UserService, $scope) {
   }
 
   if (_.every(['access_token', 'expires_in', 'user_id','email'], param => _.contains(location.hash, param))) {
-    UserService.getSession(getTokenFromUrl(), $scope);
+    UserService.getSession(getTokenFromUrl(), $scope)
+      .then(sid => $cookies.put('sid', sid));//TODO testing
   }
 
   $scope.authorize = function () {

@@ -80,7 +80,7 @@ class LoginController {
     }
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
+    public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
 
         String access_token = (String) strJson.get("access_token");
         sessionBean.setAccessToken(access_token);
