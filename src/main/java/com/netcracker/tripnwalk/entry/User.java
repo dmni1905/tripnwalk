@@ -52,7 +52,6 @@ public class User {
     )
     private Set<User> friends = new HashSet<>();
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
             joinColumns = {@JoinColumn(name = "user_id")},
