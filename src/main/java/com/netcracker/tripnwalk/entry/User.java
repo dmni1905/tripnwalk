@@ -24,7 +24,7 @@ public class User {
     private String surname;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private String birthDate;
 
     @Column(name = "login", unique = true)
     private String login;
@@ -118,11 +118,11 @@ public class User {
         this.surname = surname;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
