@@ -15,7 +15,7 @@ app.controller('AuthCtrl', function(UserService, $scope) {
   }
 
   if (_.every(['access_token', 'expires_in', 'user_id'], param => _.contains(location.hash, param))) {
-    UserService.getSession(getTokenFromUrl());
+    UserService.getSession(getTokenFromUrl(), $scope);
   }
 
   $scope.authorize = function () {
