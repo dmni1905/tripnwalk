@@ -29,7 +29,6 @@ public class User {
     @Column(name = "login", unique = true)
     private String login;
 
-    @NotNull
     @Column(name = "password")
     private String password;
 
