@@ -9,12 +9,12 @@ app.controller('AuthCtrl', function(UserService, $scope) {
       return matches ? matches[1] : null;
     }
 
-    _.each(['access_token', 'expires_in', 'user_id'], param => tokenObj[param] = getHashValue(param));
+    _.each(['access_token', 'expires_in', 'user_id','email'], param => tokenObj[param] = getHashValue(param));
 
     return tokenObj;
   }
 
-  if (_.every(['access_token', 'expires_in', 'user_id'], param => _.contains(location.hash, param))) {
+  if (_.every(['access_token', 'expires_in', 'user_id','email'], param => _.contains(location.hash, param))) {
     UserService.getSession(getTokenFromUrl(), $scope);
   }
 
@@ -23,7 +23,7 @@ app.controller('AuthCtrl', function(UserService, $scope) {
       'client_id=5368462' +
       '&display=popup' +
       '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
-      '&scope=bdate,photo_200_orig' +
+      '&scope=friends,email' +
       '&response_type=token' +
       '&v=5.50';
   };
