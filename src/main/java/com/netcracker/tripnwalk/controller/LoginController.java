@@ -125,26 +125,7 @@ class LoginController {
                 user.setEmail(email);
 
                 if (jsonObject.get("bdate") != null) {
-                    String bdateUser = (String) jsonObject.get("bdate");
-                    String[] split_birthday = bdateUser.split("\\.");
-                    SimpleDateFormat sdf;
-
-                    if (((String) jsonObject.get("bdate")).length() > 6) {
-                        sdf = new SimpleDateFormat("dd.mm.yyyy");
-                    } else {
-                        if ((split_birthday[0].length() == 1) && (split_birthday[0].length() == 2)) {
-                            sdf = new SimpleDateFormat("d.mm");
-                        } else {
-                            if ((split_birthday[0].length() == 2) && (split_birthday[0].length() == 1)) {
-                                sdf = new SimpleDateFormat("dd.m");
-                            } else {
-                                sdf = new SimpleDateFormat("dd.mm");
-                            }
-                        }
-                    }
-                    java.util.Date date = sdf.parse((String) jsonObject.get("bdate"));
-                    java.sql.Date sqlDate = new Date(date.getTime());
-                    user.setBirthDate(sqlDate);
+                    user.setBirthDate((String) jsonObject.get("bdate"));
                 }
 
                 user.setSourceId(userIDOauth);
