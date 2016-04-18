@@ -112,19 +112,20 @@ class LoginController {
                 JSONArray jsonArray = (JSONArray) jsonObject.get("response");
                 jsonObject = (JSONObject) jsonArray.get(0);
 
+                user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
+                        userIDOauth, "VK");
+
                 if (jsonObject.get("bdate") != null) {
-                    user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
-                            (String) jsonObject.get("bdate"), userIDOauth, "VK");
-                } else {
-                    user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
-                            userIDOauth, "VK");
+                    user.setBirthDate((String) jsonObject.get("bdate"));
                 }
                 userRepository.save(user);
             }
 
             sessionBean.setSessionId(user.getId());
             resultJson.put("email", user.getEmail());
-            resultJson.put("bdate", user.getBirthDate().toString());
+            if (user.getBirthDate() != null) {
+                resultJson.put("bdate", user.getBirthDate().toString());
+            }
             resultJson.put("last_name", user.getSurname());
             resultJson.put("first_name", user.getName());
             resultJson.put("session_id", sessionBean.getSessionId());

@@ -83,14 +83,6 @@ public class User {
     public User(String username) {
         this.name = username;
     }
-    public User(String name, String surname, String email, String birthDate, String sourceId, String sourceType){
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.sourceId = sourceId;
-        this.sourceType = sourceType;
-    }
     public User(String name, String surname, String email, String sourceId, String sourceType){
         this.name = name;
         this.surname = surname;
