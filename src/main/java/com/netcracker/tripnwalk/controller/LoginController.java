@@ -80,7 +80,7 @@ class LoginController {
     }
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
+    public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
 
         String access_token = (String) strJson.get("access_token");
         sessionBean.setAccessToken(access_token);
@@ -106,36 +106,28 @@ class LoginController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             User user = userRepository.findByOauthID(userIDOauth);
-            if (user != null) {
-                sessionBean.setSessionId(user.getId()); //создание сессии
-                resultJson.put("email", user.getEmail());
-                resultJson.put("bdate", user.getBirthDate().toString());
-                resultJson.put("last_name", user.getSurname());
-                resultJson.put("first_name", user.getName());
-                resultJson.put("session_id", sessionBean.getSessionId());
-            } else {
+            if (user == null) {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
                 JSONArray jsonArray = (JSONArray) jsonObject.get("response");
                 jsonObject = (JSONObject) jsonArray.get(0);
 
-                user = new User();
-                user.setName((String) jsonObject.get("first_name"));
-                user.setSurname((String) jsonObject.get("last_name"));
-                user.setEmail(email);
-
                 if (jsonObject.get("bdate") != null) {
-                    user.setBirthDate((String) jsonObject.get("bdate"));
+                    user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
+                            (String) jsonObject.get("bdate"), userIDOauth, "VK");
+                } else {
+                    user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
+                            userIDOauth, "VK");
                 }
-
-                user.setSourceId(userIDOauth);
-                user.setSourceType("VK");
-
                 userRepository.save(user);
-                sessionBean.setSessionId(user.getId());
-                resultJson.put("session_id", sessionBean.getSessionId());
             }
 
+            sessionBean.setSessionId(user.getId());
+            resultJson.put("email", user.getEmail());
+            resultJson.put("bdate", user.getBirthDate().toString());
+            resultJson.put("last_name", user.getSurname());
+            resultJson.put("first_name", user.getName());
+            resultJson.put("session_id", sessionBean.getSessionId());
             result = resultJson.toString();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
