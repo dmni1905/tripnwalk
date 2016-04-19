@@ -4,8 +4,11 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   var routeMode = false;
   var map;
 
+  // Current route to interact with.
   $scope.curRoute = {};
+  // Array of existing routes.
   $scope.routes = [];
+  // Map settings.
   $scope.map = {
     center: { latitude: 59.938600, longitude: 30.31410 },
     zoom: 13,
@@ -16,8 +19,10 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     }
   };
 
+  // Route mode switch. If true, allows user to create or modify route.
   $scope.toggleRouteMode = state => routeMode = state;
 
+  // Creates map polyline for current route.
   function setPolyline() {
     $scope.curRoute = {
       path: new google.maps.Polyline({
@@ -29,7 +34,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     $scope.curRoute.path.setMap(map);
   }
-// Handles click events on a map, and adds a new point to the Polyline.
+
+  // Handles click events on a map, and adds a new point to the Polyline.
   function setMarker(evt) {
     if (!routeMode) return;
 
@@ -47,6 +53,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     $scope.$apply();
   }
 
+  // Transforms route path of given route to array of coordinate objects,
   function routeToArray(route) {
     return _.map(route.getPath().j, (latLng, index) => {
       return {
@@ -57,6 +64,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     });
   }
 
+  // Renders given route and adds path object to it.
   function renderRoute(route) {
     var points = _.sortBy(route.points, point => point.position);
     var polyLine = _.map(points, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
@@ -72,10 +80,20 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     return _.extend(route, { path: path });
   }
 
+  /**
+   * Returns route by given id or undefined, if route does not exist.
+   *
+   * @param id
+   */
   function getRouteById(id) {
     return _.find($scope.routes, route => route.id == id);
   }
 
+  /**
+   * Opens modal for route to be deleted.
+   *
+   * @param id Id of route to be deleted.
+   */
   $scope.openDeletionModal = id => {
     $scope.curRoute = getRouteById(id);
 
@@ -85,6 +103,12 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     });
   };
 
+  /**
+   * Creates new route or updates existing one.
+   *
+   * @param route Route to be saved.
+   * @param cb Operation callback.
+   */
   $scope.saveRoute = function(route, cb) {
     //TODO validation.
     var route0 = _.omit(route, 'path');
@@ -106,6 +130,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     }
   };
 
+  //
   $scope.clearRoute = function() {
     if (!_.contains($scope.routes, $scope.curRoute)) {
       $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
