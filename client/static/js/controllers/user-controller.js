@@ -5,7 +5,7 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
   $scope.bday = '16/11/93';
   $scope.country = 'Russia';
   $scope.email = 'desiresdesigner@gmail.com';
-
+  $scope.example = {test:'me'};
   $scope.user = {};
 
   function getTokenFromUrl() {
@@ -23,14 +23,21 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
 
   if (_.every(['access_token', 'expires_in', 'user_id','email'], param => _.contains(location.hash, param))) {
     UserService.getSession(getTokenFromUrl(), $scope)
-      .then(sid => $cookies.put('sid', sid));//TODO testing
+      .then(res => {
+        $scope.user = {
+          first_name: res.first_name,
+          last_name: res.last_name,
+          email: res.email,
+          //bdate: res.bdate
+        }
+      });//TODO testing
   }
 
   $scope.authorize = function () {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
-      '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+      '&redirect_uri=http://localhost:63342/tripnwalk/client/index.html' +
       '&scope=friends,email' +
       '&response_type=token' +
       '&v=5.50';
