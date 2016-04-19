@@ -144,7 +144,7 @@ class LoginController {
                     }
                     java.util.Date date = sdf.parse((String) jsonObject.get("bdate"));
                     java.sql.Date sqlDate = new Date(date.getTime());
-                    user.setBirthDate(sqlDate);
+                    user.setBirthDate(sqlDate.toString());
                 }
 
                 user.setSourceId(userIDOauth);
