@@ -7,9 +7,13 @@
           Trip & Walk
         </a>
       </li>
+
       <li>
         <a href="#profile" data-toggle="collapse">PROFILE</a>
         <div id="profile" ng-controller="UserCtrl" class="collapse in">
+            <span>{{user.first_name}}</span>
+            <span>{{user}}</span>
+            <span>{{example}}</span>
           <label>{{nickname}}</label>
           <p style="margin: 0">
             <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
@@ -20,7 +24,7 @@
             <dt>Country</dt>
             <dd id="country">{{country}}</dd>
             <dt>Birth date</dt>
-            <dd id="bday">{{bday}}</dd>
+            <dd id="bday">{{$scope.user[bdate]}}</dd>
             <dt>E-mail</dt>
             <dd id="email">{{email}}</dd>
             <dt>Profession</dt>

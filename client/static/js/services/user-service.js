@@ -12,8 +12,8 @@ app.factory('UserService', function($compile, $templateRequest, $http) {
 
             $('#auth').remove();
             $templateRequest('templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
-
-            return res.data.session_id;
+            return res.data;
+            
           },
           err => {
             //TODO Handle unsuccessful auth.
