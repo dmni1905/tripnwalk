@@ -43,17 +43,17 @@ html, body {
 	z-index: 99;
 }
 
-.route-menu-controls {
+.route-menu-controls, .friend-menu-controls {
 	display: flex;
 }
 
-.remove-route {
+.remove-route, .remove-friend {
 	cursor: pointer;
 	color: red;
 	margin-top: 11px;
 }
 
-#route-edit-window {
+#route-edit-window, #friend-add-window {
 	position: fixed;
 	top: 15%;
 	left: 75%;
@@ -84,7 +84,7 @@ html, body {
 	margin-left: 100px;
 }
 
-.route-form-header {
+.route-form-header, .friend-form-header {
 	margin-left: 28%;
 	margin-top: 10px;
 }
@@ -133,14 +133,14 @@ html, body {
 	width: 120px;
 }
 
-#routes label {
+#routes label, #friends label {
 	display: block;
 	color: #CCCCCC;
 	width: 80%;
 	text-align: left;
 }
 
-.add-route-btn {
+.add-route-btn, .add-friend-btn {
 	width: 120px!important;
 	margin-left: 32px;
 	margin-top: 10px;

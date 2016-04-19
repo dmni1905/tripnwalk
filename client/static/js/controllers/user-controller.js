@@ -1,6 +1,13 @@
 'use strict';
 
-app.controller('UserCtrl', function($scope, UserService) {
+app.controller('UserCtrl', function ($scope, UserService, $uibModal) {
+  $scope.nickname = 'DesiresDesigner';
+  $scope.bday = '16/11/93';
+  $scope.country = 'Russia';
+  $scope.email = 'desiresdesigner@gmail.com';
+  $scope.friends = [];
+  $scope.curFriend = {};
+
   function getTokenFromUrl() {
     var tokenObj = {};
 
@@ -19,17 +26,50 @@ app.controller('UserCtrl', function($scope, UserService) {
   }
 
   $scope.authorize = function () {
-      window.location.href = 'http://oauth.vk.com/authorize?' +
-            'client_id=5368462' +
-            '&display=popup' +
-            '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
-            '&scope=bdate,photo_200_orig' +
-            '&response_type=token' +
-            '&v=5.50';
+    window.location.href = 'http://oauth.vk.com/authorize?' +
+      'client_id=5368462' +
+      '&display=popup' +
+      '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+      '&scope=bdate,photo_200_orig' +
+      '&response_type=token' +
+      '&v=5.50';
   };
 
-  $scope.nickname = 'DesiresDesigner';
-  $scope.bday = '16/11/93';
-  $scope.country = 'Russia';
-  $scope.email = 'desiresdesigner@gmail.com';
+  function getFriendById(id) {
+    return _.find($scope.friends, friend => friend.id == id);
+  }
+
+  $scope.openDeletionFriend = id => {
+    $scope.curFriend = getFriendById(id);
+
+    $scope.modalInstance = $uibModal.open({
+      templateUrl: 'templates/deletion-friend.html',
+      scope: $scope
+    });
+  };
+
+  $scope.removeFriend = function () {
+    UserService.remove($scope.curFriend.id)
+      .then(() => {
+        $scope.friends.splice($scope.friends.indexOf($scope.curFriend), 1);
+        $scope.curFriend = {};
+        $scope.modalInstance.dismiss();
+
+        delete $scope.modalInstance;
+
+      });
+  };
+
+  $scope.addFriend = function () {
+    UserService.addFriend($scope.curFriend.id)
+      .then(() => {
+
+      });
+  };
+
+
+  UserService.getFriends()
+    .then(res => {
+      $scope.friends = res;
+    });
 });
