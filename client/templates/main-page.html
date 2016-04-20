@@ -30,7 +30,16 @@
       <li>
         <a href="#friends" data-toggle="collapse">FRIENDS</a>
         <div id="friends" class="collapse">
-          Friends list. Coming soon...
+          <add-friend-form id="add-user" class="friend-menu-controls"></add-friend-form>
+
+          <ul style="list-style-type:none; padding-left: 0;">
+            <li ng-repeat="friend in friends">
+              <div class="friend-menu-controls friend-element-id-{{friend.id}}">
+                <label class="btn btn-link" route-form>{{friend.surname}} {{friend.name}}</label>
+                <i class="fa fa-times remove-friend" ng-click="openDeletionFriend(friend.id)"></i>
+              </div>
+            </li>
+          </ul>
         </div>
       </li>
       <li>
@@ -64,6 +73,7 @@
       <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
 
       <div class="route-form-place"></div>
+      <div class="friend-form-place"></div>
 
       <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
     </div>
