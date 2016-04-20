@@ -58,9 +58,9 @@ public class UserService {
             return Optional.of(userRepository.save(userCurrent.get())).isPresent();
         } else {
             if (userCurrent.isPresent()) {
-                logger.error("MODIFY: User with id=" + userCurrent.get().getId() + " not found");
+                logger.error("ADD FRIEND: User with id=" + userCurrent.get().getId() + " not found");
             } else {
-                logger.error("MODIFY: User with id=" + friendId + " not found");
+                logger.error("ADD FRIEND: User with id=" + friendId + " not found");
             }
             return false;
         }
@@ -76,9 +76,9 @@ public class UserService {
                     Optional.of(userRepository.save(userCurrent.get())).isPresent();
         } else {
             if(userCurrent.isPresent()){
-                logger.error("MODIFY: User with id=" + userCurrent.get().getId() + " not found");
+                logger.error("DELETE FRIEND: User with id=" + userCurrent.get().getId() + " not found");
             } else {
-                logger.error("MODIFY: User with id=" + friendId + " not found");
+                logger.error("DELETE FRIEND: User with id=" + friendId + " not found");
             }
             return false;
         }

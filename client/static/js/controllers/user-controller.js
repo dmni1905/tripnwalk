@@ -1,6 +1,8 @@
 'use strict';
 
-app.controller('UserCtrl', function($scope, $cookies, UserService) {
+app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
+  $scope.friends = [];
+  $scope.curFriend = {};
 
   function getTokenFromUrl() {
     var tokenObj = {};
@@ -27,7 +29,7 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
         };
       });//TODO testing
   }
-  
+
   $scope.authorize = function () {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
@@ -37,4 +39,44 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
       '&response_type=token' +
       '&v=5.50';
   };
+
+  function getFriendById(id) {
+    return _.find($scope.friends, friend => friend.id == id);
+  }
+
+  $scope.openDeletionFriend = id => {
+    $scope.curFriend = getFriendById(id);
+
+    $scope.modalInstance = $uibModal.open({
+      templateUrl: 'templates/deletion-friend.html',
+      scope: $scope
+    });
+  };
+
+  $scope.removeFriend = function () {
+    UserService.remove($scope.curFriend.id)
+      .then(() => {
+        $scope.friends.splice($scope.friends.indexOf($scope.curFriend), 1);
+        $scope.curFriend = {};
+        $scope.modalInstance.dismiss();
+
+        delete $scope.modalInstance;
+
+      });
+  };
+
+  $scope.addFriend = function (removeFormFriend) {
+
+    UserService.addFriend($scope.curFriend.id)
+      .then(res => {
+        $scope.friends.push(res);
+        removeFormFriend();
+      });
+  };
+
+
+  UserService.getFriends()
+    .then(res => {
+      $scope.friends = res;
+    });
 });
