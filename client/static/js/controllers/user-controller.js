@@ -1,12 +1,6 @@
 'use strict';
 
 app.controller('UserCtrl', function($scope, $cookies, UserService) {
-  $scope.nickname = 'DesiresDesigner';
-  $scope.bday = '16/11/93';
-  $scope.country = 'Russia';
-  $scope.email = 'desiresdesigner@gmail.com';
-  $scope.example = {test:'me'};
-  $scope.user = {};
 
   function getTokenFromUrl() {
     var tokenObj = {};
@@ -28,7 +22,8 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
           first_name: res.first_name,
           last_name: res.last_name,
           email: res.email,
-          //bdate: res.bdate
+          bdate: res.bdate,
+          session_id: res.session_id
         }
       });//TODO testing
   }

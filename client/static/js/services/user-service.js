@@ -23,6 +23,16 @@ app.factory('UserService', function($compile, $templateRequest, $http) {
             //TODO location.hash.replace('#',''); - extract params using this.
             location.hash = '';
           });
-    }
+    },
+      remove: (id) => {
+          return $http.delete('http://localhost:9095/' + id)
+              .then(() => {
+                  err => {
+                      console.error('User deletion failed');
+
+                      return $q.reject(err);
+                  }
+              });
+      }
   };
 });
