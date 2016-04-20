@@ -43,7 +43,7 @@ html, body {
 	z-index: 99;
 }
 
-.route-menu-controls {
+.route-menu-controls, .user-menu-controls {
 	display: flex;
 }
 
