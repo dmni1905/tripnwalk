@@ -9,9 +9,9 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
             console.log('Authorized!');
 
             location.hash = '';
-
             $('#auth').remove();
             $templateRequest('templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
+
             return res.data;
             
           },
@@ -23,16 +23,6 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
             //TODO location.hash.replace('#',''); - extract params using this.
             location.hash = '';
           });
-    },
-      removeUser: (id) => {
-          return $http.delete('http://localhost:9095/' + id)
-              .then(() => {
-                  err => {
-                      console.error('User deletion failed');
-
-                      return $q.reject(err);
-                  }
-              });
-      }
+    }
   };
 });

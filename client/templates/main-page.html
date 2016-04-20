@@ -11,24 +11,20 @@
       <li>
         <a href="#profile" data-toggle="collapse">PROFILE</a>
         <div id="profile" ng-controller="UserCtrl" class="collapse in">
-          <label>{{user.first_name + ' ' + user.last_name}}</label>
           <p style="margin: 0">
             <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
               style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;">
           </p>
           <p>
           <dl style="list-style-type:none">
-            <dt>Country</dt>
-            <dd id="country">{{'А надо?'}}</dd>
+            <dt>Name</dt>
+            <dd id="user-name">{{user.first_name + ' ' + user.last_name}}</dd>
             <dt>Birth date</dt>
-            <dd id="bday">{{user.bdate}}</dd>
+            <dd id="bdate">{{user.bdate}}</dd>
             <dt>E-mail</dt>
             <dd id="email">{{user.email}}</dd>
-            <dt>Profession</dt>
-            <dd>Developer</dd>
           </dl>
           </p>
-          <i class="fa fa-times remove-user" ng-click="removeMe()"></i>
         </div>
       </li>
       <li>

@@ -24,24 +24,15 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
           email: res.email,
           bdate: res.bdate,
           session_id: res.session_id
-        }
+        };
       });//TODO testing
   }
-
-  $scope.removeMe = function () {
-    UserService.removeUser($scope.user.session_id)
-        .then(() => {
-          $scope.user = {},
-          $scope.user.first_name = 'DELETED'
-          alert("Your account was deleted");
-        });
-  };
   
   $scope.authorize = function () {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
-      '&redirect_uri=http://localhost:63342/tripnwalk/client/index.html' +
+      '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
       '&scope=friends,email' +
       '&response_type=token' +
       '&v=5.50';

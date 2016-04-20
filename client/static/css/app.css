@@ -4,6 +4,10 @@ html, body {
 	margin: 0;
 }
 
+#profile {
+	height: 158px;
+}
+
 #profile p {
 	margin: 0;
 }
