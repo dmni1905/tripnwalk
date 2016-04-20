@@ -28,6 +28,15 @@ app.controller('UserCtrl', function($scope, $cookies, UserService) {
       });//TODO testing
   }
 
+  $scope.removeMe = function () {
+    UserService.removeUser($scope.user.session_id)
+        .then(() => {
+          $scope.user = {},
+          $scope.user.first_name = 'DELETED'
+          alert("Your account was deleted");
+        });
+  };
+  
   $scope.authorize = function () {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +

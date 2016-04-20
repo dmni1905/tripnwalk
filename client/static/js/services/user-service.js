@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('UserService', function($compile, $templateRequest, $http) {
+app.factory('UserService',function($compile, $templateRequest, $http) {
   return {
     getSession: (tokenObj, $scope) => {
       return $http.post('http://localhost:9095/session', tokenObj)
@@ -24,7 +24,7 @@ app.factory('UserService', function($compile, $templateRequest, $http) {
             location.hash = '';
           });
     },
-      remove: (id) => {
+      removeUser: (id) => {
           return $http.delete('http://localhost:9095/' + id)
               .then(() => {
                   err => {

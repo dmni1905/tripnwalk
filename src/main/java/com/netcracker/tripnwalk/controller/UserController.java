@@ -59,9 +59,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUser() {
-        Long id = 1L;
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    //TODO When we make session_id: change this method to get session_id in header, not in url
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         if (userService.delete(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
