@@ -81,11 +81,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/friends/{id}", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<String> modifyFriend(@PathVariable("id") Long idFriend) {
+    public ResponseEntity<User> modifyFriend(@PathVariable("id") Long idFriend) {
         Long idBd = 1L;
         Optional<User> user = userService.getById(idBd);
         if (userService.addFriend(user, idFriend)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(userService.getById(idFriend).get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

@@ -42,12 +42,11 @@ app.factory('UserService', ['$http', '$q', function ($http, $q) {
 
     addFriend: (id) => {
       return $http.put('http://localhost:9095/friends/' + id)
-        .then(() => {
+        .then( res => res.data,
           err => {
             console.error('Friend add failed');
 
             return $q.reject(err);
-          }
         });
     }
 

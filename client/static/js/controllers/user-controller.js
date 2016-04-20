@@ -60,10 +60,12 @@ app.controller('UserCtrl', function ($scope, UserService, $uibModal) {
       });
   };
 
-  $scope.addFriend = function () {
-    UserService.addFriend($scope.curFriend.id)
-      .then(() => {
+  $scope.addFriend = function (removeFormFriend) {
 
+    UserService.addFriend($scope.curFriend.id)
+      .then(res => {
+        $scope.friends.push(res);
+        removeFormFriend();
       });
   };
 
