@@ -47,12 +47,25 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
 
     addFriend: (id) => {
       return $http.put('http://localhost:9095/friends/' + id)
-        .then( res => res.data,
+        .then(res => res.data,
           err => {
             console.error('Friend add failed');
 
             return $q.reject(err);
-        });
+          });
+    },
+
+    findFriend: (name, surname) => {
+      return $http.get('http://localhost:9095/find-user', {
+          params: {name: (name === undefined) ? "" : name , surname: (surname === undefined) ? "" : surname}
+        })
+        .then(res => res.data,
+          err => {
+            console.error('Friend find failed');
+
+            return $q.reject(err);
+          }
+        );
     }
   };
 });
