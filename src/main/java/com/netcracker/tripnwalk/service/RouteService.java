@@ -30,14 +30,18 @@ public class RouteService {
         }
     }
 
-    public boolean add(Long idUser, Route route) {
+    public Optional<Route> add(Long idUser, Route route) {
         Optional<User> userCurrent = userService.getById(idUser);
         if (userCurrent.isPresent()) {
             userCurrent.get().addRoute(route);
-            return Optional.of(userService.save(userCurrent.get())).isPresent();
+            User userFromDB = userService.save(userCurrent.get()).get();
+            return userFromDB.getRoutes().stream().filter(r -> {
+                        return r.getName().equals(route.getName());
+                    }
+            ).findFirst();
         } else {
             logger.error("SAVE ROUTES: User with id=" + idUser + " not found");
-            return false;
+            return Optional.empty();
         }
     }
 
@@ -51,11 +55,11 @@ public class RouteService {
         }
     }
 
-    public boolean modify(Long idUser, Route route) {
+    public Optional<Route> modify(Long idUser, Route route) {
         Optional<User> userCurrent = userService.getById(idUser);
         Optional<Route> routeCurrent = getById(idUser, route.getId());
         if (userCurrent.isPresent() && routeCurrent.isPresent()) {
-            return Optional.of(routeRepository.save(route)).isPresent();
+            return Optional.of(routeRepository.save(route));
         } else {
             if (!userCurrent.isPresent()) {
                 logger.error("MODIFY ROUTES: User with id=" + idUser + " not found");
@@ -63,7 +67,7 @@ public class RouteService {
                 logger.error("MODIFY ROUTES: Route with id=" + route.getId() + " not found");
 
             }
-            return false;
+            return Optional.empty();
         }
     }
 

@@ -53,7 +53,13 @@ html, body {
 	margin-top: 11px;
 }
 
-#route-edit-window, #friend-add-window {
+.add-friend{
+	cursor: pointer;
+	color: green;
+	margin-top: 11px;
+}
+
+#route-edit-window {
 	position: fixed;
 	top: 15%;
 	left: 75%;
@@ -63,6 +69,19 @@ html, body {
 	border-radius: 20px;
 	display: block;
 	height: 500px;
+	width: 280px;
+}
+
+#friend-add-window{
+	position: fixed;
+	top: 5%;
+	left: 60%;
+	z-index: 101;
+	background-color: white;
+	border: 2px solid #CCCCCC;
+	border-radius: 20px;
+	display: block;
+	height: 340px;
 	width: 280px;
 }
 
@@ -89,11 +108,16 @@ html, body {
 	margin-top: 10px;
 }
 
-#route-edit-window .route-name {
+#route-edit-window .route-name, #friend-add-window .friend-id {
 	margin-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
+}
+
+.friend-list{
+	overflow: auto;
+	height: 130px;
 }
 
 #point-input {
@@ -108,6 +132,14 @@ html, body {
 	margin-left: 10px;
 	width: 255px;
 	height: 370px;
+	overflow: hidden;
+}
+
+#friend-list-wrapper{
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 255px;
+	height: 250px;
 	overflow: hidden;
 }
 

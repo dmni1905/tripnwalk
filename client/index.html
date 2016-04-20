@@ -97,7 +97,7 @@
                         <ul style="list-style-type:none; padding-left: 0;">
                             <li ng-repeat="friend in friends">
                                 <div class="friend-menu-controls friend-element-id-{{friend.id}}">
-                                    <label class="btn btn-link" route-form>{{friend.login}}</label>
+                                    <label class="btn btn-link" route-form>{{friend.surname}} {{friend.name}}</label>
                                     <i class="fa fa-times remove-friend" ng-click="openDeletionFriend(friend.id)"></i>
                                 </div>
                             </li>

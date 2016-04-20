@@ -36,24 +36,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
-    public ResponseEntity<String> setUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<User> setUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (userService.save(user)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<User> userFromDB = userService.save(user);
+        if (userFromDB.isPresent()) {
+            return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PATCH, produces = "application/json")
-    public ResponseEntity<String> modifyUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<User> modifyUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (userService.modify(user)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Optional<User> userFromDB = userService.modify(user);
+        if (userFromDB.isPresent()) {
+            return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -69,12 +71,18 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/find-user", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Set> findUser(@RequestParam("name") String name, @RequestParam("surname") String surname) {
+        Long id = 1L;
+        return new ResponseEntity<>(userService.findUsers(id, name, surname), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Set> getFriends() {
         Long id = 1L;
-        Optional<User> user = userService.getById(id);
-        if (user.isPresent()) {
-            return new ResponseEntity<>(user.get().getFriends(), HttpStatus.OK);
+        Optional<Set<User>> friends = userService.getFriends(id);
+        if (friends.isPresent()) {
+            return new ResponseEntity<>(friends.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

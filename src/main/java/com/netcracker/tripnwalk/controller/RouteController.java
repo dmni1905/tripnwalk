@@ -50,8 +50,9 @@ public class RouteController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Long idUser = 1L;
-        if (routeService.add(idUser, route)) {
-            return new ResponseEntity<>(route, HttpStatus.OK);
+        Optional<Route> routeFromDB = routeService.add(idUser, route);
+        if (routeFromDB.isPresent()) {
+            return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -60,9 +61,9 @@ public class RouteController {
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Route> getRouteById(@PathVariable("id") Long idRoute) {
         Long idUser = 1L;
-        Optional<Route> route = routeService.getById(idUser, idRoute);
-        if (route.isPresent()) {
-            return new ResponseEntity<>(route.get(), HttpStatus.OK);
+        Optional<Route> routeFromDB = routeService.getById(idUser, idRoute);
+        if (routeFromDB.isPresent()) {
+            return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -75,8 +76,9 @@ public class RouteController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (id == route.getId()) {
-            if (routeService.modify(idUser, route)) {
-                return new ResponseEntity<>(route, HttpStatus.OK);
+            Optional<Route> routeFromDB = routeService.modify(idUser, route);
+            if (routeFromDB.isPresent()) {
+                return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
@@ -93,14 +95,5 @@ public class RouteController {
         } else{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-//        !!!!
-//        try {
-//            userRepository.findOne(id_user).getRoutes().remove(routeRepository.findOne(id));
-//            routeRepository.delete(id);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (EmptyResultDataAccessException e) {
-//            logger.error(e);
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
 }

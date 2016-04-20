@@ -6,7 +6,21 @@ app.controller('UserCtrl', function ($scope, UserService, $uibModal) {
   $scope.country = 'Russia';
   $scope.email = 'desiresdesigner@gmail.com';
   $scope.friends = [];
+  $scope.findUsers = [];
   $scope.curFriend = {};
+
+  function compareUser(a,b) {
+    if (a.surname < b.surname)
+      return -1;
+    else if (a.surname > b.surname)
+      return 1;
+    else if (a.name < b.name)
+      return -1;
+    else if (a.name > b.name)
+      return 1;
+    else
+      return 0;
+  }
 
   function getTokenFromUrl() {
     var tokenObj = {};
@@ -60,12 +74,22 @@ app.controller('UserCtrl', function ($scope, UserService, $uibModal) {
       });
   };
 
-  $scope.addFriend = function (removeFormFriend) {
+  $scope.addFriend = function (id, removeFormFriend) {
+    if (!_.contains($scope.friends, getFriendById(id))) {
+      UserService.addFriend(id)
+        .then(res => {
+          $scope.friends.push(res);
+          $scope.friends.sort(compareUser);
+          removeFormFriend();
+        });
+    }
+  };
 
-    UserService.addFriend($scope.curFriend.id)
+  $scope.findFriend = function () {
+    UserService.findFriend($scope.curFriend.name, $scope.curFriend.surname)
       .then(res => {
-        $scope.friends.push(res);
-        removeFormFriend();
+        $scope.findUsers = res;
+        $scope.findUsers.sort(compareUser);
       });
   };
 
@@ -73,5 +97,6 @@ app.controller('UserCtrl', function ($scope, UserService, $uibModal) {
   UserService.getFriends()
     .then(res => {
       $scope.friends = res;
+      $scope.friends.sort(compareUser);
     });
 });
