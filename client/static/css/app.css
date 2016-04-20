@@ -165,3 +165,30 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
+
+#auth {
+	display:block;
+	overflow:hidden;
+	width: 500px;
+	height: 600px;
+	top: 10%;
+	left: 30%;
+	bottom: 30%;
+	right: 30%;
+	position: absolute;
+}
+
+#auth img{
+	width: 500px;
+	height: 500px;
+}
+
+#auth > label{
+	font-size: 28px;
+	margin-left: 30%;
+}
+
+.login-controls > label{
+	font-size: 28px;
+	margin-left: 35%;
+}
