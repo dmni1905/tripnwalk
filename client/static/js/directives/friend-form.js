@@ -16,7 +16,7 @@ app.directive('friendForm', function($compile, $templateRequest) {
           $('.friend-form-place').empty();
           $scope.findUsers = [];
           //
-          //$scope.toggleRouteMode(false);
+          $('.friend-id').val('')
         };
 
         $('#friend-add-window').length > 0 && $scope.removeFormFriend();
