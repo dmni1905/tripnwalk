@@ -3,14 +3,14 @@
 app.factory('UserService',function($compile, $templateRequest, $http) {
   return {
     getSession: (tokenObj, $scope) => {
-      return $http.post('http://localhost:9095/session', tokenObj)
+      return $http.post('/session', tokenObj)
         .then(res => {
             //TODO handle session id to Local Storage.
             console.log('Authorized!');
 
             location.hash = '';
             $('#auth').remove();
-            $templateRequest('templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
+            $templateRequest('/templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
 
             return res.data;
 
@@ -26,7 +26,7 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
     },
 
     getFriends: () => {
-      return $http.get('http://localhost:9095/friends')
+      return $http.get('/friends')
         .then(res => res.data,
           err => {
             console.error('Get friends list failed');
@@ -35,7 +35,7 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
     },
 
     remove: (id) => {
-      return $http.delete('http://localhost:9095/friends/' + id)
+      return $http.delete('/friends/' + id)
         .then(() => {
           err => {
             console.error('Friend deletion failed');
@@ -46,7 +46,7 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
     },
 
     addFriend: (id) => {
-      return $http.put('http://localhost:9095/friends/' + id)
+      return $http.put('/friends/' + id)
         .then(res => res.data,
           err => {
             console.error('Friend add failed');
@@ -56,7 +56,7 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
     },
 
     findFriend: (name, surname) => {
-      return $http.get('http://localhost:9095/find-user', {
+      return $http.get('/find-user', {
           params: {name: (name === undefined) ? "" : name , surname: (surname === undefined) ? "" : surname}
         })
         .then(res => res.data,

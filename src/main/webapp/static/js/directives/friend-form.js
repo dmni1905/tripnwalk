@@ -21,7 +21,7 @@ app.directive('friendForm', function($compile, $templateRequest) {
 
         $('#friend-add-window').length > 0 && $scope.removeFormFriend();
 
-        $templateRequest('templates/friend-form.html').then(html => {
+        $templateRequest('/templates/friend-form.html').then(html => {
           angular.element($('.friend-form-place')).append($compile(html)($scope));
 
           $('.js-friend-form').draggable();

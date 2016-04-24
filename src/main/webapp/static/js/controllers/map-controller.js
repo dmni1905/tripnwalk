@@ -98,7 +98,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     $scope.curRoute = getRouteById(id);
 
     $scope.modalInstance = $uibModal.open({
-      templateUrl: 'templates/deletion-modal.html',
+      templateUrl: '/templates/deletion-modal.html',
       scope: $scope
     });
   };

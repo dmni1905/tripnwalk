@@ -1,11 +1,11 @@
 'use strict';
 
-app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
+app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.friends = [];
   $scope.findUsers = [];
   $scope.curFriend = {};
 
-  function compareUser(a,b) {
+  function compareUser(a, b) {
     if (a.surname < b.surname)
       return -1;
     else if (a.surname > b.surname)
@@ -26,12 +26,12 @@ app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
       return matches ? matches[1] : null;
     }
 
-    _.each(['access_token', 'expires_in', 'user_id','email'], param => tokenObj[param] = getHashValue(param));
+    _.each(['access_token', 'expires_in', 'user_id', 'email'], param => tokenObj[param] = getHashValue(param));
 
     return tokenObj;
   }
 
-  if (_.every(['access_token', 'expires_in', 'user_id','email'], param => _.contains(location.hash, param))) {
+  if (_.every(['access_token', 'expires_in', 'user_id', 'email'], param => _.contains(location.hash, param))) {
     UserService.getSession(getTokenFromUrl(), $scope)
       .then(res => {
         $scope.user = {
@@ -48,7 +48,7 @@ app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
-      '&redirect_uri=http://localhost/docs/tmp/client/index.html' +
+      '&redirect_uri=http://localhost:9095/' +
       '&scope=friends,email' +
       '&response_type=token' +
       '&v=5.50';
@@ -62,7 +62,7 @@ app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
     $scope.curFriend = getFriendById(id);
 
     $scope.modalInstance = $uibModal.open({
-      templateUrl: 'templates/deletion-friend.html',
+      templateUrl: '/templates/deletion-friend.html',
       scope: $scope
     });
   };
@@ -98,10 +98,11 @@ app.controller('UserCtrl', function($scope, $cookies, UserService, $uibModal) {
       });
   };
 
+    UserService.getFriends()
+      .then(res => {
+        $scope.friends = res;
+        $scope.friends.sort(compareUser);
+      });
 
-  UserService.getFriends()
-    .then(res => {
-      $scope.friends = res;
-      $scope.friends.sort(compareUser);
-    });
+
 });

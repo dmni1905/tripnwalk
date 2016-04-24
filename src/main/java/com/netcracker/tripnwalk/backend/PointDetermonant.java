@@ -91,7 +91,7 @@ public class PointDetermonant {
         return (float)Math.sqrt(p*(p - a)*(p - b)*(p - c));
     }
 
-    /*public static void main (String[] args) {
+    /*public webapp.static void main (String[] args) {
 
         PointDetermonant pointDetermonant = new PointDetermonant(10);
         RoutePoint a = new RoutePoint(0, 0, 5),
