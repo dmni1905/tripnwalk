@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('UserService',function($compile, $templateRequest, $http) {
+app.factory('UserService', function ($compile, $templateRequest, $http) {
   return {
     getSession: (tokenObj, $scope) => {
       return $http.post('/session', tokenObj)
@@ -9,8 +9,8 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
             console.log('Authorized!');
 
             location.hash = '';
-            $('#auth').remove();
-            $templateRequest('/templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
+            //$('#auth').remove();
+            //$templateRequest('/templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
 
             return res.data;
 
@@ -57,7 +57,7 @@ app.factory('UserService',function($compile, $templateRequest, $http) {
 
     findFriend: (name, surname) => {
       return $http.get('/find-user', {
-          params: {name: (name === undefined) ? "" : name , surname: (surname === undefined) ? "" : surname}
+          params: {name: (name === undefined) ? "" : name, surname: (surname === undefined) ? "" : surname}
         })
         .then(res => res.data,
           err => {

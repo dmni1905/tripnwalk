@@ -11,46 +11,50 @@
     <title>Trip_Walk</title>
 
      <!--Bootstrap Core CSS -->
-    <link th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Custom CSS -->
-    <link th:href="@{/static/css/simple-sidebar.css}" rel="stylesheet"/>
+    <link href="/static/css/simple-sidebar.css" rel="stylesheet"/>
     <!-- Font-awesome CSS -->
-    <link th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- jQuery UI -->
-    <link th:href="@{/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css}" rel="stylesheet"/>
+    <link href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
     <!-- App CSS -->
-    <link th:href="@{/static/css/app.css}" rel="stylesheet"/>
+    <link href="/static/css/app.css" rel="stylesheet"/>
 
     <!-- Google maps -->
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <!-- jQuery -->
-    <script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
-    <script th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <!-- Underscore -->
-    <script th:src="@{/bower_components/underscore/underscore-min.js}"></script>
+    <script src="/bower_components/underscore/underscore-min.js"></script>
     <!-- AngularJS -->
-    <script th:src="@{/bower_components/angular/angular.min.js}"></script>
-    <script th:src="@{/bower_components/angular-cookies/angular-cookies.min.js}"></script>
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
-    <script th:src="@{/bower_components/angular-bootstrap/ui-bootstrap.min.js}"></script>
-    <script th:src="@{/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js}"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <!-- Angular-google-maps -->
-    <script th:src="@{/bower_components/angular-google-maps/dist/angular-google-maps.min.js}"></script>
-    <script th:src="@{/bower_components/lodash/lodash.min.js}"></script>
-    <script th:src="@{/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js}"></script>
+    <script src="/bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+    <script src="/bower_components/lodash/lodash.min.js"></script>
+    <script src="/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
     <!-- App -->
-    <script type="text/javascript" th:src="@{static/js/app.js}"></script>
-    <script th:src="@{/static/js/controllers/map-controller.js}"></script>
-    <script th:src="@{/static/js/controllers/user-controller.js}"></script>
-    <script th:src="@{/static/js/services/map-service.js}"></script>
-    <script th:src="@{/static/js/services/user-service.js}"></script>
-    <script th:src="@{/static/js/directives/route-form.js}"></script>
-    <script th:src="@{/static/js/directives/friend-form.js}"></script>
+    <script type="text/javascript"  src="static/js/app.js"></script>
+    <script src="/static/js/controllers/map-controller.js"></script>
+    <script src="/static/js/controllers/user-controller.js"></script>
+    <script src="/static/js/services/map-service.js"></script>
+    <script src="/static/js/services/user-service.js"></script>
+    <script src="/static/js/directives/route-form.js"></script>
+    <script src="/static/js/directives/friend-form.js"></script>
 </head>
 
 
 <body>
+<!--<div th:if="${user}">-->
+    <!--<div ng-controller="UserCtrl">-->
+    <!--</div>-->
+<!--</div>-->
 <form id="auth">
     <label>Trip_Walk</label>
     <img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>

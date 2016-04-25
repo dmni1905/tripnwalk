@@ -5,6 +5,12 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.findUsers = [];
   $scope.curFriend = {};
 
+  if ($scope.isSession) {
+    alert('hi');
+    $('#auth').remove();
+    $templateRequest('/templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
+  }
+
   function compareUser(a, b) {
     if (a.surname < b.surname)
       return -1;
@@ -34,18 +40,21 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   if (_.every(['access_token', 'expires_in', 'user_id', 'email'], param => _.contains(location.hash, param))) {
     UserService.getSession(getTokenFromUrl(), $scope)
       .then(res => {
-        $scope.user = {
-          first_name: res.first_name,
-          last_name: res.last_name,
-          email: res.email,
-          bdate: res.bdate,
-          session_id: res.session_id
-        };
+        window.location.href = '/' + res.session_id;
+
+
+        //$scope.user = {
+        //  first_name: res.first_name,
+        //  last_name: res.last_name,
+        //  email: res.email,
+        //  bdate: res.bdate,
+        //  session_id: res.session_id
+        //};
       });//TODO testing
   }
 
   $scope.authorize = function () {
-    window.location.href = 'http://oauth.vk.com/authorize?' +
+      window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
       '&redirect_uri=http://localhost:9095/' +
@@ -53,6 +62,10 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       '&response_type=token' +
       '&v=5.50';
   };
+
+  $scope.openPage = function (){
+    alert('hi');
+  }
 
   function getFriendById(id) {
     return _.find($scope.friends, friend => friend.id == id);
