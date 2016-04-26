@@ -40,7 +40,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   }
 
   $scope.authorize = function () {
-      window.location.href = 'http://oauth.vk.com/authorize?' +
+    window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
       '&redirect_uri=http://localhost:9095/' +
@@ -51,6 +51,11 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
 
   function getFriendById(id) {
     return _.find($scope.friends, friend => friend.id == id);
+  }
+
+  $scope.setFriends = function (friends) {
+    $scope.friends = friends;
+    $scope.friends.sort(compareUser);
   }
 
   $scope.openDeletionFriend = id => {

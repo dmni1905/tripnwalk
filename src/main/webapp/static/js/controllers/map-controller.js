@@ -160,6 +160,10 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     renderRoute(route);
   };
 
+  $scope.getRender = function() {
+    _.map($scope.routes, route => renderRoute(route));
+  }
+
   //Renders map.
   uiGmapIsReady.promise(1)
     .then(instances => instances[0].map)
@@ -176,9 +180,5 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
         }, 320);
       });
 
-      MapService.fetchAll()
-        .then(res => {
-          $scope.routes = _.map(res, route => renderRoute(route));
-        });
     });
 });
