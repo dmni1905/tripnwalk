@@ -41,7 +41,7 @@ app.directive('routeForm', function($compile, $templateRequest) {
           $scope.removePoint0($scope.curRoute.id, index);
         };
 
-        $templateRequest('templates/route-form.html').then(html => {
+        $templateRequest('/templates/route-form.html').then(html => {
           angular.element($('.route-form-place')).append($compile(html)($scope));
 
           $('.js-route-form').draggable();

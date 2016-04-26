@@ -4,6 +4,10 @@ html, body {
 	margin: 0;
 }
 
+#profile {
+	height: 158px;
+}
+
 #profile p {
 	margin: 0;
 }
@@ -43,13 +47,19 @@ html, body {
 	z-index: 99;
 }
 
-.route-menu-controls {
+.route-menu-controls, .friend-menu-controls, .user-menu-controls {
 	display: flex;
 }
 
-.remove-route {
+.remove-route, .remove-friend {
 	cursor: pointer;
 	color: red;
+	margin-top: 11px;
+}
+
+.add-friend{
+	cursor: pointer;
+	color: green;
 	margin-top: 11px;
 }
 
@@ -63,6 +73,19 @@ html, body {
 	border-radius: 20px;
 	display: block;
 	height: 500px;
+	width: 280px;
+}
+
+#friend-add-window{
+	position: fixed;
+	top: 5%;
+	left: 60%;
+	z-index: 101;
+	background-color: white;
+	border: 2px solid #CCCCCC;
+	border-radius: 20px;
+	display: block;
+	height: 340px;
 	width: 280px;
 }
 
@@ -84,16 +107,21 @@ html, body {
 	margin-left: 100px;
 }
 
-.route-form-header {
+.route-form-header, .friend-form-header {
 	margin-left: 28%;
 	margin-top: 10px;
 }
 
-#route-edit-window .route-name {
+#route-edit-window .route-name, #friend-add-window .friend-id {
 	margin-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
+}
+
+.friend-list{
+	overflow: auto;
+	height: 130px;
 }
 
 #point-input {
@@ -108,6 +136,14 @@ html, body {
 	margin-left: 10px;
 	width: 255px;
 	height: 370px;
+	overflow: hidden;
+}
+
+#friend-list-wrapper{
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 255px;
+	height: 250px;
 	overflow: hidden;
 }
 
@@ -133,14 +169,14 @@ html, body {
 	width: 120px;
 }
 
-#routes label {
+#routes label, #friends label {
 	display: block;
 	color: #CCCCCC;
 	width: 80%;
 	text-align: left;
 }
 
-.add-route-btn {
+.add-route-btn, .add-friend-btn {
 	width: 120px!important;
 	margin-left: 32px;
 	margin-top: 10px;
@@ -160,4 +196,31 @@ html, body {
 	margin: auto;
 	width: 100%;
 	height: 100%;
+}
+
+#auth {
+	display:block;
+	overflow:hidden;
+	width: 500px;
+	height: 600px;
+	top: 10%;
+	left: 30%;
+	bottom: 30%;
+	right: 30%;
+	position: absolute;
+}
+
+#auth img{
+	width: 500px;
+	height: 500px;
+}
+
+#auth > label{
+	font-size: 28px;
+	margin-left: 30%;
+}
+
+.login-controls > label{
+	font-size: 28px;
+	margin-left: 35%;
 }

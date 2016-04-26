@@ -1,0 +1,22 @@
+<form id="friend-add-window" class="ui-widget-content js-friend-form">
+    <label class="friend-form-header">ADD FRIEND</label>
+    <div id="friend-list-wrapper">
+        <input type="text" class="friend-id form-control" placeholder="USER NAME" ng-model="curFriend.name">
+        <input type="text" class="friend-id form-control" placeholder="USER SURNAME" ng-model="curFriend.surname">
+        <label id="find-friend" class="btn btn-link" ng-click="findFriend()">FIND</label>
+
+        <div class="friend-list">
+            <ul>
+                <li ng-repeat="u in findUsers">
+                    <label class="">{{u.surname}} {{u.name}}</label>
+                    <i class="fa fa-plus add-friend" ng-click="addFriend(u.id, removeFormFriend)"></i>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="route-controls" class="form-inline">
+        <label id="clear-friend" class="btn btn-link">CANCEL</label>
+    </div>
+</form>

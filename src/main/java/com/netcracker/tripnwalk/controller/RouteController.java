@@ -20,7 +20,7 @@ import java.util.Set;
 
 @RestController
 public class RouteController {
-    private static final Logger logger = LogManager.getLogger(UserController.class);
+    private static final Logger logger = LogManager.getLogger(RouteController.class);
 
     @Autowired
     RouteService routeService;
@@ -35,7 +35,7 @@ public class RouteController {
 
     @RequestMapping(value = "/routes", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Set> getRoutes() {
-        Long idUser = 1L;
+        Long idUser = sessionBean.getSessionId();
         Optional<Set> routes = routeService.getAllByUserId(idUser);
         if (routes.isPresent()) {
             return new ResponseEntity(routes.get(), HttpStatus.OK);
@@ -49,9 +49,10 @@ public class RouteController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Long idUser = 1L;
-        if (routeService.add(idUser, route)) {
-            return new ResponseEntity<>(route, HttpStatus.OK);
+        Long idUser = sessionBean.getSessionId();
+        Optional<Route> routeFromDB = routeService.add(idUser, route);
+        if (routeFromDB.isPresent()) {
+            return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -59,10 +60,10 @@ public class RouteController {
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Route> getRouteById(@PathVariable("id") Long idRoute) {
-        Long idUser = 1L;
-        Optional<Route> route = routeService.getById(idUser, idRoute);
-        if (route.isPresent()) {
-            return new ResponseEntity<>(route.get(), HttpStatus.OK);
+        Long idUser = sessionBean.getSessionId();
+        Optional<Route> routeFromDB = routeService.getById(idUser, idRoute);
+        if (routeFromDB.isPresent()) {
+            return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -70,13 +71,14 @@ public class RouteController {
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.PATCH, produces = "application/json")
     public ResponseEntity<Route> modifyById(@PathVariable("id") Long id, @Valid @RequestBody Route route, BindingResult bindingResult) {
-        Long idUser = 1L;
+        Long idUser = sessionBean.getSessionId();
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (id == route.getId()) {
-            if (routeService.modify(idUser, route)) {
-                return new ResponseEntity<>(route, HttpStatus.OK);
+            Optional<Route> routeFromDB = routeService.modify(idUser, route);
+            if (routeFromDB.isPresent()) {
+                return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
@@ -87,20 +89,11 @@ public class RouteController {
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteById(@PathVariable("id") Long idRoute) {
-        Long idUser = 1L;
+        Long idUser = sessionBean.getSessionId();
         if(routeService.delete(idUser, idRoute)){
             return new ResponseEntity<>(HttpStatus.OK);
         } else{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-//        !!!!
-//        try {
-//            userRepository.findOne(id_user).getRoutes().remove(routeRepository.findOne(id));
-//            routeRepository.delete(id);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } catch (EmptyResultDataAccessException e) {
-//            logger.error(e);
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
 }

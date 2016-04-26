@@ -16,19 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 @RestController
 class LoginController {
@@ -52,6 +50,11 @@ class LoginController {
 
     @Autowired
     private SessionBean sessionBean;
+
+//    @RequestMapping("/")
+//    public ModelAndView index(){
+//        return new ModelAndView("index");
+//    }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public ResponseEntity<String> auth() throws IOException {
@@ -79,8 +82,8 @@ class LoginController {
         }
     }
 
-    @RequestMapping(value = "/getuserinfo", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<String> getUserInfoOauth(@RequestBody JSONObject strJson) throws ParseException, java.text.ParseException {
+    @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
 
         String access_token = (String) strJson.get("access_token");
         sessionBean.setAccessToken(access_token);
@@ -98,62 +101,38 @@ class LoginController {
         String result = sendHttpRequest(reqUrl).toString();
 
         //Is user exist in VK
-        System.out.println(result);
+        JSONObject resultJson = new JSONObject();
         boolean isUserDeleted = result.contains("DELETED");
         boolean isUserExist = result.contains("error");
+
         if ((isUserDeleted) || (isUserExist)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             User user = userRepository.findByOauthID(userIDOauth);
-            if (user != null) {
-                sessionBean.setSessionId(user.getId()); //создание сессии
-                JSONObject resultJson = new JSONObject();
-                resultJson.put("email", user.getEmail());
-                resultJson.put("bdate", user.getBirthDate());
-                resultJson.put("last_name", user.getSurname());
-                resultJson.put("first_name", user.getName());
-                result = resultJson.toString();
-            } else {
+            if (user == null) {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
                 JSONArray jsonArray = (JSONArray) jsonObject.get("response");
                 jsonObject = (JSONObject) jsonArray.get(0);
 
-                user = new User();
-                user.setName((String) jsonObject.get("first_name"));
-                user.setSurname((String) jsonObject.get("last_name"));
-                user.setEmail(email);
+                user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
+                        userIDOauth, "VK");
 
                 if (jsonObject.get("bdate") != null) {
-                    String bdateUser = (String) jsonObject.get("bdate");
-                    String[] split_birthday = bdateUser.split("\\.");
-                    SimpleDateFormat sdf;
-
-                    if (((String) jsonObject.get("bdate")).length() > 6) {
-                        sdf = new SimpleDateFormat("dd.mm.yyyy");
-                    } else {
-                        if ((split_birthday[0].length() == 1) && (split_birthday[0].length() == 2)) {
-                            sdf = new SimpleDateFormat("d.mm");
-                        } else {
-                            if ((split_birthday[0].length() == 2) && (split_birthday[0].length() == 1)) {
-                                sdf = new SimpleDateFormat("dd.m");
-                            } else {
-                                sdf = new SimpleDateFormat("dd.mm");
-                            }
-                        }
-                    }
-                    java.util.Date date = sdf.parse((String) jsonObject.get("bdate"));
-                    java.sql.Date sqlDate = new Date(date.getTime());
-                    user.setBirthDate(sqlDate.toString());
+                    user.setBirthDate((String) jsonObject.get("bdate"));
                 }
-
-                user.setSourceId(userIDOauth);
-                user.setSourceType("VK");
-
                 userRepository.save(user);
-                sessionBean.getSessionId();
-                System.out.println(sessionBean.getSessionId());
             }
+
+            sessionBean.setSessionId(user.getId());
+            resultJson.put("email", user.getEmail());
+            if (user.getBirthDate() != null) {
+                resultJson.put("bdate", user.getBirthDate().toString());
+            }
+            resultJson.put("last_name", user.getSurname());
+            resultJson.put("first_name", user.getName());
+            resultJson.put("session_id", sessionBean.getSessionId());
+            result = resultJson.toString();
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }

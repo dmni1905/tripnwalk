@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App" class="ng-cloak" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+
+  <title>Trip_Walk</title>
+
+  <!--Bootstrap Core CSS -->
+  <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link href="/static/css/simple-sidebar.css" rel="stylesheet"/>
+  <!-- Font-awesome CSS -->
+  <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+  <!-- jQuery UI -->
+  <link href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+  <!-- App CSS -->
+  <link href="/static/css/app.css" rel="stylesheet"/>
+
+  <!-- Google maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <!-- jQuery -->
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Underscore -->
+  <script src="/bower_components/underscore/underscore-min.js"></script>
+  <!-- AngularJS -->
+  <script src="/bower_components/angular/angular.min.js"></script>
+  <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <!-- Angular-google-maps -->
+  <script src="/bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+  <script src="/bower_components/lodash/lodash.min.js"></script>
+  <script src="/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+  <!-- App -->
+  <script type="text/javascript" src="static/js/app.js"></script>
+  <script src="/static/js/controllers/map-controller.js"></script>
+  <script src="/static/js/controllers/user-controller.js"></script>
+  <script src="/static/js/services/map-service.js"></script>
+  <script src="/static/js/services/user-service.js"></script>
+  <script src="/static/js/directives/route-form.js"></script>
+  <script src="/static/js/directives/friend-form.js"></script>
+</head>
+
+
+<body>
+<script>
+</script>
+<div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
+  <!-- Sidebar -->
+  <div id="sidebar-wrapper" ng-controller="UserCtrl">
+    <script th:inline="javascript">
+      function ready() {
+        var user = [[${user}]];
+
+        var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
+        scopeUserCtrl.user = {
+          first_name: user.name,
+          last_name: user.surname,
+          email: user.email,
+          bdate: user.birthDate,
+          session_id: user.id
+        };
+        scopeUserCtrl.setFriends(user.friends);
+        scopeUserCtrl.$apply();
+
+        var scopeMapCtrl = angular.element($("#wrapper")).scope();
+        scopeMapCtrl.routes  = user.routes;
+        scopeMapCtrl.$apply();
+      }
+      document.addEventListener("DOMContentLoaded", ready);
+      window.onload = function(){
+        var scopeMapCtrl = angular.element($("#wrapper")).scope();
+        scopeMapCtrl.getRender();
+      }
+    </script>
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a href="#">
+          Trip_Walk
+        </a>
+      </li>
+      <li>
+        <a href="#profile" data-toggle="collapse">Name</a>
+        <div id="profile" class="collapse in">
+          <p style="margin: 0">
+            <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
+                 style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;"/>
+          </p>
+          <p>
+          <dl style="list-style-type:none">
+            <dt>PROFILE</dt>
+            <dd id="user-name">{{user.first_name + ' ' + user.last_name}}</dd>
+            <dt>Birth date</dt>
+            <dd id="bdate">{{user.bdate}}</dd>
+            <dt>E-mail</dt>
+            <dd id="email">{{user.email}}</dd>
+          </dl>
+          </p>
+        </div>
+      </li>
+      <li>
+        <a href="#friends" data-toggle="collapse">FRIENDS</a>
+        <div id="friends" class="collapse">
+          <add-friend-form id="add-user" class="friend-menu-controls"></add-friend-form>
+
+          <ul style="list-style-type:none; padding-left: 0;">
+            <li ng-repeat="friend in friends">
+              <div class="friend-menu-controls friend-element-id-{{friend.id}}">
+                <a href="/{{friend.id}}" class="btn btn-link">{{friend.surname}} {{friend.name}}</a>
+                <i class="fa fa-times remove-friend" ng-click="openDeletionFriend(friend.id)"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="#routes" data-toggle="collapse">ROUTES</a>
+        <div id="routes" class="collapse">
+          <add-route-form id="add-route" class="route-menu-controls"></add-route-form>
+
+          <ul style="list-style-type:none; padding-left: 0;">
+            <li ng-repeat="route in routes">
+              <div class="route-menu-controls route-element-id-{{route.id}}">
+                <label class="btn btn-link" route-form="">{{route.name}}</label>
+                <i class="fa fa-times remove-route" ng-click="openDeletionModal(route.id)"></i>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="#donate" data-toggle="collapse">DONATE</a>
+        <div id="donate" class="collapse">
+          <img src="https://33.media.tumblr.com/avatar_4f90587f6cba_128.png"/>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div id="main">
+    <div id="map-wrapper" class="wrap">
+      <button href="#menu-toggle" class="fa fa-arrow-left fa-2x" id="menu-toggle"></button>
+
+      <div class="route-form-place"></div>
+      <div class="friend-form-place"></div>
+
+      <ui-gmap-google-map id="gmap" center='map.center' zoom='map.zoom' options='map.options'></ui-gmap-google-map>
+    </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+<!-- Menu Toggle Script -->
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    var wrapper = $("#wrapper");
+    var btn = $("#menu-toggle");
+
+    wrapper.toggleClass("toggled");
+
+    if (wrapper.hasClass("toggled")) {
+      btn.removeClass("fa-arrow-left");
+      btn.addClass("fa-arrow-right");
+    }
+    else {
+      btn.removeClass("fa-arrow-right");
+      btn.addClass("fa-arrow-left");
+    }
+  });
+</script>
+</body>
+
+</html>

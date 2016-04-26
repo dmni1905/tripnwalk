@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -29,8 +28,7 @@ public class User {
     @Column(name = "login", unique = true)
     private String login;
 
-    @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "source_type")
@@ -85,7 +83,13 @@ public class User {
     public User(String username) {
         this.name = username;
     }
-
+    public User(String name, String surname, String email, String sourceId, String sourceType){
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.sourceId = sourceId;
+        this.sourceType = sourceType;
+    }
     public Long getId() {
         return id;
     }
