@@ -4,12 +4,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.friends = [];
   $scope.findUsers = [];
   $scope.curFriend = {};
-
-  if ($scope.isSession) {
-    alert('hi');
-    $('#auth').remove();
-    $templateRequest('/templates/main-page.html').then(html => angular.element($('body')).append($compile(html)($scope)));
-  }
+  $scope.user = {};
 
   function compareUser(a, b) {
     if (a.surname < b.surname)
@@ -41,15 +36,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     UserService.getSession(getTokenFromUrl(), $scope)
       .then(res => {
         window.location.href = '/' + res.session_id;
-
-
-        //$scope.user = {
-        //  first_name: res.first_name,
-        //  last_name: res.last_name,
-        //  email: res.email,
-        //  bdate: res.bdate,
-        //  session_id: res.session_id
-        //};
       });//TODO testing
   }
 
@@ -62,10 +48,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       '&response_type=token' +
       '&v=5.50';
   };
-
-  $scope.openPage = function (){
-    alert('hi');
-  }
 
   function getFriendById(id) {
     return _.find($scope.friends, friend => friend.id == id);
@@ -110,12 +92,5 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
         $scope.findUsers.sort(compareUser);
       });
   };
-
-    UserService.getFriends()
-      .then(res => {
-        $scope.friends = res;
-        $scope.friends.sort(compareUser);
-      });
-
 
 });

@@ -40,7 +40,7 @@
   <script src="/bower_components/lodash/lodash.min.js"></script>
   <script src="/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
   <!-- App -->
-  <script type="text/javascript"  src="static/js/app.js"></script>
+  <script type="text/javascript" src="static/js/app.js"></script>
   <script src="/static/js/controllers/map-controller.js"></script>
   <script src="/static/js/controllers/user-controller.js"></script>
   <script src="/static/js/services/map-service.js"></script>
@@ -51,34 +51,53 @@
 
 
 <body>
+<script>
+</script>
 <div id="wrapper" class="js-wrapper" ng-controller="MapCtrl">
   <!-- Sidebar -->
   <div id="sidebar-wrapper" ng-controller="UserCtrl">
+    <script th:inline="javascript">
+      function ready() {
+        var user = [[${user}]];
+
+        var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
+        scopeUserCtrl.user = {
+          first_name: user.name,
+          last_name: user.surname,
+          email: user.email,
+          bdate: user.birthDate,
+          session_id: user.id
+        };
+        scopeUserCtrl.friends = user.friends;
+        scopeUserCtrl.$apply();
+
+//        var scopeMapCtrl = angular.element($("#wrapper")).scope();
+//        scopeMapCtrl.routes =  user.routes;
+        scopeMapCtrl.$apply();
+      }
+      document.addEventListener("DOMContentLoaded", ready);
+    </script>
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
         <a href="#">
           Trip_Walk
         </a>
       </li>
-
       <li>
         <a href="#profile" data-toggle="collapse">Name</a>
-        <div id="profile" ng-controller="UserCtrl" class="collapse in">
+        <div id="profile" class="collapse in">
           <p style="margin: 0">
             <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
-              style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;"/>
+                 style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;"/>
           </p>
           <p>
           <dl style="list-style-type:none">
             <dt>PROFILE</dt>
-            <dd id="user-name"><span th:text="${user.surname}"></span> <span th:text="${user.name}"></span></dd>
-            <!--<dd id="user-name">{{user.first_name + ' ' + user.last_name}}</dd>-->
+            <dd id="user-name">{{user.first_name + ' ' + user.last_name}}</dd>
             <dt>Birth date</dt>
-            <dd id="bdate" th:text="${user.birthDate}"></dd>
-            <!--<dd id="bdate">{{user.bdate}}</dd>-->
+            <dd id="bdate">{{user.bdate}}</dd>
             <dt>E-mail</dt>
-            <dd id="email" th:text="${user.email}"></dd>
-            <!--<dd id="email">{{user.email}}</dd>-->
+            <dd id="email">{{user.email}}</dd>
           </dl>
           </p>
         </div>
@@ -141,7 +160,7 @@
 
 <!-- Menu Toggle Script -->
 <script>
-  $("#menu-toggle").click(function(e) {
+  $("#menu-toggle").click(function (e) {
     e.preventDefault();
     var wrapper = $("#wrapper");
     var btn = $("#menu-toggle");

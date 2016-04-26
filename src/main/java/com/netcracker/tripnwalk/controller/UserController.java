@@ -27,6 +27,10 @@ public class UserController {
         if (Optional.ofNullable(sessionBean.getSessionId()).isPresent()) {
             Long id = sessionBean.getSessionId();
             Optional<User> user = userService.getById(id);
+            user.get().getFriends().forEach(f -> {
+                f.getFriends().clear();
+                f.getRoutes().clear();
+            });
             return new ModelAndView("main-page", "user", user.get());
         } else {
             return new ModelAndView("index");
@@ -70,16 +74,16 @@ public class UserController {
         return new ResponseEntity<>(userService.findUsers(id, name, surname), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Set> getFriends() {
-        Long id = sessionBean.getSessionId();
-        Optional<Set<User>> friends = userService.getFriends(id);
-        if (friends.isPresent()) {
-            return new ResponseEntity<>(friends.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
+//    @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
+//    public ResponseEntity<Set> getFriends() {
+//        Long id = sessionBean.getSessionId();
+//        Optional<Set<User>> friends = userService.getFriends(id);
+//        if (friends.isPresent()) {
+//            return new ResponseEntity<>(friends.get(), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//    }
 
     @RequestMapping(value = "/friends/{id}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<User> modifyFriend(@PathVariable("id") Long idFriend) {
