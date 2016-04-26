@@ -41,7 +41,15 @@ public class UserController {
                 f.getFriends().clear();
                 f.getRoutes().clear();
             });
-            return new ModelAndView("main-page", "user", user.get());
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("main-page");
+            modelAndView.addObject("user", user.get());
+            if (id == sessionBean.getSessionId()) {
+                modelAndView.addObject("isMy", true);
+            } else{
+                modelAndView.addObject("isMy", false);
+            }
+            return modelAndView;
         } else {
             return new ModelAndView("index");
         }
