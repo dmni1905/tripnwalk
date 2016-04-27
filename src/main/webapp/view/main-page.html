@@ -62,11 +62,11 @@
 
         var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
         scopeUserCtrl.user = {
-          first_name: user.name,
-          last_name: user.surname,
+          name: user.name,
+          surname: user.surname,
           email: user.email,
-          bdate: user.birthDate,
-          session_id: user.id
+          birthDate: user.birthDate,
+          id: user.id
         };
         scopeUserCtrl.setFriends(user.friends);
         scopeUserCtrl.$apply();
@@ -80,26 +80,22 @@
         var scopeMapCtrl = angular.element($("#wrapper")).scope();
         scopeMapCtrl.getRender();
       }
+
+
+
       jQuery(document).ready(function (){
-        //var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
         $('.change-user').click(function(){
           $('form').css("display", "block");
           $('#change-name').val($('#user-name').html());
+          $('#change-surname').val($('#user-surname').html());
           $('#change-bdate').val($('#user-bdate').html());
           $('#change-email').val($('#user-email').html());
         });
 
         $('.changing-user').mouseleave(function(){
           $('form').css("display", "none");
-          $('#user-name').html( $('#change-name').val());
-          $('#user-bdate').html( $('#change-bdate').val());
-          $('#user-email').html( $('#change-email').val());
-          var e = document.querySelector('div[ng-controller="UserCtrl"]');
-          var scope = angular.element(e).scope();
-          scope.user.bdate = $('#change-bdate').val();
-          console.log(scope.user.bdate);
-          scope.$apply;
-          scope.updateMe;
+          var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
+          scopeUserCtrl.updateMe();
         });
       })
 
@@ -119,21 +115,27 @@
           </p>
           <p>
           <dl style="list-style-type:none;position: relative;">
-            <dt>Name</dt>
+            <dt>Surname</dt>
             <form style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-name"/>
+            <input type="text" class="changing-user" id="change-surname" ng-model="user.surname"/>
             </form>
-            <dd id="user-name" class="change-user">{{user.first_name + ' ' + user.last_name}}</dd>
+            <dd id="user-surname" class="change-user">{{user.surname}}</dd>
+
+          <dt>Name</dt>
+          <form style="display:none; position: absolute; line-height:14px; ">
+            <input type="text" class="changing-user" id="change-name" ng-model="user.name"/>
+          </form>
+          <dd id="user-name" class="change-user">{{user.name}}</dd>
 
             <dt>Birth date</dt>
             <form style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-bdate"/>
+            <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate"/>
             </form>
-            <dd id="user-bdate" class="change-user">{{user.bdate}}</dd>
+            <dd id="user-bdate" class="change-user">{{user.birthDate}}</dd>
 
             <dt>E-mail</dt>
             <form style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-email" />
+            <input type="text" class="changing-user" id="change-email" ng-model="user.email"/>
             </form>
             <dd id="user-email" class="change-user">{{user.email}}</dd>
 

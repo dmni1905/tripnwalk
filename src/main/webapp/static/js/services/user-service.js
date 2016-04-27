@@ -35,7 +35,7 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
     },
     
     update:(user)=>{
-        return $http.patch('/',user)
+        return $http.patch('/', user)
             .then(res => res.data,
                 err => {
                     return $q.reject(err);

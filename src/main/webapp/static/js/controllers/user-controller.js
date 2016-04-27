@@ -79,7 +79,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       });
   };
   $scope.updateMe = function(){
-    UserService.updateMe($scope.user)
+    UserService.update($scope.user)
         .then(() => {
         });
   }
