@@ -62,7 +62,12 @@ html, body {
 	color: green;
 	margin-top: 11px;
 }
-
+.changing-user {
+	margin-left: 125px;
+	background: #000;
+	border: 0;
+	color: #999;
+}
 #route-edit-window {
 	position: fixed;
 	top: 15%;
