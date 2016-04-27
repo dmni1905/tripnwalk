@@ -81,6 +81,7 @@
         scopeMapCtrl.getRender();
       }
       jQuery(document).ready(function (){
+        //var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
         $('.change-user').click(function(){
           $('form').css("display", "block");
           $('#change-name').val($('#user-name').html());
@@ -88,12 +89,18 @@
           $('#change-email').val($('#user-email').html());
         });
 
-//        $('.change-user').mouseout(function(){
-//          $('form').css("display", "none");
-//          $('#user-name').html( $('#change-name').val());
-//          $('#user-bdate').html( $('#change-bdate').val());
-//          $('#user-email').html( $('#change-email').val());
-//        });
+        $('.changing-user').mouseleave(function(){
+          $('form').css("display", "none");
+          $('#user-name').html( $('#change-name').val());
+          $('#user-bdate').html( $('#change-bdate').val());
+          $('#user-email').html( $('#change-email').val());
+          var e = document.querySelector('div[ng-controller="UserCtrl"]');
+          var scope = angular.element(e).scope();
+          scope.user.bdate = $('#change-bdate').val();
+          console.log(scope.user.bdate);
+          scope.$apply;
+          scope.updateMe;
+        });
       })
 
     </script>

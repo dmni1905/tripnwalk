@@ -33,8 +33,16 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
             return $q.reject(err);
           });
     },
-
-    remove: (id) => {
+    
+    update:(user)=>{
+        return $http.patch('/',user)
+            .then(res => res.data,
+                err => {
+                    return $q.reject(err);
+                });
+    } ,
+      
+    removeFriend: (id) => {
       return $http.delete('/friends/' + id)
         .then(() => {
           err => {
@@ -44,7 +52,7 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
           }
         });
     },
-
+      
     addFriend: (id) => {
       return $http.put('/friends/' + id)
         .then(res => res.data,
