@@ -80,6 +80,22 @@
         var scopeMapCtrl = angular.element($("#wrapper")).scope();
         scopeMapCtrl.getRender();
       }
+      jQuery(document).ready(function (){
+        $('.change-user').click(function(){
+          $('form').css("display", "block");
+          $('#change-name').val($('#user-name').html());
+          $('#change-bdate').val($('#user-bdate').html());
+          $('#change-email').val($('#user-email').html());
+        });
+
+//        $('.change-user').mouseout(function(){
+//          $('form').css("display", "none");
+//          $('#user-name').html( $('#change-name').val());
+//          $('#user-bdate').html( $('#change-bdate').val());
+//          $('#user-email').html( $('#change-email').val());
+//        });
+      })
+
     </script>
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
@@ -88,20 +104,32 @@
         </a>
       </li>
       <li>
-        <a href="#profile" data-toggle="collapse">Name</a>
+        <a href="#profile" data-toggle="collapse">PROFILE</a>
         <div id="profile" class="collapse in">
           <p style="margin: 0">
             <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
                  style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;"/>
           </p>
           <p>
-          <dl style="list-style-type:none">
-            <dt>PROFILE</dt>
-            <dd id="user-name">{{user.first_name + ' ' + user.last_name}}</dd>
+          <dl style="list-style-type:none;position: relative;">
+            <dt>Name</dt>
+            <form style="display:none; position: absolute; line-height:14px; ">
+            <input type="text" class="changing-user" id="change-name"/>
+            </form>
+            <dd id="user-name" class="change-user">{{user.first_name + ' ' + user.last_name}}</dd>
+
             <dt>Birth date</dt>
-            <dd id="bdate">{{user.bdate}}</dd>
+            <form style="display:none; position: absolute; line-height:14px; ">
+            <input type="text" class="changing-user" id="change-bdate"/>
+            </form>
+            <dd id="user-bdate" class="change-user">{{user.bdate}}</dd>
+
             <dt>E-mail</dt>
-            <dd id="email">{{user.email}}</dd>
+            <form style="display:none; position: absolute; line-height:14px; ">
+            <input type="text" class="changing-user" id="change-email" />
+            </form>
+            <dd id="user-email" class="change-user">{{user.email}}</dd>
+
           </dl>
           </p>
         </div>
