@@ -25,25 +25,25 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
           });
     },
 
-    getFriends: () => {
-      return $http.get('/friends')
+    getFriends: (id) => {
+      return $http.get('/'+id+'/friends')
         .then(res => res.data,
           err => {
             console.error('Get friends list failed');
             return $q.reject(err);
           });
     },
-    
+
     update:(user)=>{
-        return $http.patch('/', user)
+        return $http.patch('/' + user.id, user)
             .then(res => res.data,
                 err => {
                     return $q.reject(err);
                 });
     } ,
-      
-    removeFriend: (id) => {
-      return $http.delete('/friends/' + id)
+
+    removeFriend: (id, id_friends) => {
+      return $http.delete('/' + id + '/friends/' + id_friends)
         .then(() => {
           err => {
             console.error('Friend deletion failed');
@@ -52,9 +52,9 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
           }
         });
     },
-      
-    addFriend: (id) => {
-      return $http.put('/friends/' + id)
+
+    addFriend: (id, id_friends) => {
+      return $http.put('/' + id + '/friends/' + id_friends)
         .then(res => res.data,
           err => {
             console.error('Friend add failed');

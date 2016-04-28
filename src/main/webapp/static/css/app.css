@@ -25,6 +25,14 @@ html, body {
 	color:#999
 }
 
+#profile .hide_default_css{
+	border: 0;
+	background: none;
+	outline: none;
+	float: right;
+	padding-right: 45px;
+}
+
 #wrapper {
 	width: 100%;
 	height: 100%;

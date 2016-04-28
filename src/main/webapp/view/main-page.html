@@ -116,26 +116,31 @@
           <p>
           <dl style="list-style-type:none;position: relative;">
             <dt>Surname</dt>
-            <form style="display:none; position: absolute; line-height:14px; ">
+            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
             <input type="text" class="changing-user" id="change-surname" ng-model="user.surname"/>
+                <!--ng-click="updateMe()-->
+              <submit class="fa fa-save hide_default_css"></submit>
             </form>
             <dd id="user-surname" class="change-user">{{user.surname}}</dd>
 
           <dt>Name</dt>
-          <form style="display:none; position: absolute; line-height:14px; ">
+          <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
             <input type="text" class="changing-user" id="change-name" ng-model="user.name"/>
+            <submit class="fa fa-save hide_default_css"></submit>
           </form>
           <dd id="user-name" class="change-user">{{user.name}}</dd>
 
             <dt>Birth date</dt>
-            <form style="display:none; position: absolute; line-height:14px; ">
+            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
             <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate"/>
+                <submit class="fa fa-save hide_default_css"></submit>
             </form>
             <dd id="user-bdate" class="change-user">{{user.birthDate}}</dd>
 
             <dt>E-mail</dt>
-            <form style="display:none; position: absolute; line-height:14px; ">
+            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
             <input type="text" class="changing-user" id="change-email" ng-model="user.email"/>
+                <submit class="fa fa-save hide_default_css"></submit>
             </form>
             <dd id="user-email" class="change-user">{{user.email}}</dd>
 

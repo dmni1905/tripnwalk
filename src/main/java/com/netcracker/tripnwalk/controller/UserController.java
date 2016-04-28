@@ -35,7 +35,6 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView getUser(@PathVariable("id") Long id) {
         if (Optional.ofNullable(sessionBean.getSessionId()).isPresent()) {
-//            Long id = sessionBean.getSessionId();
             Optional<User> user = userService.getById(id);
             user.get().getFriends().forEach(f -> {
                 f.getFriends().clear();
@@ -46,7 +45,7 @@ public class UserController {
             modelAndView.addObject("user", user.get());
             if (id == sessionBean.getSessionId()) {
                 modelAndView.addObject("isMy", true);
-            } else{
+            } else {
                 modelAndView.addObject("isMy", false);
             }
             return modelAndView;
@@ -68,17 +67,18 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PATCH, produces = "application/json")
-    public ResponseEntity<User> modifyUser(@Valid @RequestBody User user, BindingResult bindingResult) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH, produces = "application/json")
+    public ResponseEntity<User> modifyUser(@PathVariable("id") Long id, @Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Optional<User> userFromDB = userService.modify(user);
-        if (userFromDB.isPresent()) {
-            return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id == sessionBean.getSessionId()) {
+            Optional<User> userFromDB = userService.modify(user);
+            if (userFromDB.isPresent()) {
+                return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(value = "/find-user", method = RequestMethod.GET, produces = "application/json")
@@ -87,37 +87,39 @@ public class UserController {
         return new ResponseEntity<>(userService.findUsers(id, name, surname), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/friends", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Set> getFriends() {
-        Long id = sessionBean.getSessionId();
-        Optional<Set<User>> friends = userService.getFriends(id);
-        if (friends.isPresent()) {
-            return new ResponseEntity<>(friends.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    @RequestMapping(value = "/{id}/friends", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Set> getFriends(@PathVariable("id") Long id) {
+        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id == sessionBean.getSessionId()) {
+            Optional<Set<User>> friends = userService.getFriends(id);
+            if (friends.isPresent()) {
+                return new ResponseEntity<>(friends.get(), HttpStatus.OK);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @RequestMapping(value = "/friends/{id}", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<User> modifyFriend(@PathVariable("id") Long idFriend) {
+    @RequestMapping(value = "/{id}/friends/{id_friend}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity<User> modifyFriend(@PathVariable("id") Long id, @PathVariable("id_friend") Long idFriend) {
         Long idBd = sessionBean.getSessionId();
-        Optional<User> user = userService.getById(idBd);
-        if (userService.addFriend(user, idFriend)) {
-            return new ResponseEntity<>(userService.getById(idFriend).get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (Optional.ofNullable(idBd).isPresent() && id == idBd) {
+            Optional<User> user = userService.getById(idBd);
+            if (userService.addFriend(user, idFriend)) {
+                return new ResponseEntity<>(userService.getById(idFriend).get(), HttpStatus.OK);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @RequestMapping(value = "/friends/{id}", method = RequestMethod.DELETE, produces = "application/json")
-    public ResponseEntity<String> deleteFriend(@PathVariable("id") Long idFriend) {
+    @RequestMapping(value = "/{id}/friends/{id_friend}", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseEntity<String> deleteFriend(@PathVariable("id") Long id, @PathVariable("id_friend") Long idFriend) {
         Long idBd = sessionBean.getSessionId();
-        Optional<User> user = userService.getById(idBd);
-        if (userService.deleteFriend(user, idFriend)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (Optional.ofNullable(idBd).isPresent() && id == idBd) {
+            Optional<User> user = userService.getById(idBd);
+            if (userService.deleteFriend(user, idFriend)) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
 

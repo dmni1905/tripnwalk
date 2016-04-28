@@ -68,7 +68,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   };
 
   $scope.removeFriend = function () {
-    UserService.removeFriend($scope.curFriend.id)
+    UserService.removeFriend($scope.user.id, $scope.curFriend.id)
       .then(() => {
         $scope.friends.splice($scope.friends.indexOf($scope.curFriend), 1);
         $scope.curFriend = {};
@@ -81,12 +81,13 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.updateMe = function(){
     UserService.update($scope.user)
         .then(() => {
+
         });
   }
 
   $scope.addFriend = function (id, removeFormFriend) {
     if (!_.contains($scope.friends, getFriendById(id))) {
-      UserService.addFriend(id)
+      UserService.addFriend($scope.user.id, id)
         .then(res => {
           $scope.friends.push(res);
           $scope.friends.sort(compareUser);
