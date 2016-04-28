@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.tree.Tree;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -41,13 +38,9 @@ public class UserService {
     }
 
     public Optional<User> modify(User user) {
-        Optional<User> userCurrent = getById(user.getId());
-        if (userCurrent.isPresent()) {
-            return Optional.of(userRepository.save(user));
-        } else {
-            logger.error("MODIFY: User with id=" + user.getId() + " not found");
-            return Optional.empty();
-        }
+        User userDB = getById(user.getId()).get();
+        Arrays.stream(User.class.getDeclaredFields()).forEach(f -> mergeUserByField(userDB, user, f.getName()));
+        return Optional.of(userRepository.save(userDB));
     }
 
     public boolean delete(Long id) {
@@ -106,6 +99,36 @@ public class UserService {
                 logger.error("DELETE FRIEND: User with id=" + friendId + " not found");
             }
             return false;
+        }
+    }
+
+    private void mergeUserByField(User userDb, User userReq, String field) {
+        switch (field) {
+            case "name":
+                if (!userDb.getName().equals(userReq.getName())) {
+                    userDb.setName(userReq.getName());
+                }
+                break;
+            case "surname":
+                if (!userDb.getSurname().equals(userReq.getSurname())) {
+                    userDb.setSurname(userReq.getSurname());
+                }
+                break;
+//            case "login":
+//                if (!userDb.getLogin().equals(userReq.getLogin())) {
+//                    userDb.setLogin(userReq.getLogin());
+//                }
+//                break;
+            case "birthDate":
+                if (!userDb.getBirthDate().equals(userReq.getBirthDate())) {
+                    userDb.setBirthDate(userReq.getBirthDate());
+                }
+                break;
+            case "email":
+                if (!userDb.getEmail().equals(userReq.getEmail())) {
+                    userDb.setEmail(userReq.getEmail());
+                }
+                break;
         }
     }
 }
