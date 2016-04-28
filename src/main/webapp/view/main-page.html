@@ -8,7 +8,7 @@
   <meta name="description" content=""/>
   <meta name="author" content=""/>
 
-  <title>Trip_Walk</title>
+  <title>Trip &amp; Walk</title>
 
   <!--Bootstrap Core CSS -->
   <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -102,7 +102,7 @@
     <ul class="sidebar-nav">
       <li class="sidebar-brand">
         <a href="#">
-          Trip_Walk
+          Trip &amp; Walk
         </a>
       </li>
       <li>
@@ -118,7 +118,7 @@
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px;"
                   ng-hide="hide_surname==true" ng-show="hide_surname == false">
               <input type="text" class="changing-user" id="change-surname" ng-model="user.surname" autocomplete="off"/>
-              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_surname=true"></submit>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide_surname=true"></submit>
             </form>
             <dd id="user-surname" ng-click="hide_surname = false">{{user.surname}}</dd>
 
@@ -126,7 +126,7 @@
             <form th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_name==true" ng-show="hide_name == false">
               <input type="text" class="changing-user" id="change-name" ng-model="user.name" autocomplete="off"/>
-              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_name=true"></submit>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide_name=true"></submit>
             </form>
             <dd id="user-name" ng-click="hide_name = false">{{user.name}}</dd>
 
@@ -134,7 +134,7 @@
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_bdate==true" ng-show="hide_bdate == false">
               <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate" autocomplete="off"/>
-              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_bdate=true"></submit>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide_bdate=true"></submit>
             </form>
             <dd id="user-bdate" ng-click="hide_bdate = false">{{user.birthDate}}</dd>
 
@@ -142,7 +142,7 @@
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_email==true" ng-show="hide_email == false">
               <input type="text" class="changing-user" id="change-email" ng-model="user.email" autocomplete="off"/>
-              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_email=true"></submit>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide_email=true"></submit>
             </form>
             <dd id="user-email" ng-click="hide_email = false">{{user.email}}</dd>
 

@@ -30,7 +30,7 @@ html, body {
 	background: none;
 	outline: none;
 	float: right;
-	color: green;
+	color: white;
 	padding-top: 2px;
 	padding-right: 25px;
 }
@@ -75,7 +75,8 @@ html, body {
 .changing-user {
 	margin-left: 125px;
 	background: #000;
-	border: 0;
+	border: 1px solid lightgrey;
+	border-radius: 2px;
 	width:130px;
 	color: #999;
 	outline: none;
