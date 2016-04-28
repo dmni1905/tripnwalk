@@ -72,6 +72,27 @@ html, body {
 	color: green;
 	margin-top: 11px;
 }
+.ui-datepicker table{
+	font-size:.7em;
+}
+.ui-datepicker {
+	width:13em;
+}
+.ui-datepicker .ui-datepicker-title{
+	line-height:1.5em;
+	font-size:.9em;
+}
+.ui-datepicker .ui-datepicker-next, .ui-datepicker .ui-datepicker-prev{
+	height:1.6em;
+}
+.userProfile{
+	list-style-type:none;
+	position: relative;
+}
+.modifyProfile{
+	position: absolute;
+	line-height:14px;
+}
 .changing-user {
 	margin-left: 125px;
 	background: #000;
