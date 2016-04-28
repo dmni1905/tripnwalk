@@ -72,32 +72,31 @@
         scopeUserCtrl.$apply();
 
         var scopeMapCtrl = angular.element($("#wrapper")).scope();
-        scopeMapCtrl.routes  = user.routes;
+        scopeMapCtrl.routes = user.routes;
         scopeMapCtrl.$apply();
       }
       document.addEventListener("DOMContentLoaded", ready);
-      window.onload = function(){
+      window.onload = function () {
         var scopeMapCtrl = angular.element($("#wrapper")).scope();
         scopeMapCtrl.getRender();
       }
 
 
+//      jQuery(document).ready(function () {
+//        $('.change-user').click(function () {
+//          $('form').css("display", "block");
+//          $('#change-name').val($('#user-name').html());
+//          $('#change-surname').val($('#user-surname').html());
+//          $('#change-bdate').val($('#user-bdate').html());
+//          $('#change-email').val($('#user-email').html());
+//        });
 
-      jQuery(document).ready(function (){
-        $('.change-user').click(function(){
-          $('form').css("display", "block");
-          $('#change-name').val($('#user-name').html());
-          $('#change-surname').val($('#user-surname').html());
-          $('#change-bdate').val($('#user-bdate').html());
-          $('#change-email').val($('#user-email').html());
-        });
-
-        $('.changing-user').mouseleave(function(){
-          $('form').css("display", "none");
-          var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
-          scopeUserCtrl.updateMe();
-        });
-      })
+//        $('.changing-user').mouseleave(function(){
+//          $('form').css("display", "none");
+//          var scopeUserCtrl = angular.element($("#sidebar-wrapper")).scope();
+//          scopeUserCtrl.updateMe();
+//        });
+//      })
 
     </script>
     <ul class="sidebar-nav">
@@ -116,33 +115,37 @@
           <p>
           <dl style="list-style-type:none;position: relative;">
             <dt>Surname</dt>
-            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-surname" ng-model="user.surname"/>
-                <!--ng-click="updateMe()-->
-              <submit class="fa fa-save hide_default_css"></submit>
+            <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px;"
+                  ng-hide="hide_surname==true" ng-show="hide_surname == false">
+              <input type="text" class="changing-user" id="change-surname" ng-model="user.surname"/>
+              <!--ng-click="updateMe()"-->
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
             </form>
-            <dd id="user-surname" class="change-user">{{user.surname}}</dd>
+            <dd id="user-surname" class="change-user" ng-click="hide_surname = false">{{user.surname}}</dd>
 
-          <dt>Name</dt>
-          <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-name" ng-model="user.name"/>
-            <submit class="fa fa-save hide_default_css"></submit>
-          </form>
-          <dd id="user-name" class="change-user">{{user.name}}</dd>
+            <dt>Name</dt>
+            <form th:if="${isMy}" style="position: absolute; line-height:14px; "
+                  ng-hide="hide_name==true" ng-show="hide_name == false">
+              <input type="text" class="changing-user" id="change-name" ng-model="user.name"/>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
+            </form>
+            <dd id="user-name" class="change-user" ng-click="hide_name = false">{{user.name}}</dd>
 
             <dt>Birth date</dt>
-            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate"/>
-                <submit class="fa fa-save hide_default_css"></submit>
+            <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
+                  ng-hide="hide_bdate==true" ng-show="hide_bdate == false">
+              <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate"/>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
             </form>
-            <dd id="user-bdate" class="change-user">{{user.birthDate}}</dd>
+            <dd id="user-bdate" class="change-user" ng-click="hide_bdate = false">{{user.birthDate}}</dd>
 
             <dt>E-mail</dt>
-            <form th:if="${isMy}" style="display:none; position: absolute; line-height:14px; ">
-            <input type="text" class="changing-user" id="change-email" ng-model="user.email"/>
-                <submit class="fa fa-save hide_default_css"></submit>
+            <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
+                  ng-hide="hide_email==true" ng-show="hide_email == false">
+              <input type="text" class="changing-user" id="change-email" ng-model="user.email"/>
+              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
             </form>
-            <dd id="user-email" class="change-user">{{user.email}}</dd>
+            <dd id="user-email" class="change-user" ng-click="hide_email = false">{{user.email}}</dd>
 
           </dl>
           </p>
