@@ -30,7 +30,9 @@ html, body {
 	background: none;
 	outline: none;
 	float: right;
-	padding-right: 45px;
+	color: green;
+	padding-top: 2px;
+	padding-right: 25px;
 }
 
 #wrapper {
@@ -74,7 +76,9 @@ html, body {
 	margin-left: 125px;
 	background: #000;
 	border: 0;
+	width:130px;
 	color: #999;
+	outline: none;
 }
 #route-edit-window {
 	position: fixed;

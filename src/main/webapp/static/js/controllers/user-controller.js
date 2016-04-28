@@ -85,11 +85,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.updateMe = function(){
     UserService.update($scope.user)
         .then(() => {
-          $scope.hide_surname = true;
-          $scope.hide_name = true;
-          $scope.hide_bdate = true;
-          $scope.hide_email = true;
-          //angular.element(document.querySelector(".modifyProfile")).css("display","none");
         });
   }
 

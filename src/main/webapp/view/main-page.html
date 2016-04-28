@@ -117,35 +117,34 @@
             <dt>Surname</dt>
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px;"
                   ng-hide="hide_surname==true" ng-show="hide_surname == false">
-              <input type="text" class="changing-user" id="change-surname" ng-model="user.surname"/>
-              <!--ng-click="updateMe()"-->
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
+              <input type="text" class="changing-user" id="change-surname" ng-model="user.surname" autocomplete="off"/>
+              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_surname=true"></submit>
             </form>
-            <dd id="user-surname" class="change-user" ng-click="hide_surname = false">{{user.surname}}</dd>
+            <dd id="user-surname" ng-click="hide_surname = false">{{user.surname}}</dd>
 
             <dt>Name</dt>
             <form th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_name==true" ng-show="hide_name == false">
-              <input type="text" class="changing-user" id="change-name" ng-model="user.name"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
+              <input type="text" class="changing-user" id="change-name" ng-model="user.name" autocomplete="off"/>
+              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_name=true"></submit>
             </form>
-            <dd id="user-name" class="change-user" ng-click="hide_name = false">{{user.name}}</dd>
+            <dd id="user-name" ng-click="hide_name = false">{{user.name}}</dd>
 
             <dt>Birth date</dt>
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_bdate==true" ng-show="hide_bdate == false">
-              <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
+              <input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate" autocomplete="off"/>
+              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_bdate=true"></submit>
             </form>
-            <dd id="user-bdate" class="change-user" ng-click="hide_bdate = false">{{user.birthDate}}</dd>
+            <dd id="user-bdate" ng-click="hide_bdate = false">{{user.birthDate}}</dd>
 
             <dt>E-mail</dt>
             <form class="modifyProfile" th:if="${isMy}" style="position: absolute; line-height:14px; "
                   ng-hide="hide_email==true" ng-show="hide_email == false">
-              <input type="text" class="changing-user" id="change-email" ng-model="user.email"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe()"></submit>
+              <input type="text" class="changing-user" id="change-email" ng-model="user.email" autocomplete="off"/>
+              <submit class="fa fa-check hide_default_css" ng-click="updateMe();hide_email=true"></submit>
             </form>
-            <dd id="user-email" class="change-user" ng-click="hide_email = false">{{user.email}}</dd>
+            <dd id="user-email" ng-click="hide_email = false">{{user.email}}</dd>
 
           </dl>
           </p>
