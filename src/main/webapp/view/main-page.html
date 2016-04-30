@@ -119,9 +119,7 @@
             <dt>Birth date</dt>
             <form class="modifyProfile" th:if="${isMy}"
                   ng-hide="hide_bdate==true" ng-show="hide_bdate == false">
-
               <input id="datepicker" class="changing-user" ng-model="user.birthDate" autocomplete="off" />
-              <!--<input type="text" class="changing-user" id="change-bdate" ng-model="user.birthDate" autocomplete="off"/>-->
               <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide_bdate=true"></submit>
             </form>
             <dd id="user-bdate" ng-click="hide_bdate = false">{{user.birthDate}}</dd>

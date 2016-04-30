@@ -14,13 +14,13 @@
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <!-- Custom CSS -->
     <link href="/static/css/simple-sidebar.css" rel="stylesheet"/>
+    <link href="/static/css/signin.css" rel="stylesheet"/>
     <!-- Font-awesome CSS -->
     <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- jQuery UI -->
     <link href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
     <!-- App CSS -->
     <link href="/static/css/app.css" rel="stylesheet"/>
-
     <!-- Google maps -->
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <!-- jQuery -->
@@ -53,8 +53,21 @@
 <body>
 <form id="auth">
     <label>Trip &amp; Walk</label>
-    <img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>
+    <!--<img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>-->
     <div class="login-controls">
+        <form class="form-signin">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address"/>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password"/>
+            <!--<div class="checkbox">-->
+                <!--<label>-->
+                    <!--<input type="checkbox" value="remember-me"/> Remember me-->
+                <!--</label>-->
+            <!--</div>-->
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button class="btn btn-lg btn btn-info btn-block" type="submit">Register</button>
+        </form>
         <label style="display: initial;">Log in:</label>
         <button class="fa fa-vk" ng-click="authorize()" ng-controller="UserCtrl"></button>
     </div>

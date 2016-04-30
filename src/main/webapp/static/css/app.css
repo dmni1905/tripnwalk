@@ -3,7 +3,10 @@ html, body {
 	height: 100%;
 	margin: 0;
 }
-
+body{
+	background:url("http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg");
+	background-size:cover;
+}
 #profile {
 	height: 158px;
 }
@@ -236,13 +239,28 @@ html, body {
 	width: 100%;
 	height: 100%;
 }
-
+.form-control{
+	margin-bottom: 15px;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.btn-block{
+	display:inline-block;
+	width:45%;
+	margin-top:10px;
+}
+.btn-block+.btn-block{
+	margin-top:10px;
+}
 #auth {
 	display:block;
 	overflow:hidden;
+	margin-top: 80px;
 	width: 500px;
 	height: 600px;
 	top: 10%;
+	text-align: center;
 	left: 30%;
 	bottom: 30%;
 	right: 30%;
@@ -255,11 +273,16 @@ html, body {
 }
 
 #auth > label{
-	font-size: 28px;
-	margin-left: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 72px;
 }
 
 .login-controls > label{
 	font-size: 28px;
-	margin-left: 35%;
+	margin-left:auto;
+	margin-right: auto;
+}
+.login-controls{
+	margin-top: 30px;
 }
