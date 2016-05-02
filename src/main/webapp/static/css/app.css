@@ -4,7 +4,8 @@ html, body {
 	margin: 0;
 }
 body{
-	background:url("http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg");
+	/*background:url("http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg");*/
+	background: url("http://www.picshare.ru/uploads/160501/eoPjTUcbTk.jpg");
 	background-size:cover;
 }
 #profile {
@@ -247,7 +248,7 @@ body{
 }
 .btn-block{
 	display:inline-block;
-	width:45%;
+	width:37%;
 	margin-top:10px;
 }
 .btn-block+.btn-block{
@@ -258,7 +259,7 @@ body{
 	overflow:hidden;
 	margin-top: 80px;
 	width: 500px;
-	height: 600px;
+	height: 370px;
 	top: 10%;
 	text-align: center;
 	left: 30%;
@@ -271,13 +272,29 @@ body{
 	width: 500px;
 	height: 500px;
 }
-
+.main-heading{
+	margin-bottom:0;
+}
 #auth > label{
 	margin-left: auto;
 	margin-right: auto;
 	font-size: 72px;
+	color: #337AB7;
+	font-family: fantasy;
+	letter-spacing: 2px;
 }
 
+.login-controls .error{
+	display: block;
+	color: #000000;
+	font-size: 16px;
+	font-weight: 600;
+	border: 3px solid red;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 3px;
+}
 .login-controls > label{
 	font-size: 28px;
 	margin-left:auto;

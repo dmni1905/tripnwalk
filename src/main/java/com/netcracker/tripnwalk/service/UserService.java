@@ -33,6 +33,10 @@ public class UserService {
         return Optional.ofNullable(userRepository.findOne(id));
     }
 
+    public Optional<User> getByLogin(String login) {
+        return Optional.ofNullable(userRepository.findByLogin(login));
+    }
+
     public Optional<User> save(User user) {
         return Optional.of(userRepository.save(user));
     }

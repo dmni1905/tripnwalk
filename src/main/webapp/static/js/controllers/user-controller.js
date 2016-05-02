@@ -9,6 +9,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.hide_name = true;
   $scope.hide_bdate = true;
   $scope.hide_email = true;
+  $scope.hide_error = true;
 
   function compareUser(a, b) {
     if (a.surname < b.surname)
@@ -57,6 +58,23 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     return _.find($scope.friends, friend => friend.id == id);
   }
 
+  $scope.login = function () {
+    UserService.login($scope.user)
+        .then(res => {
+          if (res == undefined){
+            $scope.hide_error = false;
+          }else{
+            window.location.href = '/' + res;
+          }
+        });
+  }
+
+  $scope.updateMe = function(){
+    UserService.update($scope.user)
+        .then(() => {
+        });
+  }
+  
   $scope.setFriends = function (friends) {
     $scope.friends = friends;
     $scope.friends.sort(compareUser);
@@ -82,11 +100,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
 
       });
   };
-  $scope.updateMe = function(){
-    UserService.update($scope.user)
-        .then(() => {
-        });
-  }
 
   $scope.addFriend = function (id, removeFormFriend) {
     if (!_.contains($scope.friends, getFriendById(id))) {

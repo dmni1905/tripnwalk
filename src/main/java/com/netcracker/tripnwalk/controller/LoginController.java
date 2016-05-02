@@ -2,6 +2,7 @@ package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
+import com.netcracker.tripnwalk.service.UserService;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Optional;
 
 @RestController
 class LoginController {
@@ -47,6 +49,9 @@ class LoginController {
 
     @Inject
     UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private SessionBean sessionBean;
@@ -70,13 +75,19 @@ class LoginController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user) {
-        User userBD = userRepository.findByLogin(user.getLogin());
-        if (userBD.getPassword().equals(user.getPassword())) {
-            System.out.println(userBD.getId().toString());
-            sessionBean.setSessionId(userBD.getId()); //создание сессии
-            return new ResponseEntity<>(HttpStatus.OK);
+        Long session = 0l;
+        Optional<User> userBD = userService.getByLogin(user.getLogin());
+        if (userBD.isPresent()) {
+            User userFromBD = userBD.get();
+            if (userFromBD.getPassword().equals(user.getPassword())) {
+                sessionBean.setSessionId(userFromBD.getId());
+                session = sessionBean.getSessionId();
+                return new ResponseEntity<>(session.toString(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -85,10 +96,10 @@ class LoginController {
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
 
-        String access_token = (String) strJson.get("access_token");
-        sessionBean.setAccessToken(access_token);
-        String expires_in = (String) strJson.get("expires_in");
-        sessionBean.setExpiresIn(expires_in);
+//        String access_token = (String) strJson.get("access_token");
+//        sessionBean.setAccessToken(access_token);
+//        String expires_in = (String) strJson.get("expires_in");
+//        sessionBean.setExpiresIn(expires_in);
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
 

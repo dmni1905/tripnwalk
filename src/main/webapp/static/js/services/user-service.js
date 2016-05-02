@@ -25,6 +25,19 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
           });
     },
 
+      login:(user)=>{
+          return $http.post('/login', user)
+              .then(res => {
+                  console.log(res.data);
+                      console.log('Authorized!');
+                      return res.data;
+                  },
+                  err => {
+                      err;
+                      console.log('Authorization failed!');
+                  });
+      },
+
     getFriends: (id) => {
       return $http.get('/'+id+'/friends')
         .then(res => res.data,
