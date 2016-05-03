@@ -65,24 +65,29 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
         });
   }
 
-  // $scope.register = function () {
-  //   UserService.register($scope.user)
-  //       .then(res => {
-  //         if (res == undefined){
-  //           $scope.hide.register_error = false;
-  //         }else{
-  //           window.location.href = '/';
-  //         }
-  //       });
-  // }
-
-  $scope.registerPage = function(){
-    //UserService.registerPage()
-    //    .then(res => {
-          window.location.href = '/registerPage';
-        //});
+  $scope.register = function () {
+    console.log($scope.user);
+    if ($scope.user.name !=null && $scope.user.login !=null
+        && $scope.user.email !=null && $scope.user.password !=null) {
+      UserService.register($scope.user)
+          .then(res => {
+            if (res == undefined) {
+              $scope.hide.register_error = false;
+            } else {
+              window.location.href = '/' + res;
+            }
+          });
+    }
   }
 
+  $scope.registerPage = function(){
+    window.location.href = '/register';
+  }
+
+  $scope.mainPage = function(){
+    window.location.href = '/';
+  }
+  
   $scope.updateMe = function(){
     UserService.update($scope.user)
         .then(() => {

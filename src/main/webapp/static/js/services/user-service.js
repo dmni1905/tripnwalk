@@ -37,24 +37,18 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
                   });
       },
 
-      // register:(user)=>{
-      //     return $http.put('/', user)
-      //         .then(res => {
-      //                 console.log('Authorized!');
-      //                 return res.data;
-      //             },
-      //             err => {
-      //                 err;
-      //                 console.log('Authorization failed!');
-      //             });
-      // },
-      
-    registerPage:()=>{
-      return $http.get('/registerPage')
-          .then(res => {
-              return res.data;
-          });
-    },
+      register:(user)=>{
+          console.log(user);
+          return $http.put('/', user)
+              .then(res => {
+                      console.log('Registered!');
+                      return res.data;
+                  },
+                  err => {
+                      err;
+                      console.log('Registration failed!');
+                  });
+      },
       
     getFriends: (id) => {
       return $http.get('/'+id+'/friends')
@@ -67,10 +61,7 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
 
     update:(user)=>{
         return $http.patch('/' + user.id, user)
-            .then(res => res.data,
-                err => {
-                    return $q.reject(err);
-                });
+            .then(res => res.data)
     } ,
 
     removeFriend: (id, id_friends) => {

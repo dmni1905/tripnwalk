@@ -1,7 +1,6 @@
 package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
-import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -43,7 +43,7 @@ public class UserController {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("main-page");
             modelAndView.addObject("user", user.get());
-            if (id == sessionBean.getSessionId()) {
+            if (id.equals(sessionBean.getSessionId())) {
                 modelAndView.addObject("isMy", true);
             } else {
                 modelAndView.addObject("isMy", false);
@@ -55,15 +55,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<User> setUser(@Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+    public ResponseEntity<String> setUser(HttpServletRequest request, @RequestBody User user) {
+        Optional<User> userBD = userService.getByLogin(user.getLogin());
+
+        if (userBD.isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Optional<User> userFromDB = userService.save(user);
-        if (userFromDB.isPresent()) {
-            return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            userBD = userService.save(user);
+            User userFromBD = userBD.get();
+
+            sessionBean.setSessionId(userFromBD.getId());
+            Long session = sessionBean.getSessionId();
+
+            return new ResponseEntity<>(session.toString(), HttpStatus.OK);
         }
     }
 

@@ -56,13 +56,9 @@ class LoginController {
     @Autowired
     private SessionBean sessionBean;
 
-//    @RequestMapping("/")
-//    public ModelAndView index(){
-//        return new ModelAndView("index");
-//    }
-
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public ResponseEntity<String> auth() throws IOException {
+
         String reqUrl = "http://oauth.vk.com/authorize?" +
                 "client_id=" + CLIENT_ID +
                 "&display=" + DISPLAY +
@@ -76,7 +72,7 @@ class LoginController {
     }
 
 
-    @RequestMapping(value = "/registerPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage() throws IOException {
         return new ModelAndView("register");
     }
