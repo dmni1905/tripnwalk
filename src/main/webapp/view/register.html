@@ -52,28 +52,28 @@
 
 <body>
 <div class="index" ng-controller="UserCtrl">
-    <label class="main-heading">Trip &amp;</label>
-    <form id="auth">
-        <!--<img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>-->
-        <div class="login-controls">
-            <form class="form-signin">
-                <label for="inputEmail" class="sr-only">Login</label>
-                <input type="text" id="inputEmail" class="form-control" ng-model="user.login" placeholder="Login"/>
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" ng-model="user.password" placeholder="Password"/>
-                <!--<div class="checkbox">-->
-                <!--<label>-->
-                <!--<input type="checkbox" value="remember-me"/> Remember me-->
-                <!--</label>-->
-                <!--</div>-->
-                <span class="error" ng-hide="hide_error==true" ng-show="hide_error == false">Incorrect login or password</span>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login();">Sign in</button>
-                <button class="btn btn-lg btn btn-info btn-block" type="submit">Register</button>
-                <br/>
-            </form>
-            <label style="display: initial;">Log in:</label>
-            <button class="fa fa-vk" ng-click="authorize()" ng-controller="UserCtrl"></button>
-        </div>
+    <<label class="main-heading">Trip &amp;</label>
+    <!--<form id="auth">-->
+        <!--&lt;!&ndash;<img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>&ndash;&gt;-->
+        <!--<div class="login-controls">-->
+            <!--<form class="form-signin">-->
+                <!--<label for="inputEmail" class="sr-only">Login</label>-->
+                <!--<input type="text" id="inputEmail" class="form-control" ng-model="user.login" placeholder="Login"/>-->
+                <!--<label for="inputPassword" class="sr-only">Password</label>-->
+                <!--<input type="password" id="inputPassword" class="form-control" ng-model="user.password" placeholder="Password"/>-->
+                <!--&lt;!&ndash;<div class="checkbox">&ndash;&gt;-->
+                <!--&lt;!&ndash;<label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<input type="checkbox" value="remember-me"/> Remember me&ndash;&gt;-->
+                <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<span class="error" ng-hide="hide_error==true" ng-show="hide_error == false">Incorrect login or password</span>-->
+                <!--<button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login();">Sign in</button>-->
+                <!--<button class="btn btn-lg btn btn-info btn-block" type="submit">Register</button>-->
+                <!--<br/>-->
+            <!--</form>-->
+            <!--<label style="display: initial;">Log in:</label>-->
+            <!--<button class="fa fa-vk" ng-click="authorize()" ng-controller="UserCtrl"></button>-->
+        <!--</div>-->
     </form>
 </div>
 </body>
