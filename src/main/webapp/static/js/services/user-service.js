@@ -28,7 +28,6 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
       login:(user)=>{
           return $http.post('/login', user)
               .then(res => {
-                  console.log(res.data);
                       console.log('Authorized!');
                       return res.data;
                   },
@@ -37,7 +36,26 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
                       console.log('Authorization failed!');
                   });
       },
-
+      
+      register:(user)=>{
+          return $http.put('/', user)
+              .then(res => {
+                      console.log('Authorized!');
+                      return res.data;
+                  },
+                  err => {
+                      err;
+                      console.log('Authorization failed!');
+                  });
+      },
+      
+    registerPage:()=>{
+      return $http.get('/registerPage')
+          .then(res => {
+              return res.data;
+          });
+    },
+      
     getFriends: (id) => {
       return $http.get('/'+id+'/friends')
         .then(res => res.data,

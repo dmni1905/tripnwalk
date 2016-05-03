@@ -5,11 +5,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.findUsers = [];
   $scope.curFriend = {};
   $scope.user = {};
-  $scope.hide_surname = true;
-  $scope.hide_name = true;
-  $scope.hide_bdate = true;
-  $scope.hide_email = true;
-  $scope.hide_error = true;
+  $scope.hide = {surname:true, name:true, bdate:true, email:true, login_error:true, register_error:true};
 
   function compareUser(a, b) {
     if (a.surname < b.surname)
@@ -62,10 +58,29 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     UserService.login($scope.user)
         .then(res => {
           if (res == undefined){
-            $scope.hide_error = false;
+            $scope.hide.login_error = false;
           }else{
             window.location.href = '/' + res;
           }
+        });
+  }
+
+  $scope.register = function () {
+    UserService.register($scope.user)
+        .then(res => {
+          if (res == undefined){
+            $scope.hide.register_error = false;
+          }else{
+            window.location.href = '/';
+          }
+        });
+  }
+
+  $scope.registerPage = function(){
+    UserService.registerPage()
+        .then(res => {
+          console.log(res);
+          //window.location.href = '/register';
         });
   }
 

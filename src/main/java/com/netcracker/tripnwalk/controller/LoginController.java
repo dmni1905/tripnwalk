@@ -75,6 +75,12 @@ class LoginController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @RequestMapping(value = "/registerPage", method = RequestMethod.GET)
+    public ModelAndView registerPage() throws IOException {
+        return new ModelAndView("register");
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user) {
         Long session = 0l;
@@ -96,10 +102,6 @@ class LoginController {
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
 
-//        String access_token = (String) strJson.get("access_token");
-//        sessionBean.setAccessToken(access_token);
-//        String expires_in = (String) strJson.get("expires_in");
-//        sessionBean.setExpiresIn(expires_in);
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
 

@@ -54,7 +54,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<User> setUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
