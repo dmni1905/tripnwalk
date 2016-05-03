@@ -77,10 +77,10 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   // }
 
   $scope.registerPage = function(){
-    UserService.registerPage()
-        .then(res => {
-          window.location.href = '/register';
-        });
+    //UserService.registerPage()
+    //    .then(res => {
+          window.location.href = '/registerPage';
+        //});
   }
 
   $scope.updateMe = function(){
