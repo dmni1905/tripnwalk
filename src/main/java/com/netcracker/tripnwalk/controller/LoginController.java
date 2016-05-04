@@ -79,20 +79,34 @@ class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user) {
-        Long session = 0l;
         Optional<User> userBD = userService.getByLogin(user.getLogin());
         if (userBD.isPresent()) {
             User userFromBD = userBD.get();
             if (userFromBD.getPassword().equals(user.getPassword())) {
                 sessionBean.setSessionId(userFromBD.getId());
-                session = sessionBean.getSessionId();
-                return new ResponseEntity<>(session.toString(), HttpStatus.OK);
+                String session = sessionBean.getSessionId().toString();
+                return new ResponseEntity<>(session, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity<String> logout() {
+        Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
+        System.out.println(sessionBean.getSessionId());
+        if (sessionId.isPresent()) {
+            sessionBean.setSessionId(null);
+            System.out.println(sessionBean.getSessionId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            System.out.println(sessionBean.getSessionId());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")

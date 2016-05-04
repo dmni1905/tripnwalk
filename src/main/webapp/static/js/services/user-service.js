@@ -38,7 +38,6 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
       },
 
       register:(user)=>{
-          console.log(user);
           return $http.put('/', user)
               .then(res => {
                       console.log('Registered!');
@@ -49,7 +48,16 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
                       console.log('Registration failed!');
                   });
       },
-      
+
+    logout:{
+        return: $http.get('/logout')
+            .then(res => res.data,
+                err => {
+                    console.error('Get friends list failed');
+                    return $q.reject(err);
+                }),
+    },
+
     getFriends: (id) => {
       return $http.get('/'+id+'/friends')
         .then(res => res.data,
