@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('UserService', function ($compile, $templateRequest, $http) {
+app.factory('UserService', function ($compile, $templateRequest, $http, $q) {
   return {
     getSession: (tokenObj, $scope) => {
       return $http.post('/session', tokenObj)
@@ -49,14 +49,14 @@ app.factory('UserService', function ($compile, $templateRequest, $http) {
                   });
       },
 
-    logout:{
-        return: $http.get('/logout')
-            .then(res => res.data,
-                err => {
-                    console.error('Get friends list failed');
-                    return $q.reject(err);
-                }),
-    },
+      logout: ()=> {
+          return $http.get('/logout')
+              .then(res => res.data,
+                  err => {
+                      console.error('Get friends list failed');
+                      return $q.reject(err);
+                  });
+      },
 
     getFriends: (id) => {
       return $http.get('/'+id+'/friends')

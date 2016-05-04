@@ -95,7 +95,7 @@
           Trip &amp; Walk
         </a>
       </li>
-      <li style="height: 250px">
+      <li style="height: 280px">
         <a href="#profile" data-toggle="collapse">PROFILE</a>
         <div th:if="${isMy}" ng-controller="uploadCtrl">
         <input type='file' file-model="fileImg" name='uploadfile' id='uploader'/>
@@ -142,6 +142,7 @@
             <dd id="user-email" ng-click="hide.email = false">{{user.email}}</dd>
           </dl>
           </p>
+          <br/>
         </div>
       </li>
       <li>

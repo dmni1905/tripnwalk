@@ -94,20 +94,19 @@ class LoginController {
         }
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ResponseEntity<String> logout() {
-        Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
-        System.out.println(sessionBean.getSessionId());
-        if (sessionId.isPresent()) {
-            sessionBean.setSessionId(null);
-            System.out.println(sessionBean.getSessionId());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            System.out.println(sessionBean.getSessionId());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-    }
+//    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+//    public ResponseEntity<String> logout() {
+//        Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
+//        System.out.println(sessionBean.getSessionId());
+//        if (sessionId.isPresent()) {
+//            sessionBean.setSessionId(null);
+//            System.out.println(sessionBean.getSessionId());
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } else {
+//            System.out.println(sessionBean.getSessionId());
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
