@@ -5,7 +5,12 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.findUsers = [];
   $scope.curFriend = {};
   $scope.user = {};
-  $scope.hide = {surname:true, name:true, bdate:true, email:true, login_error:true, register_error:true};
+  $scope.urlAvatar = 'http://www.nbb.go.th/images/blank_person[1].jpg';
+  $scope.hide = {surname: true, name: true, bdate: true, email: true, login_error: true, register_error: true};
+
+  $scope.setUrl = function(url){
+    $scope.urlAvatar = url;
+  };
 
   function compareUser(a, b) {
     if (a.surname < b.surname)
@@ -56,44 +61,44 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
 
   $scope.login = function () {
     UserService.login($scope.user)
-        .then(res => {
-          if (res == undefined){
-            $scope.hide.login_error = false;
-          }else{
-            window.location.href = '/' + res;
-          }
-        });
+      .then(res => {
+        if (res == undefined) {
+          $scope.hide.login_error = false;
+        } else {
+          window.location.href = '/' + res;
+        }
+      });
   }
 
   $scope.register = function () {
     console.log($scope.user);
-    if ($scope.user.name !=null && $scope.user.login !=null
-        && $scope.user.email !=null && $scope.user.password !=null) {
+    if ($scope.user.name != null && $scope.user.login != null
+      && $scope.user.email != null && $scope.user.password != null) {
       UserService.register($scope.user)
-          .then(res => {
-            if (res == undefined) {
-              $scope.hide.register_error = false;
-            } else {
-              window.location.href = '/' + res;
-            }
-          });
+        .then(res => {
+          if (res == undefined) {
+            $scope.hide.register_error = false;
+          } else {
+            window.location.href = '/' + res;
+          }
+        });
     }
   }
 
-  $scope.registerPage = function(){
+  $scope.registerPage = function () {
     window.location.href = '/register';
   }
 
-  $scope.mainPage = function(){
+  $scope.mainPage = function () {
     window.location.href = '/';
   }
-  
-  $scope.updateMe = function(){
+
+  $scope.updateMe = function () {
     UserService.update($scope.user)
-        .then(() => {
-        });
+      .then(() => {
+      });
   }
-  
+
   $scope.setFriends = function (friends) {
     $scope.friends = friends;
     $scope.friends.sort(compareUser);
@@ -139,4 +144,9 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       });
   };
 
-});
+  //$scope.uploadImg = function () {
+  //  file.$upload('/uploadImg', $scope.file)
+  //}
+
+})
+;

@@ -76,7 +76,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id == sessionBean.getSessionId()) {
+        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id.equals(sessionBean.getSessionId())) {
             Optional<User> userFromDB = userService.modify(user);
             if (userFromDB.isPresent()) {
                 return new ResponseEntity<>(userFromDB.get(), HttpStatus.OK);
@@ -93,7 +93,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}/friends", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Set> getFriends(@PathVariable("id") Long id) {
-        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id == sessionBean.getSessionId()) {
+        if (Optional.ofNullable(sessionBean.getSessionId()).isPresent() && id.equals(sessionBean.getSessionId())) {
             Optional<Set<User>> friends = userService.getFriends(id);
             if (friends.isPresent()) {
                 return new ResponseEntity<>(friends.get(), HttpStatus.OK);
@@ -105,7 +105,7 @@ public class UserController {
     @RequestMapping(value = "/{id}/friends/{id_friend}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<User> modifyFriend(@PathVariable("id") Long id, @PathVariable("id_friend") Long idFriend) {
         Long idBd = sessionBean.getSessionId();
-        if (Optional.ofNullable(idBd).isPresent() && id == idBd) {
+        if (Optional.ofNullable(idBd).isPresent() && id.equals(idBd)) {
             Optional<User> user = userService.getById(idBd);
             if (userService.addFriend(user, idFriend)) {
                 return new ResponseEntity<>(userService.getById(idFriend).get(), HttpStatus.OK);
@@ -117,7 +117,7 @@ public class UserController {
     @RequestMapping(value = "/{id}/friends/{id_friend}", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<String> deleteFriend(@PathVariable("id") Long id, @PathVariable("id_friend") Long idFriend) {
         Long idBd = sessionBean.getSessionId();
-        if (Optional.ofNullable(idBd).isPresent() && id == idBd) {
+        if (Optional.ofNullable(idBd).isPresent() && id.equals(idBd)) {
             Optional<User> user = userService.getById(idBd);
             if (userService.deleteFriend(user, idFriend)) {
                 return new ResponseEntity<>(HttpStatus.OK);

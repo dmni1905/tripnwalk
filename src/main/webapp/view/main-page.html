@@ -42,10 +42,13 @@
   <script type="text/javascript" src="static/js/app.js"></script>
   <script src="/static/js/controllers/map-controller.js"></script>
   <script src="/static/js/controllers/user-controller.js"></script>
+  <script src="/static/js/controllers/upload-controller.js"></script>
   <script src="/static/js/services/map-service.js"></script>
+  <script src="/static/js/services/upload-service.js"></script>
   <script src="/static/js/services/user-service.js"></script>
   <script src="/static/js/directives/route-form.js"></script>
   <script src="/static/js/directives/friend-form.js"></script>
+  <script src="/static/js/directives/file-model.js"></script>
 </head>
 
 
@@ -67,6 +70,7 @@
           birthDate: user.birthDate,
           id: user.id
         };
+        scopeUserCtrl.urlAvatar = user.imgSrc;
         scopeUserCtrl.setFriends(user.friends);
         scopeUserCtrl.$apply();
 
@@ -79,10 +83,10 @@
         var scopeMapCtrl = angular.element($("#wrapper")).scope();
         scopeMapCtrl.getRender();
       }
-      $(document).ready(function() {
+      $(document).ready(function () {
         $("#datepicker").datepicker();
-        $("#datepicker").datepicker( "option", "maxDate", new Date());
-        $("#datepicker").datepicker( "option", "dateFormat", "dd.mm.yy" );
+        $("#datepicker").datepicker("option", "maxDate", new Date());
+        $("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy");
       });
     </script>
     <ul class="sidebar-nav">
@@ -91,12 +95,17 @@
           Trip &amp; Walk
         </a>
       </li>
-      <li>
+      <li style="height: 250px">
         <a href="#profile" data-toggle="collapse">PROFILE</a>
+        <div th:if="${isMy}" ng-controller="uploadCtrl">
+        <input type='file' file-model="fileImg" name='uploadfile' id='uploader'/>
+        <submit class="fa fa-upload hide_default_css" style="color: white; cursor: pointer;" ng-click="uploadFile(user.id)">Save</submit>
+        </div>
         <div id="profile" class="collapse in">
           <p style="margin: 0">
-            <img src="http://www.nbb.go.th/images/blank_person[1].jpg"
-                 style="width: 30%; height: auto; vertical-align:top; float: left; margin-left: 20px;" align="left;"/>
+            <img ng-src="{{urlAvatar}}"
+                 style="width: 30%; height: auto; max-height: 200px; vertical-align:top; float: left; margin-left: 20px;"
+                 align="left;"/>
           </p>
           <p>
           <dl class="userProfile">
@@ -119,7 +128,7 @@
             <dt>Birth date</dt>
             <form class="modifyProfile" th:if="${isMy}"
                   ng-hide="hide.bdate==true" ng-show="hide.bdate == false">
-              <input id="datepicker" class="changing-user" ng-model="user.birthDate" autocomplete="off" />
+              <input id="datepicker" class="changing-user" ng-model="user.birthDate" autocomplete="off"/>
               <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.bdate=true"></submit>
             </form>
             <dd id="user-bdate" ng-click="hide.bdate = false">{{user.birthDate}}</dd>

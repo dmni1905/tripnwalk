@@ -37,6 +37,9 @@ public class User{
     @Column(name = "source_id")
     private String sourceId;
 
+    @Column(name = "img_src")
+    private String imgSrc;
+
     @NotNull
     @Column(name = "email", unique = true, nullable = false)
     private String email;
@@ -168,6 +171,14 @@ public class User{
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     @Override

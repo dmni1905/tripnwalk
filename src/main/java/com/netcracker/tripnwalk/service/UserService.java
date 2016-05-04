@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.tree.Tree;
+import sun.security.x509.OtherName;
 
 import java.util.*;
 
@@ -64,11 +65,22 @@ public class UserService {
         }
     }
 
-    public Optional<Set<User>> getFriends(Long id){
+    public boolean setImgSrc(Long id, String src){
+        Optional<User> userCurrent = getById(id);
+        userCurrent.get().setImgSrc(src);
+        return Optional.ofNullable(userRepository.save(userCurrent.get())).isPresent();
+    }
+
+    public String getImgSrc(Long id){
+        Optional<User> userCurrent = getById(id);
+        return userCurrent.get().getImgSrc();
+    }
+
+    public Optional<Set<User>> getFriends(Long id) {
         Optional<User> userCurrent = getById(id);
         if (userCurrent.isPresent()) {
             return Optional.of((userCurrent.get().getFriends()));
-        } else{
+        } else {
             return Optional.empty();
         }
     }
@@ -109,28 +121,38 @@ public class UserService {
     private void mergeUserByField(User userDb, User userReq, String field) {
         switch (field) {
             case "name":
-                if (!userDb.getName().equals(userReq.getName())) {
-                    userDb.setName(userReq.getName());
+                if (Optional.ofNullable(userDb.getName()).isPresent()) {
+                    if (!userDb.getName().equals(userReq.getName())) {
+                        userDb.setName(userReq.getName());
+                    }
                 }
                 break;
             case "surname":
-                if (!userDb.getSurname().equals(userReq.getSurname())) {
-                    userDb.setSurname(userReq.getSurname());
+                if (Optional.ofNullable(userDb.getSurname()).isPresent()) {
+                    if (!userDb.getSurname().equals(userReq.getSurname())) {
+                        userDb.setSurname(userReq.getSurname());
+                    }
                 }
                 break;
-//            case "login":
-//                if (!userDb.getLogin().equals(userReq.getLogin())) {
-//                    userDb.setLogin(userReq.getLogin());
-//                }
-//                break;
+            case "login":
+                if (Optional.ofNullable(userDb.getLogin()).isPresent()) {
+                    if (!userDb.getLogin().equals(userReq.getLogin())) {
+                        userDb.setLogin(userReq.getLogin());
+                    }
+                }
+                break;
             case "birthDate":
-                if (!userDb.getBirthDate().equals(userReq.getBirthDate())) {
-                    userDb.setBirthDate(userReq.getBirthDate());
+                if (Optional.ofNullable(userDb.getBirthDate()).isPresent()) {
+                    if (!userDb.getBirthDate().equals(userReq.getBirthDate())) {
+                        userDb.setBirthDate(userReq.getBirthDate());
+                    }
                 }
                 break;
             case "email":
-                if (!userDb.getEmail().equals(userReq.getEmail())) {
-                    userDb.setEmail(userReq.getEmail());
+                if (Optional.ofNullable(userDb.getEmail()).isPresent()) {
+                    if (!userDb.getEmail().equals(userReq.getEmail())) {
+                        userDb.setEmail(userReq.getEmail());
+                    }
                 }
                 break;
         }
