@@ -1,6 +1,7 @@
 package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
+import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class UserController {
 
     @Autowired
     private SessionBean sessionBean;
+
+    @Inject
+    UserRepository userRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -56,19 +60,27 @@ public class UserController {
 
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<String> setUser(HttpServletRequest request, @RequestBody User user) {
-        Optional<User> userBD = userService.getByLogin(user.getLogin());
-
-        if (userBD.isPresent()) {
+        Optional<User> userBDLogin = userService.getByLogin(user.getLogin());
+        Optional<User> userBDEmail = userService.getByEmail(user.getEmail());
+        if (userBDLogin.isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            userBD = userService.save(user);
-            User userFromBD = userBD.get();
-
-            sessionBean.setSessionId(userFromBD.getId());
-            Long session = sessionBean.getSessionId();
-
-            return new ResponseEntity<>(session.toString(), HttpStatus.OK);
         }
+        if (userBDEmail.isPresent()) {
+            User userFromBD = userBDEmail.get();
+            userFromBD.setLogin(user.getLogin());
+            userFromBD.setPassword(user.getPassword());
+            if ((user.getBirthDate() != null) && (userFromBD.getBirthDate() == null)) {
+                userFromBD.setBirthDate(user.getBirthDate());
+            }
+            userRepository.save(userFromBD);
+            sessionBean.setSessionId(userFromBD.getId());
+        } else {
+            userBDLogin = userService.save(user);
+            User userFromBD = userBDLogin.get();
+            sessionBean.setSessionId(userFromBD.getId());
+        }
+        String session = sessionBean.getSessionId().toString();
+        return new ResponseEntity<>(session, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH, produces = "application/json")

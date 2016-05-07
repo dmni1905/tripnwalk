@@ -46,7 +46,7 @@ class LoginController {
     private static final String FIELDS = "bdate,photo_200_orig";
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
-
+    //"https://api.vk.com/method/users.get?user_ids=9911063&fields=bdate,photo_200_orig&name_case=nom&v=5.50;
     @Inject
     UserRepository userRepository;
 
@@ -94,19 +94,16 @@ class LoginController {
         }
     }
 
-//    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-//    public ResponseEntity<String> logout() {
-//        Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
-//        System.out.println(sessionBean.getSessionId());
-//        if (sessionId.isPresent()) {
-//            sessionBean.setSessionId(null);
-//            System.out.println(sessionBean.getSessionId());
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        } else {
-//            System.out.println(sessionBean.getSessionId());
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ResponseEntity<String> logout() {
+        Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
+        if (sessionId.isPresent()) {
+            sessionBean.setSessionId(null);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
@@ -131,11 +128,19 @@ class LoginController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } else {
             User user = userRepository.findByOauthID(userIDOauth);
-            if (user == null) {
-                JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
-                JSONArray jsonArray = (JSONArray) jsonObject.get("response");
-                jsonObject = (JSONObject) jsonArray.get(0);
+            User userEmail = userRepository.findByEmail(email);
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+            JSONArray jsonArray = (JSONArray) jsonObject.get("response");
+            jsonObject = (JSONObject) jsonArray.get(0);
+
+            if (userEmail != null) {
+                userEmail.setSourceType(userIDOauth);
+                userEmail.setSourceId("VK");
+                userRepository.save(userEmail);
+
+                user = userEmail;
+            } else if (user == null) {
 
                 user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
                         userIDOauth, "VK");
@@ -147,10 +152,11 @@ class LoginController {
             }
 
             sessionBean.setSessionId(user.getId());
-            resultJson.put("email", user.getEmail());
+
             if (user.getBirthDate() != null) {
                 resultJson.put("bdate", user.getBirthDate().toString());
             }
+            resultJson.put("email", user.getEmail());
             resultJson.put("last_name", user.getSurname());
             resultJson.put("first_name", user.getName());
             resultJson.put("session_id", sessionBean.getSessionId());

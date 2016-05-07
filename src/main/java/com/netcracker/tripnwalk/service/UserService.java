@@ -38,6 +38,13 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByLogin(login));
     }
 
+    public Optional<User> getByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
+    }
+    public Optional<User> getByOuathID(String ouathID) {
+        return Optional.ofNullable(userRepository.findByOauthID(ouathID));
+    }
+
     public Optional<User> save(User user) {
         return Optional.of(userRepository.save(user));
     }

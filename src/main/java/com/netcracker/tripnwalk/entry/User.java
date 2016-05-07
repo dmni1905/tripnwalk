@@ -93,6 +93,11 @@ public class User{
         this.sourceId = sourceId;
         this.sourceType = sourceType;
     }
+
+    public User(String sourceId, String sourceType){
+        this.sourceId = sourceId;
+        this.sourceType = sourceType;
+    }
     public Long getId() {
         return id;
     }

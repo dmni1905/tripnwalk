@@ -53,7 +53,7 @@ app.factory('UserService', function ($compile, $templateRequest, $http, $q) {
           return $http.get('/logout')
               .then(res => res.data,
                   err => {
-                      console.error('Get friends list failed');
+                      console.error('Something wrong');
                       return $q.reject(err);
                   });
       },

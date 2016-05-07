@@ -99,6 +99,14 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       });
   }
 
+  $scope.logout = function () {
+    UserService.logout()
+        .then(() => {
+
+          window.location.href = 'http://localhost:9095/';
+        });
+  }
+
   $scope.setFriends = function (friends) {
     $scope.friends = friends;
     $scope.friends.sort(compareUser);

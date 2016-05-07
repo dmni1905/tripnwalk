@@ -257,15 +257,12 @@ body{
 #auth {
 	display:block;
 	overflow:hidden;
-	margin-top: 210px;
+	margin-top:60px;
+	margin-left:auto;
+	margin-right:auto;
 	width: 500px;
 	height: 370px;
-	top: 10%;
 	text-align: center;
-	left: 30%;
-	bottom: 30%;
-	right: 30%;
-	position: absolute;
 }
 #auth img{
 	width: 500px;
@@ -303,6 +300,9 @@ body{
 	margin-right: auto;
 	margin-bottom: 3px;
 }
+.userEmail{
+	margin-top: 20px;
+}
 .login-controls > label{
 	font-size: 28px;
 	margin-left:auto;
@@ -310,4 +310,9 @@ body{
 }
 .index{
 	text-align: center;
+}
+.logout{
+	position: fixed;
+	bottom: 0;
+	left: 275px;
 }
