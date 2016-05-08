@@ -1,0 +1,20 @@
+<form id="route-edit-window" class="ui-widget-content js-route-form">
+  <label class="route-form-header">ROUTE</label>
+  <input type="text" class="route-name form-control" placeholder="ROUTE NAME" ng-model="curRoute.name">
+
+  <div id="points-list-wrapper">
+    <uib-tabset active="activeJustified" justified="true">
+      <uib-tab heading="Points">
+        <div id="points-list">
+          <uib-accordion close-others="true">
+            <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points"/>
+          </uib-accordion>
+        </div>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+
+  <div id="route-controls" class="form-inline">
+    <label id="clear-route" class="btn btn-link">CANCEL</label>
+  </div>
+</form>
