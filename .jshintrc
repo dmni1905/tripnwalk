@@ -6,8 +6,6 @@
   "forin": true,
   "noempty": true,
   "quotmark": "single",
-  "node": true,
-  "mocha": true,
   "undef": true,
   "expr": true,
   "bitwise": true,
