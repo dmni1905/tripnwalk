@@ -138,7 +138,6 @@ class LoginController {
                 userEmail.setSourceType(userIDOauth);
                 userEmail.setSourceId("VK");
                 userRepository.save(userEmail);
-
                 user = userEmail;
             } else if (user == null) {
 
@@ -147,6 +146,9 @@ class LoginController {
 
                 if (jsonObject.get("bdate") != null) {
                     user.setBirthDate((String) jsonObject.get("bdate"));
+                }
+                if (jsonObject.get("photo_200_orig") != "http://vk.com/images/camera_200.png") {
+                    user.setImgSrc((String) jsonObject.get("photo_200_orig"));
                 }
                 userRepository.save(user);
             }

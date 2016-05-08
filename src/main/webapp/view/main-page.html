@@ -112,32 +112,32 @@
             <dt ng-click="hide.surname=false">Surname</dt>
             <form class="modifyProfile" th:if="${isMy}"
                   ng-hide="hide.surname==true" ng-show="hide.surname == false">
-              <input type="text" class="changing-user" ng-model="user.surname" autocomplete="off"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.surname=true"></submit>
+              <input type="text" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.surname]" ng-model="user.surname" autocomplete="off"/>
+              <submit class="fa fa-save hide_default_css" ng-click="hide.surname=true;updateMe()"></submit>
             </form>
             <dd id="user-surname" ng-click="hide.surname = false">{{user.surname}}</dd>
 
             <dt ng-click="hide.name=false">Name</dt>
             <form class="modifyProfile" th:if="${isMy}"
                   ng-hide="hide.name==true" ng-show="hide.name == false">
-              <input type="text" class="changing-user" ng-model="user.name" autocomplete="off"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.name=true"></submit>
+              <input type="text" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.name]" ng-model="user.name" autocomplete="off"/>
+              <submit class="fa fa-save hide_default_css" ng-click="hide.name=true;updateMe()"></submit>
             </form>
             <dd id="user-name" ng-click="hide.name = false">{{user.name}}</dd>
 
-            <dt ng-click="hide.bdate=false">Birth date</dt>
+            <dt ng-click="hide.birthDate=false">Birth date</dt>
             <form class="modifyProfile" th:if="${isMy}"
-                  ng-hide="hide.bdate==true" ng-show="hide.bdate == false">
-              <input id="datepicker" class="changing-user" ng-model="user.birthDate" autocomplete="off"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.bdate=true"></submit>
+                  ng-hide="hide.birthDate==true" ng-show="hide.birthDate == false">
+              <input id="datepicker" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.birthDate]" ng-model="user.birthDate" autocomplete="off"/>
+              <submit class="fa fa-save hide_default_css" ng-click="hide.birthDate=true;updateMe()"></submit>
             </form>
-            <dd id="user-bdate" ng-click="hide.bdate = false">{{user.birthDate}}</dd>
+            <dd id="user-bdate" ng-click="hide.birthDate = false">{{user.birthDate}}</dd>
 
             <dt ng-click="hide.email=false" class="userEmail">E-mail</dt>
             <form class="modifyProfile" th:if="${isMy}"
                   ng-hide="hide.email==true" ng-show="hide.email == false">
-              <input type="email" pattern="^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$" class="changing-user" ng-model="user.email" autocomplete="off"/>
-              <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.email=true"></submit>
+              <input type="text" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-model="user.email" autocomplete="off"/>
+              <submit class="fa fa-save hide_default_css" ng-click="hide.email=true;updateMe()"></submit>
             </form>
             <dd id="user-email" ng-click="hide.email = false">{{user.email}}</dd>
           </dl>

@@ -300,9 +300,6 @@ body{
 	margin-right: auto;
 	margin-bottom: 3px;
 }
-.userEmail{
-	margin-top: 20px;
-}
 .login-controls > label{
 	font-size: 28px;
 	margin-left:auto;
@@ -315,4 +312,7 @@ body{
 	position: fixed;
 	bottom: 0;
 	left: 275px;
+}
+form .input_error{
+	border:1px solid red;
 }

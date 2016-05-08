@@ -6,7 +6,8 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.curFriend = {};
   $scope.user = {};
   $scope.urlAvatar = 'http://www.nbb.go.th/images/blank_person[1].jpg';
-  $scope.hide = {surname: true, name: true, bdate: true, email: true, login_error: true, register_error: true};
+  $scope.hide = {surname: true, name: true, birthDate: true, email: true, login_error: true, register_error: true};
+  $scope.userUpdate = {surname: true, name: true, birthDate: true, email: true};
 
   $scope.setUrl = function(url){
     $scope.urlAvatar = url;
@@ -33,7 +34,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       return matches ? matches[1] : null;
     }
 
-    _.each(['access_token', 'expires_in', 'user_id', 'email'], param => tokenObj[param] = getHashValue(param));
+    _.each(['access_token', 'expires_in', 'user_id', 'email',""], param => tokenObj[param] = getHashValue(param));
 
     return tokenObj;
   }
@@ -90,13 +91,34 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   }
 
   $scope.mainPage = function () {
-    window.location.href = '/';
+    window.location.href = 'http://localhost:9095/';
   }
 
   $scope.updateMe = function () {
-    UserService.update($scope.user)
-      .then(() => {
-      });
+    if (!$scope.user.surname.match(/[A-Za-zА-Яа-яЁё]{2,20}/)){
+      $scope.userUpdate.surname = false;
+      $scope.hide.surname = false;
+    }
+    if (!$scope.user.name.match(/[A-Za-zА-Яа-яЁё]{2,20}/)) {
+      $scope.userUpdate.name = false;
+      $scope.hide.name = false;
+    }
+    if ((!$scope.user.birthDate.match(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/)) && (!$scope.user.birthDate.match(/[0-9]{1,2}\.[0-9]{1,2}/))){
+      $scope.userUpdate.birthDate = false;
+      $scope.hide.birthDate = false;
+    }
+    if (!$scope.user.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+      $scope.userUpdate.email = false;
+      $scope.hide.email = false;
+    }
+    if ($scope.user.surname.match(/[A-Za-zА-Яа-яЁё]{2,20}/)
+        &&($scope.user.name.match(/[A-Za-zА-Яа-яЁё]{2,20}/))
+        &&(($scope.user.birthDate.match(/[0-9]{2}\.[0-9]{2}\.[0-9]{4}/)) || ($scope.user.birthDate.match(/[0-9]{1,2}\.[0-9]{1,2}/)))
+        &&($scope.user.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))){
+      UserService.update($scope.user)
+        .then(() => {
+        });
+    }
   }
 
   $scope.logout = function () {
