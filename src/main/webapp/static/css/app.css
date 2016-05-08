@@ -1,313 +1,369 @@
 html, body {
-	width: 100%;
-	height: 100%;
-	margin: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
-body{
-	/*background:url("http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg");*/
-	background: url("http://www.picshare.ru/uploads/160501/eoPjTUcbTk.jpg");
-	background-size:cover;
+
+body {
+  /*background:url("http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg");*/
+  background: url("http://www.picshare.ru/uploads/160501/eoPjTUcbTk.jpg");
+  background-size: cover;
 }
+
+#mask {
+  background-color: rgba(0, 0, 0, .8);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+#mask div{
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 50%;
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+#mask div input{
+  margin-top: 20px;
+  margin-left: 15%;
+  color: white;
+}
+
+#mask div .fa{
+  color: white;
+  cursor: pointer;
+  margin-left: 30%;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 #profile {
-	height: 158px;
+  height: 158px;
 }
 
 #profile p {
-	margin: 0;
+  margin: 0;
 }
 
 #profile label {
-	display: block;
-	color:#bbb;
+  display: block;
+  color: #bbb;
 }
 
 #profile dt {
-	color:#bbb;
+  color: #bbb;
 }
 
 #profile dd {
-	color:#999
+  color: #999
 }
 
-#profile .hide_default_css{
-	border: 0;
-	background: none;
-	outline: none;
-	float: right;
-	color: white;
-	padding-top: 2px;
-	padding-right: 25px;
+#profile .hide_default_css {
+  border: 0;
+  background: none;
+  outline: none;
+  float: right;
+  color: white;
+  padding-top: 2px;
+  padding-right: 25px;
 }
 
 .remove-route, .remove-friend {
-	cursor: pointer;
-	color: red;
-	margin-top: 11px;
+  cursor: pointer;
+  color: red;
+  margin-top: 11px;
 }
 
 #wrapper {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #main {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .wrap {
-	position: relative;
-	width: 100%;
-	height: 100%;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 #menu-toggle {
-	position: absolute;
-	z-index: 99;
+  position: absolute;
+  z-index: 99;
 }
 
 .route-menu-controls, .friend-menu-controls, .user-menu-controls {
-	display: flex;
+  display: flex;
 }
 
-.add-friend{
-	cursor: pointer;
-	color: green;
-	margin-top: 11px;
+.add-friend {
+  cursor: pointer;
+  color: green;
+  margin-top: 11px;
 }
-.ui-datepicker table{
-	font-size:.7em;
+
+.ui-datepicker table {
+  font-size: .7em;
 }
+
 .ui-datepicker {
-	width:13em;
-}
-.ui-datepicker .ui-datepicker-title{
-	line-height:1.5em;
-	font-size:.9em;
-}
-.ui-datepicker .ui-datepicker-next, .ui-datepicker .ui-datepicker-prev{
-	height:1.6em;
-}
-.userProfile{
-	list-style-type:none;
-	position: relative;
-}
-.modifyProfile{
-	position: absolute;
-	line-height:14px;
-}
-.changing-user {
-	margin-left: 125px;
-	background: #000;
-	border: 1px solid lightgrey;
-	border-radius: 2px;
-	width:130px;
-	color: #999;
-	outline: none;
-}
-#route-edit-window {
-	position: fixed;
-	top: 15%;
-	left: 75%;
-	z-index: 99;
-	background-color: white;
-	border: 2px solid #CCCCCC;
-	border-radius: 20px;
-	display: block;
-	height: 500px;
-	width: 280px;
+  width: 13em;
 }
 
-#friend-add-window{
-	position: fixed;
-	top: 5%;
-	left: 60%;
-	z-index: 101;
-	background-color: white;
-	border: 2px solid #CCCCCC;
-	border-radius: 20px;
-	display: block;
-	height: 340px;
-	width: 280px;
+.ui-datepicker .ui-datepicker-title {
+  line-height: 1.5em;
+  font-size: .9em;
+}
+
+.ui-datepicker .ui-datepicker-next, .ui-datepicker .ui-datepicker-prev {
+  height: 1.6em;
+}
+
+.userProfile {
+  list-style-type: none;
+  position: relative;
+}
+
+.modifyProfile {
+  position: absolute;
+  line-height: 14px;
+}
+
+.changing-user {
+  background: #000;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  width: 130px;
+  color: #999;
+  outline: none;
+}
+
+#route-edit-window {
+  position: fixed;
+  top: 15%;
+  left: 75%;
+  z-index: 99;
+  background-color: white;
+  border: 2px solid #CCCCCC;
+  border-radius: 20px;
+  display: block;
+  height: 500px;
+  width: 280px;
+}
+
+#friend-add-window {
+  position: fixed;
+  top: 5%;
+  left: 60%;
+  z-index: 101;
+  background-color: white;
+  border: 2px solid #CCCCCC;
+  border-radius: 20px;
+  display: block;
+  height: 340px;
+  width: 280px;
 }
 
 .modal-content {
-	margin-top: 50%;
+  margin-top: 50%;
 }
 
 .deletion-modal {
-	height: 100px;
+  height: 100px;
 }
 
 .deletion-modal > label {
-	margin-top: 20px;
-	margin-left: 50px;
+  margin-top: 20px;
+  margin-left: 50px;
 }
 
 .deletion-modal .modal-controls {
-	margin-top: 10px;
-	margin-left: 100px;
+  margin-top: 10px;
+  margin-left: 100px;
 }
 
 .route-form-header, .friend-form-header {
-	margin-left: 28%;
-	margin-top: 10px;
+  margin-left: 28%;
+  margin-top: 10px;
 }
 
 #route-edit-window .route-name, #friend-add-window .friend-id {
-	margin-top: 5px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 70%;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
 }
 
-.friend-list{
-	overflow: auto;
-	height: 130px;
+.friend-list {
+  overflow: auto;
+  height: 130px;
 }
 
 #point-input {
-	position: relative;
-	margin-top: 10px;
-	margin-left: 10px;
-	width: auto;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: auto;
 }
 
 #points-list-wrapper {
-	margin-top: 10px;
-	margin-left: 10px;
-	width: 255px;
-	height: 370px;
-	overflow: hidden;
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 255px;
+  height: 370px;
+  overflow: hidden;
 }
 
-#friend-list-wrapper{
-	margin-top: 10px;
-	margin-left: 10px;
-	width: 255px;
-	height: 250px;
-	overflow: hidden;
+#friend-list-wrapper {
+  margin-top: 10px;
+  margin-left: 10px;
+  width: 255px;
+  height: 250px;
+  overflow: hidden;
 }
 
 #points-list {
-	height: 302px;
-	overflow: auto;
+  height: 302px;
+  overflow: auto;
 }
 
 #save-route {
-	margin-left: 18%;
+  margin-left: 18%;
 }
 
 #clear-route {
-	margin-left: 10%;
+  margin-left: 10%;
 }
 
 .point-controls {
-	display: table-caption;
+  display: table-caption;
 }
 
 .point-controls label {
-	margin-bottom: 5px;
-	width: 120px;
+  margin-bottom: 5px;
+  width: 120px;
 }
 
 #routes label, #friends label {
-	display: block;
-	color: #CCCCCC;
-	width: 80%;
-	text-align: left;
+  display: block;
+  color: #CCCCCC;
+  width: 80%;
+  text-align: left;
 }
 
 .add-route-btn, .add-friend-btn {
-	width: 120px!important;
-	margin-left: 32px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-left: 0;
+  width: 120px !important;
+  margin-left: 32px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 0;
 }
 
 #gmap {
-	width: 100%;
-	height: 100%;
-}
-.angular-google-map {
-	width: 100%;
-	height: 100%;
-}
-.angular-google-map-container {
-	margin: auto;
-	width: 100%;
-	height: 100%;
-}
-.form-control{
-	margin-bottom: 15px;
-	width: 50%;
-	margin-left: auto;
-	margin-right: auto;
-}
-.btn-block{
-	display:inline-block;
-	width:37%;
-	margin-top:10px;
-}
-.btn-block+.btn-block{
-	margin-top:10px;
-}
-#auth {
-	display:block;
-	overflow:hidden;
-	margin-top: 210px;
-	width: 500px;
-	height: 370px;
-	top: 10%;
-	text-align: center;
-	left: 30%;
-	bottom: 30%;
-	right: 30%;
-	position: absolute;
-}
-#auth img{
-	width: 500px;
-	height: 500px;
-}
-.main-heading{
-	margin: 55px auto 0 auto;
-	font-family: Comic Sans MS, fantasy, Arial;
-	color: #337AB7;
-	text-shadow: 1px 1px 2px black;
-	font-size: 86px;
-	letter-spacing: 2px;
+  width: 100%;
+  height: 100%;
 }
 
-#register{
-	width: 800px;
-	margin-left: auto;
-	margin-right: auto;
+.angular-google-map {
+  width: 100%;
+  height: 100%;
 }
-.main-heading.register_title{
-	margin-top:0;
+
+.angular-google-map-container {
+  margin: auto;
+  width: 100%;
+  height: 100%;
 }
+
+.form-control {
+  margin-bottom: 15px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-block {
+  display: inline-block;
+  width: 37%;
+  margin-top: 10px;
+}
+
+.btn-block + .btn-block {
+  margin-top: 10px;
+}
+
+#auth {
+  display: block;
+  overflow: hidden;
+  margin-top: 210px;
+  width: 500px;
+  height: 370px;
+  top: 10%;
+  text-align: center;
+  left: 30%;
+  bottom: 30%;
+  right: 30%;
+  position: absolute;
+}
+
+#auth img {
+  width: 500px;
+  height: 500px;
+}
+
+.main-heading {
+  margin: 55px auto 0 auto;
+  font-family: Comic Sans MS, fantasy, Arial;
+  color: #337AB7;
+  text-shadow: 1px 1px 2px black;
+  font-size: 86px;
+  letter-spacing: 2px;
+}
+
+#register {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.main-heading.register_title {
+  margin-top: 0;
+}
+
 #register .login-controls {
-	width: 60%;
-	margin:50px auto 0 auto;
+  width: 60%;
+  margin: 50px auto 0 auto;
 }
-.login-controls .error{
-	display: block;
-	color: #000000;
-	font-size: 16px;
-	font-weight: 600;
-	border: 3px solid red;
-	width: 50%;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 3px;
+
+.login-controls .error {
+  display: block;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 600;
+  border: 3px solid red;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3px;
 }
-.login-controls > label{
-	font-size: 28px;
-	margin-left:auto;
-	margin-right: auto;
+
+.login-controls > label {
+  font-size: 28px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.index{
-	text-align: center;
+
+.index {
+  text-align: center;
 }
