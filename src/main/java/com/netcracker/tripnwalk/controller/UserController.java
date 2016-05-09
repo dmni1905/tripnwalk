@@ -75,6 +75,7 @@ public class UserController {
             userRepository.save(userFromBD);
             sessionBean.setSessionId(userFromBD.getId());
         } else {
+            user.setImgSrc("http://www.nbb.go.th/images/blank_person[1].jpg");
             userBDLogin = userService.save(user);
             User userFromBD = userBDLogin.get();
             sessionBean.setSessionId(userFromBD.getId());

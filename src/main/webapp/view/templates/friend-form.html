@@ -6,12 +6,13 @@
         <label id="find-friend" class="btn btn-link" ng-click="findFriend()">FIND</label>
 
         <div class="friend-list">
-            <ul>
-                <li ng-repeat="u in findUsers">
-                    <label class="">{{u.surname}} {{u.name}}</label>
+                <div ng-repeat="u in findUsers">
+                    <a href="/{{u.id}}" class="btn btn-link user-friend">
+                        <div class="img" style="height: 50px; width: 50px; overflow: hidden; border-radius: 100px;"><img ng-src="{{u.imgSrc}}" class="round" style="width: 100%"/></div>
+                        <div class="name" style="display: inline-block;">{{u.surname}} {{u.name}}</div></a>
+                    <!--<label class="">{{u.surname}} {{u.name}}</label>-->
                     <i class="fa fa-plus add-friend" ng-click="addFriend(u.id, removeFormFriend)"></i>
-                </li>
-            </ul>
+                </div>
         </div>
 
     </div>
