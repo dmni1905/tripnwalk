@@ -2,31 +2,18 @@
   <label class="route-form-header">ADD/EDIT ROUTE</label>
   <input type="text" class="route-name form-control" placeholder="ROUTE NAME" ng-model="curRoute.name">
 
-    <div id="points-list-wrapper">
-    <uib-tabset active="activeJustified" justified="true">
-      <uib-tab heading="Points">
-        <div id="points-list">
-          <uib-accordion close-others="true">
-            <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
-              <div class="point-controls">
-                <label class="btn btn-default">ADD AFTER</label>
-                <label class="btn btn-default">ADD CONTENT</label>
-                <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
-              </div>
-            </uib-accordion-group>
-          </uib-accordion>
-        </div>
-      </uib-tab>
-      <!--<uib-tab heading="POI">-->
-        <!--<uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.data">-->
-          <!--<div class="point-controls">-->
-            <!--<label class="btn btn-default">ADD AFTER</label>-->
-            <!--<label class="btn btn-default">ADD CONTENT</label>-->
-            <!--<label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>-->
-          <!--</div>-->
-        <!--</uib-accordion-group>-->
-      <!--</uib-tab>-->
-    </uib-tabset>
+  <div id="points-list-wrapper">
+    <label>Points:</label>
+    <div id="points-list">
+      <uib-accordion close-others="true">
+        <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
+          <div class="point-controls">
+            <label class="btn btn-default">ADD AFTER</label>
+            <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
+          </div>
+        </uib-accordion-group>
+      </uib-accordion>
+    </div>
   </div>
 
   <div id="route-controls" class="form-inline">

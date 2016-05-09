@@ -2,6 +2,7 @@
 
 app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapService, $uibModal) {
   var routeMode = false;
+  var markers = [];
   var map;
 
   // Current route to interact with.
@@ -20,7 +21,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   // Route mode switch. If true, allows user to create or modify route.
-  $scope.toggleRouteMode = state => routeMode = state;
+  $scope.toggleRouteMode = state => routeMode = !!state || false;
 
   // Creates map polyline for current route.
   function setPolyline() {
@@ -35,11 +36,50 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     $scope.curRoute.path.setMap(map);
   }
 
+  $scope.toggleRouteSelected = function(isSelected, route) {
+    var route0 = route || $scope.curRoute;
+    var selected = {
+      strokeColor: '#AAAAAA',
+      strokeOpacity: 1.0,
+      strokeWeight: 6
+    };
+    var notSelected = {
+      strokeColor: '#000000',
+      strokeOpacity: 1.0,
+      strokeWeight: 3
+    };
+
+    route0.selected = !!isSelected || false;
+    route0.path.setOptions(isSelected && selected || notSelected);
+  }
+
+  function renderMarker(position) {
+    // Check if marker exists.
+
+    if (_.find(markers, marker => marker.position == position)) return;
+
+    var marker = new google.maps.Marker({
+      position: position,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 3
+      },
+      draggable: false,
+      map: map
+    });
+
+    markers.push(marker);
+  }
+
   // Handles click events on a map, and adds a new point to the Polyline.
   function setMarker(evt) {
     if (!routeMode) return;
 
     !$scope.curRoute.path && setPolyline();
+
+    if (!$scope.curRoute.selected) {
+      $scope.toggleRouteSelected(true);
+    }
 
     var position = evt.latLng;
     var path = $scope.curRoute.path.getPath();
@@ -50,12 +90,15 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     $scope.curRoute.points = routeToArray($scope.curRoute.path);
 
-    $scope.$apply();
+    renderMarker(position);
+
+    $scope.$apply(position);
   }
 
   // Transforms route path of given route to array of coordinate objects,
   function routeToArray(route) {
     return _.map(route.getPath().j, (latLng, index) => {
+
       return {
         position: index,
         lat: latLng.lat().toFixed(6),
@@ -67,7 +110,13 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   // Renders given route and adds path object to it.
   function renderRoute(route) {
     var points = _.sortBy(route.points, point => point.position);
-    var polyLine = _.map(points, latLng => new google.maps.LatLng(latLng.lat, latLng.lng));
+    var polyLine = _.map(points, latLng => {
+      var point = new google.maps.LatLng(latLng.lat, latLng.lng);
+
+      renderMarker(point);
+
+      return point;
+    });
     var path = new google.maps.Polyline({
       path: polyLine,
       strokeColor: '#000000',
@@ -78,6 +127,18 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     path.setMap(map);
 
     return _.extend(route, { path: path });
+  }
+
+  function cleaRouteMarkers(route) {
+    if (!route.path) return;
+
+    _.each(route.path.getPath().j, latLng => {
+      var marker = _.find(markers, marker => marker.position == latLng);
+
+      marker && marker.setMap(null);
+
+      markers = _.without(markers, marker);
+    });
   }
 
   /**
@@ -110,14 +171,24 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
    * @param cb Operation callback.
    */
   $scope.saveRoute = function(route, cb) {
-    //TODO validation.
+    var $input = $('#route-edit-window').find('.route-name');
+
+    if ($input.val() === '') {
+      $input.parent().addClass('has-error');
+
+      return;
+    }
+
     var route0 = _.omit(route, 'path');
+
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
     if (_.contains($scope.routes, route)) {
       MapService.update(route0)
         .then(route => {
           _.extend(getRouteById(route.id), route);
+
+          cb();
         });
     }
     else {
@@ -128,12 +199,18 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
           cb();
         });
     }
+
+    $scope.toggleRouteSelected(false);
   };
 
   //
   $scope.clearRoute = function() {
     if (!_.contains($scope.routes, $scope.curRoute)) {
-      $scope.curRoute.path && $scope.curRoute.path.getPath().clear();
+      var route = $scope.curRoute;
+
+      cleaRouteMarkers(route);
+
+      route.path && route.path.getPath().clear();
     }
 
     $scope.curRoute = {};
@@ -153,16 +230,15 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.removePoint0 = (id, index) => {
     var route = getRouteById(id);
 
+    cleaRouteMarkers(route);
     route.path.getPath().clear();
-
     route.points.splice(index, 1);
-
     renderRoute(route);
   };
 
   $scope.getRender = function() {
     _.map($scope.routes, route => renderRoute(route));
-  }
+  };
 
   //Renders map.
   uiGmapIsReady.promise(1)

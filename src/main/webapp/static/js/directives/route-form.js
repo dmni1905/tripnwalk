@@ -13,11 +13,11 @@ app.directive('routeForm', function($compile, $templateRequest) {
       //TODO look at controllers to handle route-form.
       element.bind('click', function(evt){
         $scope.removeForm = () => {
-          //TODO proper clean-up.
           $('.route-form-place').empty();
           $scope.clearRoute();
 
           $scope.toggleRouteMode(false);
+          $scope.toggleRouteSelected(false, $scope.curRoute);
         };
 
         $('#route-edit-window').length > 0 && $scope.removeForm();
@@ -29,6 +29,8 @@ app.directive('routeForm', function($compile, $templateRequest) {
           $scope.curRoute =  _.find($scope.routes, route => {
             return route.id == existingRoute.match(/id-(.+)/)[1];
           });
+
+          $scope.toggleRouteSelected(true, $scope.curRoute);
 
           $scope.curRoute.points = _.sortBy($scope.curRoute.points, point => point.position);
         }
