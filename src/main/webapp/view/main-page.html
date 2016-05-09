@@ -134,11 +134,11 @@
 
               <dt>Birth date</dt>
               <form class="modifyProfile" th:if="${isMy}"
-                    ng-hide="hide.bdate==true" ng-show="hide.bdate == false">
+                    ng-hide="hide.birthDate==true" ng-show="hide.birthDate == false">
                 <input id="datepicker" class="changing-user" ng-model="user.birthDate" autocomplete="off"/>
                 <submit class="fa fa-save hide_default_css" ng-click="updateMe();hide.bdate=true"></submit>
               </form>
-              <dd id="user-bdate" ng-click="hide.bdate = false">{{user.birthDate}}</dd>
+              <dd id="user-bdate" ng-click="hide.birthDate = false">{{user.birthDate}}</dd>
 
               <dt>E-mail</dt>
               <form class="modifyProfile" th:if="${isMy}"
@@ -193,6 +193,7 @@
         <a href="#" ng-click="logout()" style="display:none">LogOut</a>
       </li>
     </ul>
+    <button type="button" class="logout btn btn-danger" ng-click="logout()">LogOut</button>
   </div>
   <!-- /#sidebar-wrapper -->
 
