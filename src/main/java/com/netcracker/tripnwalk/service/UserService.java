@@ -142,7 +142,7 @@ public class UserService {
                 }
                 break;
             case "login":
-                if (Optional.ofNullable(userDb.getLogin()).isPresent()) {
+                if (Optional.ofNullable(userDb.getLogin()).isPresent() && Optional.ofNullable(userReq.getLogin()).isPresent()) {
                     if (!userDb.getLogin().equals(userReq.getLogin())) {
                         userDb.setLogin(userReq.getLogin());
                     }

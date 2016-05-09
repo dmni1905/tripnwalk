@@ -6,8 +6,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.curFriend = {};
   $scope.user = {};
   $scope.urlAvatar = 'http://www.nbb.go.th/images/blank_person[1].jpg';
-  $scope.hide = {surname: true, name: true, bdate: true, email: true, login_error: true, register_error: true, upload_form: true};
-  $scope.hide = {surname: true, name: true, birthDate: true, email: true, login_error: true, register_error: true};
+  $scope.hide = {surname: true, name: true, birthDate: true, email: true, login_error: true, register_error: true, upload_form: true};
   $scope.userUpdate = {surname: true, name: true, birthDate: true, email: true};
 
   $scope.setUrl = function(url){
