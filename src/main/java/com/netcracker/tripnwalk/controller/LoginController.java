@@ -47,18 +47,16 @@ class LoginController {
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
     //"https://api.vk.com/method/users.get?user_ids=9911063&fields=bdate,photo_200_orig&name_case=nom&v=5.50;
+
     @Inject
-    UserRepository userRepository;
-
+    private UserRepository userRepository;
     @Autowired
-    UserService userService;
-
+    private UserService userService;
     @Autowired
     private SessionBean sessionBean;
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     public ResponseEntity<String> auth() throws IOException {
-
         String reqUrl = "http://oauth.vk.com/authorize?" +
                 "client_id=" + CLIENT_ID +
                 "&display=" + DISPLAY +
@@ -66,8 +64,8 @@ class LoginController {
                 "&scope=" + SCOPE +
                 "&response_type=" + RESPONSE_TYPE +
                 "&v=" + VERSION;
-
         String result = sendHttpRequest(reqUrl).toString();
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -80,11 +78,14 @@ class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getAuth(HttpServletRequest request, @RequestBody User user) {
         Optional<User> userBD = userService.getByLogin(user.getLogin());
+
         if (userBD.isPresent()) {
             User userFromBD = userBD.get();
+
             if (userFromBD.getPassword().equals(user.getPassword())) {
                 sessionBean.setSessionId(userFromBD.getId());
                 String session = sessionBean.getSessionId().toString();
+
                 return new ResponseEntity<>(session, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -97,8 +98,10 @@ class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ResponseEntity<String> logout() {
         Optional<Long> sessionId = Optional.ofNullable(sessionBean.getSessionId());
+
         if (sessionId.isPresent()) {
             sessionBean.setSessionId(null);
+
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -107,10 +110,8 @@ class LoginController {
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
-
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
-
         String reqUrl = "https://api.vk.com/method/users.get?" +
                 "user_ids=" + userIDOauth +
                 "&fields=" + FIELDS +
@@ -140,7 +141,6 @@ class LoginController {
                 userRepository.save(userEmail);
                 user = userEmail;
             } else if (user == null) {
-
                 user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
                         userIDOauth, "VK");
 
@@ -163,6 +163,7 @@ class LoginController {
             resultJson.put("first_name", user.getName());
             resultJson.put("session_id", sessionBean.getSessionId());
             result = resultJson.toString();
+
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }
@@ -175,8 +176,8 @@ class LoginController {
                 "&fields=" + FIELDS +
                 "&name_case=" + NAME_CASE +
                 "&v=" + VERSION + 5.50;
-
         StringBuilder result = sendHttpRequest(reqUrl);
+
         try {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
@@ -196,6 +197,7 @@ class LoginController {
     public StringBuilder sendHttpRequest(String reqUrl) {
         StringBuilder result = new StringBuilder();
         HttpGet httpGet = new HttpGet(reqUrl);
+
         try (CloseableHttpClient httpclient = HttpClients.createDefault();
              CloseableHttpResponse response = httpclient.execute(httpGet);
              BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
@@ -209,6 +211,7 @@ class LoginController {
         } catch (Exception e) {
             logger.error(e);
         }
+
         return result;
     }
 }

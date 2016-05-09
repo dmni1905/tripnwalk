@@ -1,9 +1,6 @@
 package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.Route;
-import com.netcracker.tripnwalk.entry.User;
-import com.netcracker.tripnwalk.repository.RouteRepository;
-import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.RouteService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.Set;
@@ -23,13 +19,7 @@ public class RouteController {
     private static final Logger logger = LogManager.getLogger(RouteController.class);
 
     @Autowired
-    RouteService routeService;
-
-    @Inject
-    RouteRepository routeRepository;
-    @Inject
-    UserRepository userRepository;
-
+    private RouteService routeService;
     @Autowired
     private SessionBean sessionBean;
 
@@ -59,7 +49,7 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.GET, produces = "application/json")
-    public ResponseEntity<Route> getRouteById(@PathVariable("id") Long idRoute) {
+    public ResponseEntity<Route> getRoute(@PathVariable("id") Long idRoute) {
         Long idUser = sessionBean.getSessionId();
         Optional<Route> routeFromDB = routeService.getById(idUser, idRoute);
         if (routeFromDB.isPresent()) {
@@ -70,7 +60,9 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.PATCH, produces = "application/json")
-    public ResponseEntity<Route> modifyById(@PathVariable("id") Long id, @Valid @RequestBody Route route, BindingResult bindingResult) {
+    public ResponseEntity<Route> updateRoute(@PathVariable("id") Long id,
+                                             @Valid @RequestBody Route route,
+                                             BindingResult bindingResult) {
         Long idUser = sessionBean.getSessionId();
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -88,7 +80,7 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteById(@PathVariable("id") Long idRoute) {
+    public ResponseEntity<String> deleteRoute(@PathVariable("id") Long idRoute) {
         Long idUser = sessionBean.getSessionId();
         if(routeService.delete(idUser, idRoute)){
             return new ResponseEntity<>(HttpStatus.OK);

@@ -16,7 +16,7 @@ public class UserService {
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public Set<User> findUsers(Long curId, String name, String surname) {
         if (name.isEmpty() && surname.isEmpty()) {
@@ -41,6 +41,7 @@ public class UserService {
     public Optional<User> getByEmail(String email) {
         return Optional.ofNullable(userRepository.findByEmail(email));
     }
+
     public Optional<User> getByOuathID(String ouathID) {
         return Optional.ofNullable(userRepository.findByOauthID(ouathID));
     }
@@ -52,39 +53,48 @@ public class UserService {
     public Optional<User> modify(User user) {
         User userDB = getById(user.getId()).get();
         Arrays.stream(User.class.getDeclaredFields()).forEach(f -> mergeUserByField(userDB, user, f.getName()));
+
         return Optional.of(userRepository.save(userDB));
     }
 
     public boolean delete(Long id) {
         Optional<User> userCurrent = getById(id);
+
         if (userCurrent.isPresent()) {
             User user = userCurrent.get();
+
             user.getFriends().forEach(u -> {
                 u.getFriends().remove(user);
                 userRepository.save(u);
             });
             user.getFriends().clear();
             userRepository.delete(id);
+
             return true;
         } else {
             logger.error("DELETE: User with id=" + id + " not found");
+
             return false;
         }
     }
 
     public boolean setImgSrc(Long id, String src){
         Optional<User> userCurrent = getById(id);
+
         userCurrent.get().setImgSrc(src);
+
         return Optional.ofNullable(userRepository.save(userCurrent.get())).isPresent();
     }
 
     public String getImgSrc(Long id){
         Optional<User> userCurrent = getById(id);
+
         return userCurrent.get().getImgSrc();
     }
 
     public Optional<Set<User>> getFriends(Long id) {
         Optional<User> userCurrent = getById(id);
+
         if (userCurrent.isPresent()) {
             return Optional.of((userCurrent.get().getFriends()));
         } else {
@@ -94,6 +104,7 @@ public class UserService {
 
     public boolean addFriend(Optional<User> userCurrent, Long friendId) {
         Optional<User> userFriend = getById(friendId);
+
         if (userFriend.isPresent() && userCurrent.isPresent()) {
             userCurrent.get().addFriend(userFriend.get());
             return Optional.of(userRepository.save(userCurrent.get())).isPresent();
@@ -103,24 +114,27 @@ public class UserService {
             } else {
                 logger.error("ADD FRIEND: User with id=" + friendId + " not found");
             }
+
             return false;
         }
     }
 
     public boolean deleteFriend(Optional<User> userCurrent, Long friendId) {
         Optional<User> userFriend = getById(friendId);
+
         if (userFriend.isPresent() && userCurrent.isPresent()) {
             userCurrent.get().getFriends().remove(userFriend.get());
             userFriend.get().getFriends().remove(userCurrent.get());
-            return
-                    Optional.of(userRepository.save(userFriend.get())).isPresent() &&
-                            Optional.of(userRepository.save(userCurrent.get())).isPresent();
+
+            return Optional.of(userRepository.save(userFriend.get())).isPresent() &&
+                Optional.of(userRepository.save(userCurrent.get())).isPresent();
         } else {
             if (userCurrent.isPresent()) {
                 logger.error("DELETE FRIEND: User with id=" + userCurrent.get().getId() + " not found");
             } else {
                 logger.error("DELETE FRIEND: User with id=" + friendId + " not found");
             }
+
             return false;
         }
     }

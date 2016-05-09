@@ -33,6 +33,7 @@ public class Application extends WebMvcConfigurerAdapter {
         resolver.setTemplateMode("HTML5");
         resolver.setCharacterEncoding("UTF-8");
         resolver.setCacheable(false);
+
         return resolver;
     }
 

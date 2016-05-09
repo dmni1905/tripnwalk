@@ -39,7 +39,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.toggleRouteSelected = function(isSelected, route) {
     var route0 = route || $scope.curRoute;
     var selected = {
-      strokeColor: '#AAAAAA',
+      strokeColor: '#7CFC00',
       strokeOpacity: 1.0,
       strokeWeight: 6
     };
@@ -51,7 +51,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     route0.selected = !!isSelected || false;
     route0.path.setOptions(isSelected && selected || notSelected);
-  }
+  };
 
   function renderMarker(position) {
     // Check if marker exists.
@@ -179,7 +179,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       return;
     }
 
-    var route0 = _.omit(route, 'path');
+    var route0 = _.omit(route, ['path', 'selected']);
 
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
