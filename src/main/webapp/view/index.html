@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App" class="ng-cloak" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Trip &amp; Walk</title>
+
+     <!--Bootstrap Core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Custom CSS -->
+    <link href="/static/css/simple-sidebar.css" rel="stylesheet"/>
+    <link href="/static/css/signin.css" rel="stylesheet"/>
+    <!-- Font-awesome CSS -->
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- jQuery UI -->
+    <link href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+    <!-- App CSS -->
+    <link href="/static/css/app.css" rel="stylesheet"/>
+    <!-- Google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <!-- jQuery -->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Underscore -->
+    <script src="/bower_components/underscore/underscore-min.js"></script>
+    <!-- AngularJS -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <!-- Angular-google-maps -->
+    <script src="/bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+    <script src="/bower_components/lodash/lodash.min.js"></script>
+    <script src="/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+    <!-- App -->
+    <script type="text/javascript"  src="static/js/app.js"></script>
+    <script src="/static/js/controllers/map-controller.js"></script>
+    <script src="/static/js/controllers/user-controller.js"></script>
+    <script src="/static/js/services/map-service.js"></script>
+    <script src="/static/js/services/user-service.js"></script>
+    <script src="/static/js/directives/route-form.js"></script>
+    <script src="/static/js/directives/friend-form.js"></script>
+</head>
+
+
+<body>
+<div class="index" ng-controller="UserCtrl">
+<label class="main-heading">Trip &amp; Walk</label>
+<form id="auth">
+    <!--<img src="http://www.adriatic-route.com/wp-content/uploads/2016/03/GIS.jpg"/>-->
+    <div class="login-controls">
+        <form class="form-signin">
+            <label for="inputEmail" class="sr-only">Login</label>
+            <input type="text" id="inputEmail" class="form-control" ng-model="user.login" placeholder="Login"/>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" ng-model="user.password" placeholder="Password"/>
+            <!--<div class="checkbox">-->
+                <!--<label>-->
+                    <!--<input type="checkbox" value="remember-me"/> Remember me-->
+                <!--</label>-->
+            <!--</div>-->
+            <span class="error" ng-hide="hide.login_error==true" ng-show="hide.login_error == false">Incorrect login or password</span>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login();">Sign in</button>
+            <button class="btn btn-lg btn btn-info btn-block" type="submit" ng-click="registerPage()">Register</button>
+            <br/>
+        </form>
+        <label style="display: initial;">Log in:</label>
+        <button class="fa fa-vk" ng-click="authorize()" ng-controller="UserCtrl"></button>
+    </div>
+</form>
+</div>
+</body>
+
+</html>

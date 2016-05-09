@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="App" class="ng-cloak" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Trip &amp; Walk</title>
+
+    <!--Bootstrap Core CSS -->
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Custom CSS -->
+    <link href="/static/css/simple-sidebar.css" rel="stylesheet"/>
+    <link href="/static/css/signin.css" rel="stylesheet"/>
+    <!-- Font-awesome CSS -->
+    <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- jQuery UI -->
+    <link href="/bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css" rel="stylesheet"/>
+    <!-- App CSS -->
+    <link href="/static/css/app.css" rel="stylesheet"/>
+    <!-- Google maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <!-- jQuery -->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Underscore -->
+    <script src="/bower_components/underscore/underscore-min.js"></script>
+    <!-- AngularJS -->
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <!-- Angular-google-maps -->
+    <script src="/bower_components/angular-google-maps/dist/angular-google-maps.min.js"></script>
+    <script src="/bower_components/lodash/lodash.min.js"></script>
+    <script src="/bower_components/angular-simple-logger/dist/angular-simple-logger.min.js"></script>
+    <!-- App -->
+    <script type="text/javascript"  src="static/js/app.js"></script>
+    <script src="/static/js/controllers/map-controller.js"></script>
+    <script src="/static/js/controllers/user-controller.js"></script>
+    <script src="/static/js/services/map-service.js"></script>
+    <script src="/static/js/services/user-service.js"></script>
+    <script src="/static/js/directives/route-form.js"></script>
+    <script src="/static/js/directives/friend-form.js"></script>
+</head>
+
+
+<body>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $("#datepicker1").datepicker();
+        $("#datepicker1").datepicker( "option", "maxDate", new Date());
+        $("#datepicker1").datepicker( "option", "dateFormat", "dd.mm.yy" );
+    });
+</script>
+
+<div class="index" ng-controller="UserCtrl">
+    <a ng-click="mainPage()"><label class="main-heading register_title">Trip &amp; Walk</label></a>
+    <form id="register">
+        <div class="login-controls">
+            <form class="form-signin">
+                <input type="text" class="form-control" ng-model="user.name" pattern="[A-Za-zА-Яа-яЁё]{2,20}" placeholder="Name" autofocus="autofocus" required="required"/>
+                <input type="text" class="form-control" ng-model="user.surname" pattern="[A-Za-zА-Яа-яЁё]{2,20}" placeholder="Surname"/>
+                <input type="text" id="datepicker1" pattern="[0-9]{2}\.[0-9]{2}\.[0-9]{4}" oninvalid="this.setCustomValidity('Введите дату в формате «DD.MM.YYYY»')" class="form-control" ng-model="user.birthDate" placeholder="Birthdate"/>
+                <input type="email" class="form-control" pattern="^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$" oninvalid="this.setCustomValidity('Введите email в формате «логин@поддомен.домен»')" ng-model="user.email" placeholder="Email" required="required"/>
+                <input type="text" class="form-control" ng-model="user.login" pattern="^[A-z0-9_-]{3,16}$" oninvalid="this.setCustomValidity('Логин должен содержать от 3 до 16 символов и может состоять из букв, цифр, дефисов и подчёркиваний')" placeholder="Login" required="required"/>
+                <input type="password" class="form-control" ng-model="user.password" pattern="^[A-z0-9_-]{3,16}$" oninvalid="this.setCustomValidity('Пароль должен содержать от 3 до 16 символов и может состоять из букв, цифр, дефисов и подчёркиваний')" placeholder="Password" required="required"/>
+
+                <span class="error" ng-hide="hide.register_error==true" pattern="" ng-show="hide.register_error == false">Login exists</span>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="mainPage()">Main Page</button>
+                <button class="btn btn-lg btn btn-info btn-block" type="submit" ng-click="register()">Register</button>
+                <br/>
+            </form>
+        </div>
+    </form>
+</div>
+</body>
+</html>

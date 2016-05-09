@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
@@ -24,13 +23,12 @@ public class User {
     private String surname;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private String birthDate;
 
     @Column(name = "login", unique = true)
     private String login;
 
-    @NotNull
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "source_type")
@@ -38,6 +36,9 @@ public class User {
 
     @Column(name = "source_id")
     private String sourceId;
+
+    @Column(name = "img_src")
+    private String imgSrc;
 
     @NotNull
     @Column(name = "email", unique = true, nullable = false)
@@ -52,7 +53,6 @@ public class User {
     )
     private Set<User> friends = new HashSet<>();
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -86,7 +86,18 @@ public class User {
     public User(String username) {
         this.name = username;
     }
+    public User(String name, String surname, String email, String sourceId, String sourceType){
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.sourceId = sourceId;
+        this.sourceType = sourceType;
+    }
 
+    public User(String sourceId, String sourceType){
+        this.sourceId = sourceId;
+        this.sourceType = sourceType;
+    }
     public Long getId() {
         return id;
     }
@@ -119,11 +130,11 @@ public class User {
         this.surname = surname;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -165,6 +176,14 @@ public class User {
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     @Override

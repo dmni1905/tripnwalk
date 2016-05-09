@@ -3,7 +3,7 @@
 app.factory('MapService', ['$http', '$q', function($http, $q) {
   return {
     create: (route) => {
-      return $http.post('http://tripnwalk.tk/rest-api/routes', route)
+      return $http.post('/routes', route)
         .then(res => res.data,
           err => {
             console.error('Route creating failed');
@@ -13,7 +13,7 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
     },
 
     remove: (id) => {
-      return $http.delete('http://tripnwalk.tk/rest-api/routes/' + id)
+      return $http.delete('/routes/' + id)
         .then(() => {},
           err => {
             console.error('Route deletion failed');
@@ -23,7 +23,7 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
     },
 
     update: (route) => {
-      return $http.patch('http://tripnwalk.tk/rest-api/routes/' + route.id, route)
+      return $http.patch('/routes/' + route.id, route)
         .then(res => res.data,
           err => {
             console.error('Route updating failed');
@@ -33,7 +33,7 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
     },
 
     fetchAll: () => {
-      return $http.get('http://tripnwalk.tk/rest-api/routes')
+      return $http.get('http://localhost:9095/routes')
         .then(res => res.data,
           err => {
             console.error('Route fetching failed');
@@ -42,7 +42,7 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
     },
 
     fetch: (id) => {
-      return $http.get('http://tripnwalk.tk/rest-api/routes/' + id)
+      return $http.get('/routes/' + id)
         .then(res => res.data,
           err => {
             console.error('Route fetching failed');
