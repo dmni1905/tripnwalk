@@ -179,5 +179,6 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
           map.setCenter(center);
         }, 320);
       });
+      $scope.getRender();
     });
 });

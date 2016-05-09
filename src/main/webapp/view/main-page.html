@@ -89,10 +89,6 @@
         scopeMapCtrl.$apply();
       }
       document.addEventListener("DOMContentLoaded", ready);
-//      window.onload = function () {
-//        var scopeMapCtrl = angular.element($("#wrapper")).scope();
-//        scopeMapCtrl.getRender();
-//      }
       $(document).ready(function () {
 
         $("#datepicker").datepicker();
@@ -233,13 +229,6 @@
       btn.addClass("fa-arrow-left");
     }
   });
-</script>
-<script>
-  document.body.onload = function () {
-    var scopeMapCtrl = angular.element($("#wrapper")).scope();
-    console.log(scopeMapCtrl.routes.length);
-    scopeMapCtrl.getRender();
-  }
 </script>
 </body>
 
