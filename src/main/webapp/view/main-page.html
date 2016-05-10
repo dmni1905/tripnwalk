@@ -128,7 +128,7 @@
               </form>
               <dd id="user-name" ng-click="hide.name = false">{{user.name}}</dd>
 
-              <dt ng-click="hide.birthDate = false">Birth date</dt>
+              <dt ng-click="hide.birthDate = false ">Birth date</dt>
               <form class="modifyProfile" th:if="${isMy}"
                     ng-hide="hide.birthDate==true" ng-show="hide.birthDate == false">
                 <input id="datepicker" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.birthDate]" ng-model="user.birthDate" autocomplete="off"/>
