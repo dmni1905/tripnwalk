@@ -33,7 +33,7 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
     },
 
     fetchAll: () => {
-      return $http.get('http://localhost:9095/routes')
+      return $http.get('/routes')
         .then(res => res.data,
           err => {
             console.error('Route fetching failed');

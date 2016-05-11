@@ -50,7 +50,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     window.location.href = 'http://oauth.vk.com/authorize?' +
       'client_id=5368462' +
       '&display=popup' +
-      '&redirect_uri=http://localhost:9095/' +
+      '&redirect_uri=http://tripnwalk.tk/' +
       '&scope=friends,email' +
       '&response_type=token' +
       '&v=5.50';
@@ -93,7 +93,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   }
 
   $scope.mainPage = function () {
-    window.location.href = 'http://localhost:9095/';
+    window.location.href = 'http://tripnwalk.tk/';
   }
 
   $scope.updateMe = function () {
@@ -127,7 +127,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     UserService.logout()
         .then(() => {
 
-          window.location.href = 'http://localhost:9095/';
+          window.location.href = 'http://tripnwalk.tk/';
         });
   }
 
