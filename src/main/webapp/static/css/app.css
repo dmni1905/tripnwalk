@@ -10,37 +10,37 @@ body{
 }
 
 #mask {
-  background-color: rgba(0, 0, 0, .8);
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 10;
+	background-color: rgba(0, 0, 0, .8);
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 10;
 }
 
 #mask div{
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 50%;
-  border: 2px solid;
-  border-radius: 10px;
-  padding: 5px;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 50%;
+	border: 2px solid;
+	border-radius: 10px;
+	padding: 5px;
 }
 
 #mask div input{
-  margin-top: 20px;
-  margin-left: 15%;
-  color: white;
+	margin-top: 20px;
+	margin-left: 15%;
+	color: white;
 }
 
 #mask div .fa{
-  color: white;
-  cursor: pointer;
-  margin-left: 30%;
-  font-size: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+	color: white;
+	cursor: pointer;
+	margin-left: 30%;
+	font-size: 20px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 #profile {
@@ -94,7 +94,7 @@ body{
 	position: relative;
 	width: 100%;
 	height: 100%;
-    overflow: hidden;
+	overflow: hidden;
 }
 
 #menu-toggle {
@@ -170,25 +170,14 @@ body{
 	margin-top: 50%;
 }
 
-.deletion-modal {
-	height: 100px;
-}
-
-.deletion-modal > label {
-	margin-top: 20px;
-	margin-left: 50px;
-}
-
-.deletion-modal .modal-controls {
-	margin-top: 10px;
-	margin-left: 100px;
-}
-
-.route-form-header, .friend-form-header {
-	margin-left: 28%;
+.friend-form-header {
+	margin-left: 35%;
 	margin-top: 10px;
 }
-
+.route-form-header {
+	margin-left: 30%;
+	margin-top: 10px;
+}
 #route-edit-window .route-name, #friend-add-window .friend-id {
 	margin-top: 5px;
 	margin-left: auto;
@@ -343,9 +332,9 @@ body{
 	text-align: center;
 }
 .logout{
-	position: fixed;
-	bottom: 10px;
-	left: 255px;
+	text-align:right;
+	margin-top:5px;
+	margin-right:20px;
 }
 form .input_error{
 	border:1px solid red;
@@ -371,4 +360,19 @@ form .input_error{
 .user-friend .name{
 	margin-top: 14px;
 	float: left;
+	margin-left:5px;
+}
+.vk{
+	background:url("http://i9.pixs.ru/storage/4/3/9/vkjpg_2960679_21894439.jpg")
+}
+.deletion-friend, .deletion-modal{
+	text-align: center;
+}
+.deletion-friend label, .deletion-modal label{
+	margin-top:8px;
+	margin-bottom:0;
+}
+.modal-controls{
+	margin-top:5px;
+	margin-bottom:7px;
 }

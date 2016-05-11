@@ -61,14 +61,16 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   }
 
   $scope.login = function () {
-    UserService.login($scope.user)
-      .then(res => {
-        if (res == undefined) {
-          $scope.hide.login_error = false;
-        } else {
-          window.location.href = '/' + res;
-        }
-      });
+    if (($scope.user.login != null) && ($scope.user.password != null)) {
+      UserService.login($scope.user)
+          .then(res => {
+            if (res == undefined) {
+              $scope.hide.login_error = false;
+            } else {
+              window.location.href = '/' + res;
+            }
+          });
+    }
   }
 
   $scope.register = function () {
