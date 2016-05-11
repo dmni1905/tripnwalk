@@ -139,9 +139,8 @@
               <dt ng-click="hide.email = false">E-mail</dt>
               <form class="modifyProfile" th:if="${isMy}"
                     ng-hide="hide.email==true" ng-show="hide.email == false">
-                <input type="email" pattern="^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$" class="changing-user"
-                       ng-model="user.email" autocomplete="off"/>
-                <submit class="fa fa-save hide_default_css" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-click="hide.email=true;updateMe()"></submit>
+                <input type="text" class="changing-user"  ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-model="user.email" autocomplete="off"/>
+                <submit class="fa fa-save hide_default_css" ng-click="hide.email=true;updateMe()"></submit>
               </form>
               <dd id="user-email" ng-click="hide.email = false">{{user.email}}</dd>
             </dl>

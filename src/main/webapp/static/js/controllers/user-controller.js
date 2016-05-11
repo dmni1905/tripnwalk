@@ -125,6 +125,7 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
       $scope.hide.birthDate = false;
     }
     if (!$scope.user.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+      console.log("1");
       $scope.userUpdate.email = false;
       $scope.hide.email = false;
     }
@@ -141,7 +142,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.logout = function () {
     UserService.logout()
         .then(() => {
-
           window.location.href = 'http://localhost:9095/';
         });
   }
