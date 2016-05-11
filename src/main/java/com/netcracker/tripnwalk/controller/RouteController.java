@@ -67,7 +67,7 @@ public class RouteController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (id == route.getId()) {
+        if (id.equals(route.getId())) {
             Optional<Route> routeFromDB = routeService.modify(idUser, route);
             if (routeFromDB.isPresent()) {
                 return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
