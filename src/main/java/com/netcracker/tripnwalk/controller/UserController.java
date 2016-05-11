@@ -39,7 +39,7 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView getUser(@PathVariable("id") Long id) {
         if (Optional.ofNullable(sessionBean.getSessionId()).isPresent()) {
-            Optional<User> user = userService.getById(id);
+                Optional<User> user = userService.getById(id);
             user.get().getFriends().forEach(f -> {
                 f.getFriends().clear();
                 f.getRoutes().clear();
