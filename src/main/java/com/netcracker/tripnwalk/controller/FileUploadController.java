@@ -1,18 +1,13 @@
 package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.User;
-import com.netcracker.tripnwalk.service.UserService;
+import com.netcracker.tripnwalk.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -22,9 +17,7 @@ public class FileUploadController {
     @Autowired
     private SessionBean sessionBean;
     @Autowired
-    private Environment env;
-    @Autowired
-    private UserService userService;
+    private UploadService uploadService;
 
     @RequestMapping(value = "/{id}/fileUpload", method = POST)
     public ResponseEntity<User> uploadFile(@RequestParam("file") MultipartFile uploadfile,
@@ -32,51 +25,12 @@ public class FileUploadController {
         Long idBd = sessionBean.getSessionId();
 
         if (Optional.ofNullable(idBd).isPresent() && id.equals(idBd)) {
-            final String path = env.getProperty("paths.uploadedFiles");
-            File dir = new File(path, id.toString());
-
-            if (!dir.exists()) {
-                dir.mkdirs();
-            } else {
-                Stream.of(dir.listFiles()).forEach(File::delete);
-            }
-
-            String name = uploadfile.getOriginalFilename();
-            String exp = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
-
-            if (exp.equals("png") || exp.equals("jpg") || exp.equals("jepg")) {
-
-                if (!uploadfile.isEmpty()) {
-                    File newImg = new File(dir, System.currentTimeMillis() + "." + exp);
-                    if (uploadedFiles(uploadfile, newImg)) {
-                        userService.setImgSrc(id, "/static/img/users/" + id + '/' + newImg.getName());
-
-                        User user = userService.getById(id).get();
-
-                        user.getFriends().clear();
-                        user.getRoutes().clear();
-
-                        return new ResponseEntity<>(user, OK);
-                    }
-                }
+            Optional<User> upload = uploadService.upload(uploadfile, id);
+            if (upload.isPresent()){
+                return new ResponseEntity<>(upload.get(), OK);
             }
         }
 
         return new ResponseEntity<>(BAD_REQUEST);
-    }
-
-    private boolean uploadedFiles(MultipartFile uploadfile, File img) {
-        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(img))) {
-            byte[] bytes = uploadfile.getBytes();
-
-            stream.write(bytes);
-            stream.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-
-            return false;
-        }
-
-        return true;
     }
 }
