@@ -333,9 +333,14 @@ body{
 }
 .logout{
 	text-align:right;
-	margin-top:5px;
-	margin-right:20px;
 }
+
+.logout i {
+	margin-left: 270%;
+	cursor: pointer;
+	color: #bbb;
+}
+
 form .input_error{
 	border:1px solid red;
 }
