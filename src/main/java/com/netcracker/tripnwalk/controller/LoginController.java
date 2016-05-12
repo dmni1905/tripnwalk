@@ -179,7 +179,7 @@ class LoginController {
             for (Object aJsonArray : jsonArray) {
                 obj = (JSONObject) aJsonArray;
                 userVkMap.add(obj.get("id").toString());
-                System.out.println(obj.get("id"));
+                //System.out.println(obj.get("id")); TODO
             }
         } catch (ParseException | NullPointerException ex) {
             ex.printStackTrace();
