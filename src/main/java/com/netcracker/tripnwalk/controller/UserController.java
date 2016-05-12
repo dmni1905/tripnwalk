@@ -3,6 +3,7 @@ package com.netcracker.tripnwalk.controller;
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +77,7 @@ public class UserController {
             sessionBean.setSessionId(userFromBD.getId());
         } else {
             user.setImgSrc("http://www.nbb.go.th/images/blank_person[1].jpg");
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             userBDLogin = userService.save(user);
             User userFromBD = userBDLogin.get();
             sessionBean.setSessionId(userFromBD.getId());

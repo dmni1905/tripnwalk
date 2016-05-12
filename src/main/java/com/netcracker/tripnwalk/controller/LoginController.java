@@ -3,6 +3,7 @@ package com.netcracker.tripnwalk.controller;
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -58,8 +59,7 @@ class LoginController {
 
         if (userBD.isPresent()) {
             User userFromBD = userBD.get();
-
-            if (userFromBD.getPassword().equals(user.getPassword())) {
+            if (userFromBD.getPassword().equals(DigestUtils.md5Hex(user.getPassword()))) {
                 sessionBean.setSessionId(userFromBD.getId());
                 String session = sessionBean.getSessionId().toString();
                 return new ResponseEntity<>(session, HttpStatus.OK);
@@ -129,7 +129,6 @@ class LoginController {
 
                 //Add friends from VK
                 user = addFriendFromVK(user);
-                userRepository.save(user);
             }
 
             sessionBean.setSessionId(user.getId());
@@ -154,11 +153,13 @@ class LoginController {
                 "user_id=" + VKUSER_ID +
                 "&fields=" + FIELDS +
                 "&name_case=" + NAME_CASE +
-                "&v=" + VERSION + 5.50;
+                "&v=" + VERSION;
 
         String result = sendHttpRequest(reqUrl).toString();
 
+        //коллекция для получения ID друзей из ВК
         Set<String> userVkMap = new HashSet<>();
+        //коллекция, где значение - ID VK, а ключ user
         Map<String, User> userMap = new HashMap<>();
         userRepository.findAll().forEach(u -> {
             if (Optional.ofNullable(u.getSourceType()).isPresent()) {
@@ -188,7 +189,7 @@ class LoginController {
         userVkMap.retainAll(userMap.keySet());
         for (String userVK : userVkMap) {
             user.addFriend(userMap.get(userVK));
-        }
+        };
         userRepository.save(user);
         return user;
     }
