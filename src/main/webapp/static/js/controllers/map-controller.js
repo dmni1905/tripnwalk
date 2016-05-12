@@ -89,7 +89,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     $scope.curRoute.points = routeToArray($scope.curRoute.path);
 
-    renderMarker(position, path.j.length);
+    renderMarker(position, path.j.length - 1);
 
     $scope.$apply(position);
   }
