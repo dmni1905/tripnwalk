@@ -141,7 +141,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.logout = function () {
     UserService.logout()
         .then(() => {
-
           window.location.href = 'http://localhost:9095/';
         });
   }

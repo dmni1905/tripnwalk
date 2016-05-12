@@ -62,7 +62,7 @@
       <div  ng-controller="uploadCtrl">
         <input type='file' file-model="fileImg" name='uploadfile' id='uploader'/>
         <submit class="fa fa-upload hide_default_css" style="color: white; cursor: pointer;"
-          ng-click="uploadFile(user.id);hide.upload_form=true">
+                ng-click="uploadFile(user.id);hide.upload_form=true">
         </submit>
         <submit class="fa fa-undo hide_default_css"  ng-click="hide.upload_form=true"></submit>
       </div>
@@ -117,7 +117,7 @@
             <dl class="userProfile">
               <dt ng-click="hide.surname = false">Surname</dt>
               <form class="modifyProfile" th:if="${isMy}"
-                ng-hide="hide.surname==true" ng-show="hide.surname == false">
+                    ng-hide="hide.surname==true" ng-show="hide.surname == false">
                 <input type="text" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.surname]" ng-model="user.surname" autocomplete="off"/>
                 <submit class="fa fa-save hide_default_css" ng-click="hide.surname=true;updateMe()"></submit>
               </form>
@@ -125,7 +125,7 @@
 
               <dt ng-click="hide.name = false">Name</dt>
               <form class="modifyProfile" th:if="${isMy}"
-                ng-hide="hide.name==true" ng-show="hide.name == false">
+                    ng-hide="hide.name==true" ng-show="hide.name == false">
                 <input type="text" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.name]" ng-model="user.name" autocomplete="off"/>
                 <submit class="fa fa-save hide_default_css" ng-click="hide.name=true;updateMe()"></submit>
               </form>
@@ -133,7 +133,7 @@
 
               <dt ng-click="hide.birthDate = false ">Birth date</dt>
               <form class="modifyProfile" th:if="${isMy}"
-                ng-hide="hide.birthDate==true" ng-show="hide.birthDate == false">
+                    ng-hide="hide.birthDate==true" ng-show="hide.birthDate == false">
                 <input id="datepicker" class="changing-user" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.birthDate]" ng-model="user.birthDate" autocomplete="off"/>
                 <submit class="fa fa-save hide_default_css" ng-click="hide.birthDate=true;updateMe()"></submit>
               </form>
@@ -141,10 +141,9 @@
 
               <dt ng-click="hide.email = false">E-mail</dt>
               <form class="modifyProfile" th:if="${isMy}"
-                ng-hide="hide.email==true" ng-show="hide.email == false">
-                <input type="email" pattern="^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$" class="changing-user"
-                  ng-model="user.email" autocomplete="off"/>
-                <submit class="fa fa-save hide_default_css" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-click="hide.email=true;updateMe()"></submit>
+                    ng-hide="hide.email==true" ng-show="hide.email == false">
+                <input type="text" class="changing-user"  ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-model="user.email" autocomplete="off"/>
+                <submit class="fa fa-save hide_default_css" ng-click="hide.email=true;updateMe()"></submit>
               </form>
               <dd id="user-email" ng-click="hide.email = false">{{user.email}}</dd>
             </dl>

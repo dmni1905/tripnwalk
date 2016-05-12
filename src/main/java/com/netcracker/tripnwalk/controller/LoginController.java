@@ -136,8 +136,8 @@ class LoginController {
             jsonObject = (JSONObject) jsonArray.get(0);
 
             if (userEmail != null) {
-                userEmail.setSourceType(userIDOauth);
-                userEmail.setSourceId("VK");
+                userEmail.setSourceId(userIDOauth);
+                userEmail.setSourceType("VK");
                 userRepository.save(userEmail);
                 user = userEmail;
             } else if (user == null) {
