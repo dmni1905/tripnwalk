@@ -192,7 +192,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
-    if (_.contains($scope.routes, route)) {
+    if (_.find($scope.routes, route0 => route0.id == route.id)) {
       MapService.update(route0)
         .then(route => {
           _.extend(getRouteById(route.id), route);
