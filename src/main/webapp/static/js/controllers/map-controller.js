@@ -21,7 +21,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   };
 
   // Route mode switch. If true, allows user to create or modify route.
-  $scope.toggleRouteMode = state => routeMode = !!state || false;
+  $scope.toggleRouteMode = function(state) {
+    return routeMode = !!state || false;
+  };
 
   // Creates map polyline for current route.
   function setPolyline() {
@@ -50,20 +52,17 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     };
 
     route0.selected = !!isSelected || false;
-    route0.path.setOptions(isSelected && selected || notSelected);
+    route0.path.setOptions(route0.selected && selected || notSelected);
   };
 
-  function renderMarker(position) {
+  function renderMarker(position, index) {
     // Check if marker exists.
 
     if (_.find(markers, marker => marker.position == position)) return;
 
     var marker = new google.maps.Marker({
       position: position,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 3
-      },
+      icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + index + '|FF0000|000000',
       draggable: false,
       map: map
     });
@@ -90,7 +89,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     $scope.curRoute.points = routeToArray($scope.curRoute.path);
 
-    renderMarker(position);
+    renderMarker(position, path.j.length);
 
     $scope.$apply(position);
   }
@@ -110,10 +109,10 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   // Renders given route and adds path object to it.
   function renderRoute(route) {
     var points = _.sortBy(route.points, point => point.position);
-    var polyLine = _.map(points, latLng => {
+    var polyLine = _.map(points, (latLng, index) => {
       var point = new google.maps.LatLng(latLng.lat, latLng.lng);
 
-      renderMarker(point);
+      renderMarker(point, index);
 
       return point;
     });
@@ -126,7 +125,17 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     path.setMap(map);
 
-    return _.extend(route, { path: path });
+    route = _.extend({}, route, { path: path });
+
+    var routeIndex = _.findIndex($scope.routes, route0 => route0.id == route.id);
+
+    if ($scope.routes[routeIndex] && !$scope.routes[routeIndex].path) {
+      $scope.routes[routeIndex].path = route.path;
+    }
+
+    $scope.toggleRouteSelected(route.selected, route);
+
+    return route;
   }
 
   function cleaRouteMarkers(route) {
@@ -227,13 +236,12 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       });
   };
 
-  $scope.removePoint0 = (id, index) => {
-    var route = getRouteById(id);
-
+  $scope.removePoint0 = function(route, index) {
     cleaRouteMarkers(route);
     route.path.getPath().clear();
     route.points.splice(index, 1);
-    renderRoute(route);
+
+    return renderRoute(route);
   };
 
   $scope.getRender = function() {

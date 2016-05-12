@@ -40,7 +40,7 @@ app.directive('routeForm', function($compile, $templateRequest) {
 
           var index = $('.panel-group .panel').index($event.currentTarget.closest('.panel'));
 
-          $scope.removePoint0($scope.curRoute.id, index);
+          $scope.curRoute = $scope.removePoint0($scope.curRoute, index);
         };
 
         $templateRequest('/templates/route-form.html').then(html => {

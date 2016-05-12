@@ -101,14 +101,17 @@
         <a href="/">
           Trip &amp; Walk
         </a>
+        <div class="logout">
+          <i type="button" class="fa fa-sign-out" ng-click="logout()"></i>
+        </div>
       </li>
       <li style="margin-bottom: 5px;">
         <a href="#profile" data-toggle="collapse">PROFILE</a>
         <div id="profile" class="collapse in" style="width: 100%;">
           <div style="margin: 0; height: 100%; width: 30%; float: left; display: inline-block;">
             <img ng-click="hide.upload_form=false" ng-src="{{urlAvatar}}"
-                 style="max-width: 100%; max-height: 100%; vertical-align:top; float: left; margin-left: 20px; z-index: 5"
-                 align="left;"/>
+              style="max-width: 100%; max-height: 100%; vertical-align:top; float: left; margin-left: 20px; z-index: 5"
+              align="left;"/>
           </div>
           <div style="display: inline-block; width: 60%;">
             <dl class="userProfile">
@@ -139,9 +142,8 @@
               <dt ng-click="hide.email = false">E-mail</dt>
               <form class="modifyProfile" th:if="${isMy}"
                     ng-hide="hide.email==true" ng-show="hide.email == false">
-                <input type="email" pattern="^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$" class="changing-user"
-                       ng-model="user.email" autocomplete="off"/>
-                <submit class="fa fa-save hide_default_css" ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-click="hide.email=true;updateMe()"></submit>
+                <input type="text" class="changing-user"  ng-class="{true: 'input_ok', false: 'input_error'}[userUpdate.email]" ng-model="user.email" autocomplete="off"/>
+                <submit class="fa fa-save hide_default_css" ng-click="hide.email=true;updateMe()"></submit>
               </form>
               <dd id="user-email" ng-click="hide.email = false">{{user.email}}</dd>
             </dl>
@@ -186,9 +188,6 @@
         <div id="donate" class="collapse">
           <img src="https://33.media.tumblr.com/avatar_4f90587f6cba_128.png"/>
         </div>
-      </li>
-      <li class="logout">
-        <button type="button" class="btn btn-danger" ng-click="logout()">LogOut</button>
       </li>
     </ul>
   </div>

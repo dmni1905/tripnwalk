@@ -6,9 +6,8 @@
     <label>Points:</label>
     <div id="points-list">
       <uib-accordion close-others="true">
-        <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
+        <uib-accordion-group heading="{{point.position}}. {{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
           <div class="point-controls">
-            <label class="btn btn-default">ADD AFTER</label>
             <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
           </div>
         </uib-accordion-group>

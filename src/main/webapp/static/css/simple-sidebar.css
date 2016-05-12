@@ -86,6 +86,7 @@
     height: 65px;
     font-size: 18px;
     line-height: 60px;
+    display: inline-flex;
 }
 
 .sidebar-nav > .sidebar-brand a {

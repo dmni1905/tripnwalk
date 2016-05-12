@@ -6,6 +6,8 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.curFriend = {};
   $scope.user = {};
   $scope.urlAvatar = 'http://www.nbb.go.th/images/blank_person[1].jpg';
+  $scope.incorrect_login = "";
+  $scope.incorrect_register ="Login exist";
   $scope.hide = {surname: true, name: true, birthDate: true, email: true, login_error: true, register_error: true, upload_form: true};
   $scope.userUpdate = {surname: true, name: true, birthDate: true, email: true};
 
@@ -61,10 +63,20 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   }
 
   $scope.login = function () {
-    if (($scope.user.login != null) && ($scope.user.password != null)) {
+    if (($scope.user.login == null)&&($scope.user.password == null)) {
+      $scope.hide.login_error = false;
+      $scope.incorrect_login = "Login & Password is null"
+    }else if ($scope.user.login == null){
+      $scope.hide.login_error = false;
+      $scope.incorrect_login = "Login is null";
+    }else if ($scope.user.password == null) {
+      $scope.hide.login_error = false;
+      $scope.incorrect_login = "Password is null";
+    }else{
       UserService.login($scope.user)
           .then(res => {
             if (res == undefined) {
+              $scope.incorrect_login = "Data is incorrect"
               $scope.hide.login_error = false;
             } else {
               window.location.href = '/' + res;
@@ -85,6 +97,9 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
             window.location.href = '/' + res;
           }
         });
+    }else{
+      $scope.incorrect_register = "Data is incorrect";
+      $scope.hide.register_error = false;
     }
   }
 
@@ -126,7 +141,6 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
   $scope.logout = function () {
     UserService.logout()
         .then(() => {
-
           window.location.href = 'http://tripnwalk.tk/';
         });
   }

@@ -333,9 +333,14 @@ body{
 }
 .logout{
 	text-align:right;
-	margin-top:5px;
-	margin-right:20px;
 }
+
+.logout i {
+	margin-left: 270%;
+	cursor: pointer;
+	color: #bbb;
+}
+
 form .input_error{
 	border:1px solid red;
 }
@@ -361,9 +366,6 @@ form .input_error{
 	margin-top: 14px;
 	float: left;
 	margin-left:5px;
-}
-.vk{
-	background:url("http://i9.pixs.ru/storage/4/3/9/vkjpg_2960679_21894439.jpg")
 }
 .deletion-friend, .deletion-modal{
 	text-align: center;
