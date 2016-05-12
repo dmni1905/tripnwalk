@@ -192,10 +192,11 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
 
     route.points = _.map(route.points, point => _.omit(point, '$$hashKey'));
 
-    if (_.contains($scope.routes, route)) {
+    if (_.find($scope.routes, route0 => route0.id == route.id)) {
       MapService.update(route0)
         .then(route => {
-          _.extend(getRouteById(route.id), route);
+          var routeIndex = _.findIndex($scope.routes, route0 => route0.id == route.id);
+          $scope.routes[routeIndex] = _.extend($scope.routes[routeIndex], route);
 
           cb();
         });
@@ -240,6 +241,11 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     cleaRouteMarkers(route);
     route.path.getPath().clear();
     route.points.splice(index, 1);
+    route.points = _.map(route.points, (point, index) => {
+      point.position = index;
+
+      return point;
+    });
 
     return renderRoute(route);
   };
