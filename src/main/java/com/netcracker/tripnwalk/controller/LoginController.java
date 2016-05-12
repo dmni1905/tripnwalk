@@ -28,25 +28,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 class LoginController {
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-    //Для получения ID пользователя, e-mail, access_token
-    private static final String CLIENT_ID = "5368462";
-    private static final String REDIRECT_URL = "http://localhost:9095/";
-    private static final String DISPLAY = "popup";
-    private static final String SCOPE = "friends,email";
-    private static final String RESPONSE_TYPE = "token";
     // Для запроса списка друзей пользователя
     private static final String VKUSER_ID = "9911063";
-    private static final String OFFSET = "100";
     private static final String FIELDS = "bdate,photo_200_orig";
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
-    //"https://api.vk.com/method/users.get?user_ids=9911063&fields=bdate,photo_200_orig&name_case=nom&v=5.50;
 
     @Inject
     private UserRepository userRepository;
@@ -54,21 +46,6 @@ class LoginController {
     private UserService userService;
     @Autowired
     private SessionBean sessionBean;
-
-    @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public ResponseEntity<String> auth() throws IOException {
-        String reqUrl = "http://oauth.vk.com/authorize?" +
-                "client_id=" + CLIENT_ID +
-                "&display=" + DISPLAY +
-                "&redirect_uri=" + REDIRECT_URL +
-                "&scope=" + SCOPE +
-                "&response_type=" + RESPONSE_TYPE +
-                "&v=" + VERSION;
-        String result = sendHttpRequest(reqUrl).toString();
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public ModelAndView registerPage() throws IOException {
@@ -85,7 +62,6 @@ class LoginController {
             if (userFromBD.getPassword().equals(user.getPassword())) {
                 sessionBean.setSessionId(userFromBD.getId());
                 String session = sessionBean.getSessionId().toString();
-
                 return new ResponseEntity<>(session, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -101,7 +77,6 @@ class LoginController {
 
         if (sessionId.isPresent()) {
             sessionBean.setSessionId(null);
-
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -110,6 +85,7 @@ class LoginController {
 
     @RequestMapping(value = "/session", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> getUserInfoOauth(HttpServletRequest request, @RequestBody JSONObject strJson) throws ParseException {
+
         String userIDOauth = (String) strJson.get("user_id");
         String email = (String) strJson.get("email");
         String reqUrl = "https://api.vk.com/method/users.get?" +
@@ -125,11 +101,10 @@ class LoginController {
         boolean isUserDeleted = result.contains("DELETED");
         boolean isUserExist = result.contains("error");
 
-        if ((isUserDeleted) || (isUserExist)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } else {
+        if ((!isUserDeleted) && (!isUserExist)) {
             User user = userRepository.findByOauthID(userIDOauth);
             User userEmail = userRepository.findByEmail(email);
+
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
             JSONArray jsonArray = (JSONArray) jsonObject.get("response");
@@ -141,6 +116,7 @@ class LoginController {
                 userRepository.save(userEmail);
                 user = userEmail;
             } else if (user == null) {
+
                 user = new User((String) jsonObject.get("first_name"), (String) jsonObject.get("last_name"), email,
                         userIDOauth, "VK");
 
@@ -150,13 +126,16 @@ class LoginController {
                 if (jsonObject.get("photo_200_orig") != "http://vk.com/images/camera_200.png") {
                     user.setImgSrc((String) jsonObject.get("photo_200_orig"));
                 }
+
+                //Add friends from VK
+                user = addFriendFromVK(user);
                 userRepository.save(user);
             }
 
             sessionBean.setSessionId(user.getId());
 
             if (user.getBirthDate() != null) {
-                resultJson.put("bdate", user.getBirthDate().toString());
+                resultJson.put("bdate", user.getBirthDate());
             }
             resultJson.put("email", user.getEmail());
             resultJson.put("last_name", user.getSurname());
@@ -165,36 +144,57 @@ class LoginController {
             result = resultJson.toString();
 
             return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
-    @RequestMapping(value = "/getfriends", method = RequestMethod.GET) //TODO уточнить переадресацию
-    public void getfriends() throws IOException {
+    private User addFriendFromVK(User user) {
         String reqUrl = "https://api.vk.com/method/friends.get?" +
                 "user_id=" + VKUSER_ID +
-                "&offset=" + OFFSET +
                 "&fields=" + FIELDS +
                 "&name_case=" + NAME_CASE +
                 "&v=" + VERSION + 5.50;
-        StringBuilder result = sendHttpRequest(reqUrl);
+
+        String result = sendHttpRequest(reqUrl).toString();
+
+        Set<String> userVkMap = new HashSet<>();
+        Map<String, User> userMap = new HashMap<>();
+        userRepository.findAll().forEach(u -> {
+            if (Optional.ofNullable(u.getSourceType()).isPresent()) {
+                if (u.getSourceType().equals("VK")) {
+                    userMap.put(u.getSourceId(), u);
+                }
+            }
+        });
+        userMap.remove(user.getSourceId());
 
         try {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result.toString());
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
             jsonObject = (JSONObject) jsonObject.get("response");
             JSONObject obj;
             JSONArray jsonArray = (JSONArray) jsonObject.get("items");
+
             for (Object aJsonArray : jsonArray) {
                 obj = (JSONObject) aJsonArray;
+                userVkMap.add(obj.get("id").toString());
                 System.out.println(obj.get("id"));
             }
-
         } catch (ParseException | NullPointerException ex) {
             ex.printStackTrace();
         }
+
+        userVkMap.retainAll(userMap.keySet());
+        for (String userVK : userVkMap) {
+            user.addFriend(userMap.get(userVK));
+        }
+        userRepository.save(user);
+        return user;
     }
 
-    public StringBuilder sendHttpRequest(String reqUrl) {
+
+    private StringBuilder sendHttpRequest(String reqUrl) {
         StringBuilder result = new StringBuilder();
         HttpGet httpGet = new HttpGet(reqUrl);
 
@@ -211,7 +211,6 @@ class LoginController {
         } catch (Exception e) {
             logger.error(e);
         }
-
         return result;
     }
 }
