@@ -36,7 +36,7 @@ class LoginController {
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
     // Для запроса списка друзей пользователя
-    private static final String VKUSER_ID = "9911063";
+//    private static final String VKUSER_ID = "9911063";
     private static final String FIELDS = "bdate,photo_200_orig";
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
@@ -113,7 +113,7 @@ class LoginController {
             if (userEmail != null) {
                 userEmail.setSourceId(userIDOauth);
                 userEmail.setSourceType("VK");
-                userRepository.save(userEmail);
+//                userRepository.save(userEmail);
                 user = userEmail;
             } else if (user == null) {
 
@@ -128,7 +128,8 @@ class LoginController {
                 }
 
                 //Add friends from VK
-                user = addFriendFromVK(user);
+                user = addFriendFromVK(userIDOauth, user);
+                userRepository.save(user);
             }
 
             sessionBean.setSessionId(user.getId());
@@ -148,7 +149,7 @@ class LoginController {
         }
     }
 
-    private User addFriendFromVK(User user) {
+    private User addFriendFromVK(String VKUSER_ID, User user) {
         String reqUrl = "https://api.vk.com/method/friends.get?" +
                 "user_id=" + VKUSER_ID +
                 "&fields=" + FIELDS +
@@ -180,7 +181,6 @@ class LoginController {
             for (Object aJsonArray : jsonArray) {
                 obj = (JSONObject) aJsonArray;
                 userVkMap.add(obj.get("id").toString());
-                //System.out.println(obj.get("id")); TODO
             }
         } catch (ParseException | NullPointerException ex) {
             ex.printStackTrace();
@@ -190,7 +190,6 @@ class LoginController {
         for (String userVK : userVkMap) {
             user.addFriend(userMap.get(userVK));
         };
-        userRepository.save(user);
         return user;
     }
 
