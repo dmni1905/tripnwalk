@@ -178,6 +178,7 @@
                 <label th:if="${!isMy}" class="btn btn-link" route-guest-form="">{{route.name}}</label>
                 <label th:if="${isMy}" class="btn btn-link" route-form="">{{route.name}}</label>
                 <i th:if="${isMy}" class="fa fa-times remove-route" ng-click="openDeletionModal(route.id)"></i>
+                <submit th:if="${!isMy}" onclick="this.style.display='none';" class="fa fa-save hide_default_css add-friend-route" ng-click="copyRoute(route.id);"></submit>
               </div>
             </li>
           </ul>

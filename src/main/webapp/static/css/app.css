@@ -79,7 +79,11 @@ body{
 	color: red;
 	margin-top: 11px;
 }
-
+.add-friend-route{
+	cursor: pointer;
+	color: white;
+	margin-top: 11px;
+}
 #wrapper {
 	width: 100%;
 	height: 100%;
@@ -377,4 +381,7 @@ form .input_error{
 .modal-controls{
 	margin-top:5px;
 	margin-bottom:7px;
+}
+.point-controls label{
+	margin-left:50px;
 }

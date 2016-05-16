@@ -11,11 +11,11 @@ import java.util.Set;
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "duration")
@@ -56,7 +56,6 @@ public class Route {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
@@ -80,7 +79,6 @@ public class Route {
     public void setPoints(Set<RoutePoint> points) {
         this.points = points;
     }
-
 
     public Set<RouteData> getData() {
         return data;

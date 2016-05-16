@@ -20,6 +20,15 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     }
   };
 
+  $scope.copyRoute = function(route) {
+    var temp = new Array();
+    temp = location.href.split('/');
+    var friend_id = temp[temp.length-1];
+    MapService.copyRoute(route, friend_id)
+        .then(() => {
+        });
+  };
+  
   // Route mode switch. If true, allows user to create or modify route.
   $scope.toggleRouteMode = function(state) {
     return routeMode = !!state || false;

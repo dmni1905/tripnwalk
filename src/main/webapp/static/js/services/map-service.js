@@ -12,6 +12,15 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
           });
     },
 
+      copyRoute: (id,friend_id) => {
+          return $http.put('/routes/' + id, friend_id)
+              .then(() => {},
+                  err => {
+                      console.error('Copy route failed');
+                      return $q.reject(err);
+                  });
+      },
+      
     remove: (id) => {
       return $http.delete('/routes/' + id)
         .then(() => {},

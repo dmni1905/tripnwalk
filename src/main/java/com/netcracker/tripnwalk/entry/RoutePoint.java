@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "point")
-public class RoutePoint {
+public class RoutePoint implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -61,5 +61,9 @@ public class RoutePoint {
 
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public RoutePoint clone() throws CloneNotSupportedException {
+        return (RoutePoint)super.clone();
     }
 }
