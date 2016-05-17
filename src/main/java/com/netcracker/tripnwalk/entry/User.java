@@ -62,6 +62,25 @@ public class User{
     public User() {
     }
 
+    public User(String name, String surname, String birthDate, String login, String password, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String name, String surname, String birthDate, String sourceType, String sourceId, String imgSrc, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.sourceType = sourceType;
+        this.sourceId = sourceId;
+        this.imgSrc = imgSrc;
+        this.email = email;
+    }
+
     public void addFriend(User user) {
         if (!getFriends().contains(user)) {
             getFriends().add(user);

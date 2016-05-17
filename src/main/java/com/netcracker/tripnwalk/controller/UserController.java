@@ -60,7 +60,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<String> setUser(HttpServletRequest request, @RequestBody User user) {
+    public ResponseEntity<String> setUser(@RequestBody User user) {
         Optional<User> userBDLogin = userService.getByLogin(user.getLogin());
         Optional<User> userBDEmail = userService.getByEmail(user.getEmail());
         if (userBDLogin.isPresent()) {

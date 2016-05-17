@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<dataset>
+    <point/>
+    <route/>
+    <data/>
+    <users
+            id="1"
+            name="Ivan-newName"
+            surname="Ivanov"
+            birth_date="12.12.1998"
+            login="vano"
+            password="qwerty"
+            email="ivan@gmail.com"
+            img_src="[null]"
+            source_id="[null]"
+            source_type="[null]"/>
+    <users
+            id="2"
+            name="Дмитрий"
+            surname="Ничик"
+            birth_date="19.12.1990"
+            login="user"
+            password="123"
+            email="1@gmail.com"
+            img_src="[null]"
+            source_id="[null]"
+            source_type="[null]"/>
+    <friends/>
+    <route_data/>
+    <route_point/>
+    <user_routes/>
+</dataset>

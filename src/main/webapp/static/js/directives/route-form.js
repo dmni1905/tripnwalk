@@ -61,11 +61,11 @@ app.directive('routeForm', function($compile, $templateRequest) {
         //TODO look at controllers to handle route-form.
         element.bind('click', function(evt){
           $scope.removeForm = () => {
-            //TODO proper clean-up.
             $('.route-form-place').empty();
             $scope.clearRoute();
 
             $scope.toggleRouteMode(false);
+            $scope.toggleRouteSelected(false, $scope.curRoute);
           };
 
           $('#route-edit-window').length > 0 && $scope.removeForm();
@@ -78,6 +78,8 @@ app.directive('routeForm', function($compile, $templateRequest) {
               return route.id == existingRoute.match(/id-(.+)/)[1];
             });
 
+            $scope.toggleRouteSelected(true, $scope.curRoute);
+
             $scope.curRoute.points = _.sortBy($scope.curRoute.points, point => point.position);
           }
 
@@ -86,7 +88,7 @@ app.directive('routeForm', function($compile, $templateRequest) {
 
             var index = $('.panel-group .panel').index($event.currentTarget.closest('.panel'));
 
-            $scope.removePoint0($scope.curRoute.id, index);
+            $scope.curRoute = $scope.removePoint0($scope.curRoute, index);
           };
 
           $templateRequest('/templates/route-guest-form.html').then(html => {
