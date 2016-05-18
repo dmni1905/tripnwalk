@@ -25,41 +25,51 @@ app.factory('UserService', function ($compile, $templateRequest, $http, $q) {
           });
     },
 
-      login:(user)=>{
-          return $http.post('/login', user)
-              .then(res => {
-                      console.log('Authorized!');
-                      return res.data;
-                  },
-                  err => {
-                      err;
-                      console.log('Authorization failed!');
-                  });
-      },
+    enter_guest: ()=> {
+      return $http.get('/enter_guest')
+        .then(res => {
+            return res.data;
+          },
+          err => {
+            err;
+          });
+    },
 
-      register:(user)=>{
-          return $http.put('/', user)
-              .then(res => {
-                      console.log('Registered!');
-                      return res.data;
-                  },
-                  err => {
-                      err;
-                      console.log('Registration failed!');
-                  });
-      },
+    login: (user)=> {
+      return $http.post('/login', user)
+        .then(res => {
+            console.log('Authorized!');
+            return res.data;
+          },
+          err => {
+            err;
+            console.log('Authorization failed!');
+          });
+    },
 
-      logout: ()=> {
-          return $http.get('/logout')
-              .then(res => res.data,
-                  err => {
-                      console.error('Something wrong');
-                      return $q.reject(err);
-                  });
-      },
+    register: (user)=> {
+      return $http.put('/', user)
+        .then(res => {
+            console.log('Registered!');
+            return res.data;
+          },
+          err => {
+            err;
+            console.log('Registration failed!');
+          });
+    },
+
+    logout: ()=> {
+      return $http.get('/logout')
+        .then(res => res.data,
+          err => {
+            console.error('Something wrong');
+            return $q.reject(err);
+          });
+    },
 
     getFriends: (id) => {
-      return $http.get('/'+id+'/friends')
+      return $http.get('/' + id + '/friends')
         .then(res => res.data,
           err => {
             console.error('Get friends list failed');
@@ -67,10 +77,10 @@ app.factory('UserService', function ($compile, $templateRequest, $http, $q) {
           });
     },
 
-    update:(user)=>{
-        return $http.patch('/' + user.id, user)
-            .then(res => res.data)
-    } ,
+    update: (user)=> {
+      return $http.patch('/' + user.id, user)
+        .then(res => res.data)
+    },
 
     removeFriend: (id, id_friends) => {
       return $http.delete('/' + id + '/friends/' + id_friends)

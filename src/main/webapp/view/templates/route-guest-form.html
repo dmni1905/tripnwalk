@@ -13,6 +13,10 @@
   </div>
 
   <div id="route-controls" class="form-inline">
+    <div class="like">
+      <span>{{curRoute.likes}}</span>
+      <submit ng:class="setClass(curRoute)" ng-click="likeRoute(curRoute)"></submit>
+    </div>
     <label id="clear-route" class="btn btn-link">CANCEL</label>
   </div>
 </form>

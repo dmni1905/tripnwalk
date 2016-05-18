@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('MapService', ['$http', '$q', function($http, $q) {
+app.factory('MapService', ['$http', '$q', function ($http, $q) {
   return {
     create: (route) => {
       return $http.post('/routes', route)
@@ -12,18 +12,20 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
           });
     },
 
-      copyRoute: (id,friend_id) => {
-          return $http.put('/routes/' + id, friend_id)
-              .then(() => {},
-                  err => {
-                      console.error('Copy route failed');
-                      return $q.reject(err);
-                  });
-      },
-      
+    copyRoute: (id, friend_id) => {
+      return $http.put('/routes/' + id, friend_id)
+        .then(() => {
+          },
+          err => {
+            console.error('Copy route failed');
+            return $q.reject(err);
+          });
+    },
+
     remove: (id) => {
       return $http.delete('/routes/' + id)
-        .then(() => {},
+        .then(() => {
+          },
           err => {
             console.error('Route deletion failed');
 
@@ -56,6 +58,14 @@ app.factory('MapService', ['$http', '$q', function($http, $q) {
           err => {
             console.error('Route fetching failed');
 
+            return $q.reject(err);
+          });
+    },
+
+    like: (id) => {
+      return $http.get('/routes/like/' + id)
+        .then(res => res.data,
+          err => {
             return $q.reject(err);
           });
     }

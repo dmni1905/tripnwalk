@@ -213,6 +213,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     else {
       MapService.create(route0)
         .then(route0 => {
+          route.likes = 0;
           $scope.routes.push(_.extend(route, { id: route0.id }));
 
           cb();
@@ -262,6 +263,27 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.getRender = function() {
     _.map($scope.routes, route => renderRoute(route));
   };
+
+  $scope.setClass = function(curRoute){
+    if(curRoute.likeForCurrentUser){
+      return "fa fa-heart hide_default_css";
+    } else{
+      return "fa fa-heart-o hide_default_css";
+    }
+  }
+
+  $scope.likeRoute = function(curRoute){
+    MapService.like(curRoute.id)
+      .then((res) => {
+        curRoute.likeForCurrentUser = res;
+        if(res){
+          curRoute.likes++;
+        } else{
+          curRoute.likes--;
+        }
+        console.log(res);
+      });
+  }
 
   //Renders map.
   uiGmapIsReady.promise(1)

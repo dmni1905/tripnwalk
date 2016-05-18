@@ -2,6 +2,7 @@ package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.Route;
 import com.netcracker.tripnwalk.entry.RoutePoint;
+import com.netcracker.tripnwalk.service.LikeService;
 import com.netcracker.tripnwalk.service.RouteService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,6 +24,8 @@ public class RouteController {
 
     @Autowired
     private RouteService routeService;
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private SessionBean sessionBean;
 
@@ -108,5 +112,15 @@ public class RouteController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/routes/like/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> likeRoute(@PathVariable("id") Long idRoute) {
+        Long idUser = sessionBean.getSessionId();
+        if(idUser != null){
+            boolean like = likeService.like(idUser, idRoute);
+            return new ResponseEntity<>(like, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

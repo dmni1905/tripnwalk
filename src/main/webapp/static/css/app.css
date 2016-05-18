@@ -205,8 +205,23 @@ body{
 	margin-top: 10px;
 	margin-left: 10px;
 	width: 255px;
-	height: 370px;
+	height: 350px;
 	overflow: hidden;
+}
+
+.like{
+	margin-left: 50px;
+	font-size: 20px;
+	display: inline;
+}
+
+.my-like{
+	display: inline-block;
+	color: #CCCCCC;
+}
+
+.my-like span{
+	margin-right: -20px;
 }
 
 #friend-list-wrapper{
@@ -242,7 +257,7 @@ body{
 #routes label, #friends label {
 	display: block;
 	color: #CCCCCC;
-	width: 80%;
+	width: 70%;
 	text-align: left;
 }
 

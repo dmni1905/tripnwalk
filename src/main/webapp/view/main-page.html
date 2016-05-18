@@ -101,7 +101,7 @@
         <a href="/">
           Trip &amp; Walk
         </a>
-        <div class="logout">
+        <div th:if="${!isGuest}" class="logout">
           <i type="button" class="fa fa-sign-out" ng-click="logout()"></i>
         </div>
       </li>
@@ -150,7 +150,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li th:if="${!isGuest}">
         <a href="#friends" data-toggle="collapse">FRIENDS</a>
         <div id="friends" class="collapse">
           <add-friend-form th:if="${isMy}" id="add-user" class="friend-menu-controls"></add-friend-form>
@@ -177,8 +177,12 @@
               <div class="route-menu-controls route-element-id-{{route.id}}">
                 <label th:if="${!isMy}" class="btn btn-link" route-guest-form="">{{route.name}}</label>
                 <label th:if="${isMy}" class="btn btn-link" route-form="">{{route.name}}</label>
+                <div th:if="${isMy}" class="my-like">
+                  <span>{{route.likes}}</span>
+                  <submit class="fa fa-heart hide_default_css"></submit>
+                </div>
                 <i th:if="${isMy}" class="fa fa-times remove-route" ng-click="openDeletionModal(route.id)"></i>
-                <submit th:if="${!isMy}" onclick="this.style.display='none';" class="fa fa-save hide_default_css add-friend-route" ng-click="copyRoute(route.id);"></submit>
+                <submit th:if="${!isMy} and ${!isGuest}" onclick="this.style.display='none';" class="fa fa-save hide_default_css add-friend-route" ng-click="copyRoute(route.id);"></submit>
               </div>
             </li>
           </ul>
