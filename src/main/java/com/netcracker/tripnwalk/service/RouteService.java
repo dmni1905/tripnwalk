@@ -6,9 +6,10 @@ import com.netcracker.tripnwalk.repository.RouteRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,11 +19,29 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
     @Autowired
+    private LikeService likeService;
+    @Autowired
     private UserService userService;
+
+    public Optional<Route> getById(Long id) {
+        return Optional.ofNullable(routeRepository.findOne(id));
+    }
+
+    public Route getRandom(List<Long> routeId) {
+        return routeRepository.getTopList(routeId, new PageRequest(0,1)).get(0);
+    }
+
+    public Long getCount() {
+        return routeRepository.getCointRow();
+    }
 
     public Optional<Set> getAllByUserId(Long idUser) {
         Optional<User> userCurrent = userService.getById(idUser);
         if (userCurrent.isPresent()) {
+            userCurrent.get().getRoutes().forEach(r -> {
+                r.setLikes(likeService.getListLikes(r.getId()));
+                r.setLikeForCurrentUser(likeService.getLikeStatus(idUser, r.getId()));
+            });
             return Optional.ofNullable(userCurrent.get().getRoutes());
         } else {
             logger.error("GET ROUTES: User with id=" + idUser + " not found");
@@ -49,9 +68,15 @@ public class RouteService {
         Optional<User> userCurrent = userService.getById(idUser);
 
         if (userCurrent.isPresent()) {
-            return Optional.ofNullable(routeRepository.findOne(idRoute));
+            Optional<Route> rote = Optional.ofNullable(routeRepository.findOne(idRoute));
+            if (rote.isPresent()) {
+                rote.get().setLikes(likeService.getListLikes(rote.get().getId()));
+                rote.get().setLikeForCurrentUser(likeService.getLikeStatus(idUser, idRoute));
+
+            }
+            return rote;
         } else {
-            logger.error("GET ROUTES: User with id=" + idUser + " not found");
+            logger.error("GET ROUTES: Route with id=" + idRoute + " not found");
 
             return Optional.empty();
         }
@@ -62,7 +87,12 @@ public class RouteService {
         Optional<Route> routeCurrent = getById(idUser, route.getId());
 
         if (userCurrent.isPresent() && routeCurrent.isPresent()) {
-            return Optional.of(routeRepository.save(route));
+            Optional<Route> rote = Optional.of(routeRepository.save(route));
+            if (rote.isPresent()) {
+                rote.get().setLikes(likeService.getListLikes(rote.get().getId()));
+                rote.get().setLikeForCurrentUser(likeService.getLikeStatus(idUser, route.getId()));
+            }
+            return rote;
         } else {
             if (!userCurrent.isPresent()) {
                 logger.error("MODIFY ROUTES: User with id=" + idUser + " not found");

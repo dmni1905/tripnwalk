@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,12 @@ public class Route {
 
     @Column(name = "duration")
     private Integer duration;
+
+    @Transient
+    private Integer likes;
+
+    @Transient
+    private Boolean likeForCurrentUser;
 
     @NotNull
     @Valid
@@ -46,6 +53,22 @@ public class Route {
     public Route(String name, Integer duration) {
         this.name = name;
         this.duration = duration;
+    }
+
+    public Boolean getLikeForCurrentUser() {
+        return likeForCurrentUser;
+    }
+
+    public void setLikeForCurrentUser(Boolean likeForCurrentUser) {
+        this.likeForCurrentUser = likeForCurrentUser;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
     }
 
     public Long getId() {

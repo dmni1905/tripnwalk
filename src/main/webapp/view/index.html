@@ -69,8 +69,11 @@
             <button class="btn btn-lg btn btn-info btn-block" type="submit" ng-click="registerPage()">Register</button>
             <br/>
         </form>
-        <label style="display: initial;">Log in:</label>
-        <button class="fa fa-vk" ng-click="authorize()" ng-controller="UserCtrl"></button>
+        <div style="margin-top: 15px">
+        <label style="display: initial; font-size: 20px;">Log in:</label>
+        <button class="fa fa-user-secret" style="font-size: 25px;" ng-click="enter()" ng-controller="UserCtrl"></button>
+        <button class="fa fa-vk" style="font-size: 25px;" ng-click="authorize()" ng-controller="UserCtrl"></button>
+        </div>
     </div>
 </form>
 </div>
