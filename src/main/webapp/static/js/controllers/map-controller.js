@@ -11,7 +11,7 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
   $scope.routes = [];
   // Map settings.
   $scope.map = {
-    center: { latitude: 59.938600, longitude: 30.31410 },
+    center: {latitude: 59.938600, longitude: 30.31410},
     zoom: 13,
     options: {
       minZoom: 3,
@@ -20,15 +20,36 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
     }
   };
 
-  $scope.copyRoute = function(route) {
+  $scope.copyRoute = function (route) {
     var temp = new Array();
     temp = location.href.split('/');
-    var friend_id = temp[temp.length-1];
+    var friend_id = temp[temp.length - 1];
     MapService.copyRoute(route, friend_id)
         .then(() => {
         });
   };
-  
+  $scope.changePointName = function (point_id,point_name) {
+    var pointInput = angular.element(document.querySelector('#change-' + point_id));
+    var pointSpan = angular.element(document.querySelector('#span-' + point_id));
+    var saveButton = angular.element(document.querySelector('#saveChange-' + point_id));
+    var editPoint = angular.element(document.querySelector('#editPoint-' + point_id));
+    pointInput.focus();
+    saveButton.css('display', 'inline-block');
+    pointInput.css('display', 'inline-block');
+    pointSpan.css('display', 'none');
+    editPoint.css('display', 'none');
+  }
+
+  $scope.saveChangePoint = function (point_id){
+  var pointInput = angular.element(document.querySelector('#change-' + point_id));
+  var pointSpan = angular.element(document.querySelector('#span-' + point_id));
+  var saveButton = angular.element(document.querySelector('#saveChange-' + point_id));
+  var editPoint = angular.element(document.querySelector('#editPoint-' + point_id));
+  saveButton.css('display', 'none');
+  pointInput.css('display', 'none');
+  pointSpan.css('display', 'inline-block');
+  editPoint.css('display', 'inline-block');
+ }
   // Route mode switch. If true, allows user to create or modify route.
   $scope.toggleRouteMode = function(state) {
     return routeMode = !!state || false;
@@ -110,7 +131,8 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       return {
         position: index,
         lat: latLng.lat().toFixed(6),
-        lng: latLng.lng().toFixed(6)
+        lng: latLng.lng().toFixed(6),
+        name: latLng.lat().toFixed(6) + ' ' + latLng.lng().toFixed(6)
       };
     });
   }

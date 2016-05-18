@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 public class RoutePoint implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id",unique = true)
     private Long id;
 
     @NotNull
-    @Column(name = "postion", nullable = false)
+    @Column(name = "position", nullable = false)
     private Integer position;
 
     @NotNull
@@ -23,12 +23,23 @@ public class RoutePoint implements Cloneable{
     @Column(name = "lng", nullable = false)
     private float lng;
 
+    @Column(name = "name")
+    private String name;
+
     public RoutePoint(){}
 
     public RoutePoint(Integer position, float lat, float lng) {
         this.position = position;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {

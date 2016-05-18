@@ -4,16 +4,31 @@
 
   <div id="points-list-wrapper">
     <label>Points:</label>
-    <div id="points-list">
-      <uib-accordion close-others="true">
-        <uib-accordion-group heading="{{point.position}}. {{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
-          <div class="point-controls">
-            <label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>
+    <div>
+      <div class="panel-group" ng-repeat = "point in curRoute.points">
+          <div class = "panel points" ng-controller="MapCtrl">
+            <div style="display: inline-block; width: 210px;">
+            <span class="point_position">{{point.position}}. </span>
+              <input type="text" id="change-{{point.id}}" class="changePoint" ng-model="point.name"/>
+              <span class="point_lattitude" id="span-{{point.id}}">{{point.name}}</span>
+            </div>
+            <submit class="fa fa-save hide_default_css" id="saveChange-{{point.id}}" ng-click="saveChangePoint(point.id)" style="display: none"></submit>
+            <i class="fa fa-pencil darkgreen" id="editPoint-{{point.id}}" ng-click="changePointName(point.id,point.name)"></i>
+            <i class="fa fa-times remove-route" ng-click="removePoint($event)"></i>
           </div>
-        </uib-accordion-group>
-      </uib-accordion>
+      </div>
     </div>
-  </div>
+    </div>
+    <!--<div id="points-list">-->
+      <!--<uib-accordion close-others="true">-->
+        <!--<uib-accordion-group heading="{{point.position}}" ng-repeat="point in curRoute.points">-->
+          <!--<div class="point-controls">-->
+            <!--<label class="btn btn-danger" ng-click="removePoint($event)">DELETE</label>-->
+          <!--</div>-->
+        <!--</uib-accordion-group>-->
+      <!--</uib-accordion>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <div id="route-controls" class="form-inline">
     <label id="save-route" class="btn btn-link" ng-click="saveRoute(curRoute, removeForm)">SAVE</label>
