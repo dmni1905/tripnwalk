@@ -6,7 +6,7 @@
     <label>Points:</label>
     <div id="points-list">
       <uib-accordion close-others="true">
-        <uib-accordion-group heading="{{point.position}}. {{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points">
+        <uib-accordion-group heading="{{point.position}}. {{point.name}}" ng-repeat="point in curRoute.points">
         </uib-accordion-group>
       </uib-accordion>
     </div>
