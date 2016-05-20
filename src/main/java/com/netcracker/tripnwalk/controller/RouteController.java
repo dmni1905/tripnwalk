@@ -1,16 +1,20 @@
 package com.netcracker.tripnwalk.controller;
 
 import com.netcracker.tripnwalk.entry.Route;
+import com.netcracker.tripnwalk.entry.RoutePoint;
+import com.netcracker.tripnwalk.service.LikeService;
 import com.netcracker.tripnwalk.service.RouteService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,6 +24,8 @@ public class RouteController {
 
     @Autowired
     private RouteService routeService;
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private SessionBean sessionBean;
 
@@ -45,6 +51,25 @@ public class RouteController {
             return new ResponseEntity<>(routeFromDB.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @RequestMapping(value = "/routes/{id}", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity<String> copyRoute(@PathVariable("id") Long idRoute, @RequestBody Long friend_id) throws CloneNotSupportedException {
+        Long idUser = sessionBean.getSessionId();
+        Optional<Route> friendRoute = routeService.getById(friend_id, idRoute);
+        if (friendRoute.isPresent()) {
+            Route myRoute = new Route(friendRoute.get().getName());
+            for (RoutePoint point : friendRoute.get().getPoints()) {
+                myRoute.addPoint(point.clone());
+            }
+            for (RoutePoint point : myRoute.getPoints()) {
+                point.setId(null);
+            }
+            routeService.add(idUser, myRoute);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -82,10 +107,20 @@ public class RouteController {
     @RequestMapping(value = "/routes/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteRoute(@PathVariable("id") Long idRoute) {
         Long idUser = sessionBean.getSessionId();
-        if(routeService.delete(idUser, idRoute)){
+        if (routeService.delete(idUser, idRoute)) {
             return new ResponseEntity<>(HttpStatus.OK);
-        } else{
+        } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @RequestMapping(value = "/routes/like/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Boolean> likeRoute(@PathVariable("id") Long idRoute) {
+        Long idUser = sessionBean.getSessionId();
+        if(idUser != null){
+            boolean like = likeService.like(idUser, idRoute);
+            return new ResponseEntity<>(like, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

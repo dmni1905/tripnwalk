@@ -1,6 +1,8 @@
 package com.netcracker.tripnwalk.service;
 
+import com.netcracker.tripnwalk.entry.Route;
 import com.netcracker.tripnwalk.entry.User;
+import com.netcracker.tripnwalk.entry.components.TopLike;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import sun.reflect.generics.tree.Tree;
 import sun.security.x509.OtherName;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -17,6 +20,47 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    LikeService likeService;
+    @Autowired
+    RouteService routeService;
+
+    public User getGuestProfile(){
+        User user = new User();
+        user.setName("Guest");
+        user.setSurname("Tripnwalker");
+        user.setEmail("trip@walk.tk");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        user.setBirthDate(dateFormat.format(new Date()));
+
+        List<TopLike> top = likeService.getTop();
+        List<Long> topIdRoute = new ArrayList<>();
+        top.forEach(t -> {
+            Optional<Route> byId = routeService.getById(t.getIdRoute());
+            if (byId.isPresent()) {
+                Route route = byId.get();
+                route.setLikes(Integer.parseInt(t.getCount() + ""));
+                user.addRoute(route);
+                topIdRoute.add(t.getIdRoute());
+            }
+        });
+
+        int countRoute = 5;
+        if (routeService.getCount() < countRoute) {
+            countRoute = Integer.parseInt(routeService.getCount() + "");
+        }
+        if (user.getRoutes().size() < countRoute) {
+            int size = user.getRoutes().size();
+            while (size != countRoute) {
+                Route random = routeService.getRandom(topIdRoute);
+                user.addRoute(random);
+                topIdRoute.add(random.getId());
+                size++;
+            }
+        }
+
+        return user;
+    }
 
     public Set<User> findUsers(Long curId, String name, String surname) {
         if (name.isEmpty() && surname.isEmpty()) {

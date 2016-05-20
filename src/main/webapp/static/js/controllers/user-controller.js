@@ -103,6 +103,11 @@ app.controller('UserCtrl', function ($scope, $cookies, UserService, $uibModal) {
     }
   }
 
+
+  $scope.enter = function(){
+    window.location.href = '/enter_guest';
+  }
+
   $scope.registerPage = function () {
     window.location.href = '/register';
   }

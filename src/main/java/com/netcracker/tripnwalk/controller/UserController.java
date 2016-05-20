@@ -1,8 +1,13 @@
 package com.netcracker.tripnwalk.controller;
 
+import com.netcracker.tripnwalk.entry.Route;
 import com.netcracker.tripnwalk.entry.User;
+import com.netcracker.tripnwalk.entry.components.TopLike;
 import com.netcracker.tripnwalk.repository.UserRepository;
+import com.netcracker.tripnwalk.service.LikeService;
+import com.netcracker.tripnwalk.service.RouteService;
 import com.netcracker.tripnwalk.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +16,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
 public class UserController {
     @Autowired
     UserService userService;
-
+    @Autowired
+    LikeService likeService;
     @Autowired
     private SessionBean sessionBean;
 
@@ -36,6 +42,17 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/enter_guest", method = RequestMethod.GET)
+    public ModelAndView enterAsGuest() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("main-page");
+        modelAndView.addObject("isMy", false);
+        modelAndView.addObject("isGuest", true);
+
+        modelAndView.addObject("user", userService.getGuestProfile());
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView getUser(@PathVariable("id") Long id) {
         if (Optional.ofNullable(sessionBean.getSessionId()).isPresent()) {
@@ -44,8 +61,13 @@ public class UserController {
                 f.getFriends().clear();
                 f.getRoutes().clear();
             });
+            user.get().getRoutes().forEach(r -> {
+                r.setLikes(likeService.getListLikes(r.getId()));
+                r.setLikeForCurrentUser(likeService.getLikeStatus(sessionBean.getSessionId(), r.getId()));
+            });
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("main-page");
+            modelAndView.addObject("isGuest", false);
             modelAndView.addObject("user", user.get());
             if (id.equals(sessionBean.getSessionId())) {
                 modelAndView.addObject("isMy", true);
@@ -59,7 +81,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity<String> setUser(HttpServletRequest request, @RequestBody User user) {
+    public ResponseEntity<String> setUser(@RequestBody User user) {
         Optional<User> userBDLogin = userService.getByLogin(user.getLogin());
         Optional<User> userBDEmail = userService.getByEmail(user.getEmail());
         if (userBDLogin.isPresent()) {
@@ -76,6 +98,7 @@ public class UserController {
             sessionBean.setSessionId(userFromBD.getId());
         } else {
             user.setImgSrc("http://www.nbb.go.th/images/blank_person[1].jpg");
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
             userBDLogin = userService.save(user);
             User userFromBD = userBDLogin.get();
             sessionBean.setSessionId(userFromBD.getId());

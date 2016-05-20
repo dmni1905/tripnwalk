@@ -3,6 +3,7 @@ package com.netcracker.tripnwalk.controller;
 import com.netcracker.tripnwalk.entry.User;
 import com.netcracker.tripnwalk.repository.UserRepository;
 import com.netcracker.tripnwalk.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -35,7 +36,7 @@ class LoginController {
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
     // Для запроса списка друзей пользователя
-    private static final String VKUSER_ID = "9911063";
+//    private static final String VKUSER_ID = "9911063";
     private static final String FIELDS = "bdate,photo_200_orig";
     private static final String NAME_CASE = "nom";
     private static final String VERSION = "5.50";
@@ -58,8 +59,7 @@ class LoginController {
 
         if (userBD.isPresent()) {
             User userFromBD = userBD.get();
-
-            if (userFromBD.getPassword().equals(user.getPassword())) {
+            if (userFromBD.getPassword().equals(DigestUtils.md5Hex(user.getPassword()))) {
                 sessionBean.setSessionId(userFromBD.getId());
                 String session = sessionBean.getSessionId().toString();
                 return new ResponseEntity<>(session, HttpStatus.OK);
@@ -113,7 +113,7 @@ class LoginController {
             if (userEmail != null) {
                 userEmail.setSourceId(userIDOauth);
                 userEmail.setSourceType("VK");
-                userRepository.save(userEmail);
+//                userRepository.save(userEmail);
                 user = userEmail;
             } else if (user == null) {
 
@@ -128,7 +128,7 @@ class LoginController {
                 }
 
                 //Add friends from VK
-                user = addFriendFromVK(user);
+                user = addFriendFromVK(userIDOauth, user);
                 userRepository.save(user);
             }
 
@@ -149,16 +149,18 @@ class LoginController {
         }
     }
 
-    private User addFriendFromVK(User user) {
+    private User addFriendFromVK(String VKUSER_ID, User user) {
         String reqUrl = "https://api.vk.com/method/friends.get?" +
                 "user_id=" + VKUSER_ID +
                 "&fields=" + FIELDS +
                 "&name_case=" + NAME_CASE +
-                "&v=" + VERSION + 5.50;
+                "&v=" + VERSION;
 
         String result = sendHttpRequest(reqUrl).toString();
 
+        //коллекция для получения ID друзей из ВК
         Set<String> userVkMap = new HashSet<>();
+        //коллекция, где значение - ID VK, а ключ user
         Map<String, User> userMap = new HashMap<>();
         userRepository.findAll().forEach(u -> {
             if (Optional.ofNullable(u.getSourceType()).isPresent()) {
@@ -179,7 +181,6 @@ class LoginController {
             for (Object aJsonArray : jsonArray) {
                 obj = (JSONObject) aJsonArray;
                 userVkMap.add(obj.get("id").toString());
-                //System.out.println(obj.get("id")); TODO
             }
         } catch (ParseException | NullPointerException ex) {
             ex.printStackTrace();
@@ -188,8 +189,7 @@ class LoginController {
         userVkMap.retainAll(userMap.keySet());
         for (String userVK : userVkMap) {
             user.addFriend(userMap.get(userVK));
-        }
-        userRepository.save(user);
+        };
         return user;
     }
 

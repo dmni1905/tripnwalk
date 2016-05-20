@@ -53,13 +53,32 @@ public class User{
     )
     private Set<User> friends = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_routes",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "route_id")})
     private Set<Route> routes = new HashSet<>();
 
     public User() {
+    }
+
+    public User(String name, String surname, String birthDate, String login, String password, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String name, String surname, String birthDate, String sourceType, String sourceId, String imgSrc, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.sourceType = sourceType;
+        this.sourceId = sourceId;
+        this.imgSrc = imgSrc;
+        this.email = email;
     }
 
     public void addFriend(User user) {

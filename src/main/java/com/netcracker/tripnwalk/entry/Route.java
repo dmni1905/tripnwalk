@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,15 +12,21 @@ import java.util.Set;
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "duration")
     private Integer duration;
+
+    @Transient
+    private Integer likes;
+
+    @Transient
+    private Boolean likeForCurrentUser;
 
     @NotNull
     @Valid
@@ -48,6 +55,22 @@ public class Route {
         this.duration = duration;
     }
 
+    public Boolean getLikeForCurrentUser() {
+        return likeForCurrentUser;
+    }
+
+    public void setLikeForCurrentUser(Boolean likeForCurrentUser) {
+        this.likeForCurrentUser = likeForCurrentUser;
+    }
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+
     public Long getId() {
         return id;
     }
@@ -55,7 +78,6 @@ public class Route {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;
@@ -80,7 +102,6 @@ public class Route {
     public void setPoints(Set<RoutePoint> points) {
         this.points = points;
     }
-
 
     public Set<RouteData> getData() {
         return data;

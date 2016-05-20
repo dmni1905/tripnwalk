@@ -1,20 +1,22 @@
 <form id="route-edit-window" class="ui-widget-content js-route-form">
   <label class="route-form-header">ROUTE</label>
-  <input type="text" class="route-name form-control" placeholder="ROUTE NAME" ng-model="curRoute.name">
+  <input type="text" class="route-name form-control" placeholder="ROUTE NAME" disabled="disabled" ng-model="curRoute.name">
 
   <div id="points-list-wrapper">
-    <uib-tabset active="activeJustified" justified="true">
-      <uib-tab heading="Points">
-        <div id="points-list">
-          <uib-accordion close-others="true">
-            <uib-accordion-group heading="{{point.lat}}, {{point.lng}}" ng-repeat="point in curRoute.points"/>
-          </uib-accordion>
-        </div>
-      </uib-tab>
-    </uib-tabset>
+    <label>Points:</label>
+    <div id="points-list">
+      <uib-accordion close-others="true">
+        <uib-accordion-group heading="{{point.position}}. {{point.name}}" ng-repeat="point in curRoute.points">
+        </uib-accordion-group>
+      </uib-accordion>
+    </div>
   </div>
 
   <div id="route-controls" class="form-inline">
+    <div class="like">
+      <span>{{curRoute.likes}}</span>
+      <submit ng:class="setClass(curRoute)" ng-click="likeRoute(curRoute)"></submit>
+    </div>
     <label id="clear-route" class="btn btn-link">CANCEL</label>
   </div>
 </form>

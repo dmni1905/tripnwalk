@@ -14,7 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User findByLogin(@Param("login") String userLogin);
 
     @Query("select u from User u where u.email = :email")
-    User findByEmail(@Param("email") String userLogin);
+    User findByEmail(@Param("email") String userEmail);
 
     @Query("select u from User u where source_id = :source_id")
     User findByOauthID(@Param("source_id") String userOauthID);
