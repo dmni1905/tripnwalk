@@ -206,7 +206,7 @@ body{
 	margin-left: 10px;
 	width: 255px;
 	height: 350px;
-	overflow: hidden;
+	overflow: auto;
 }
 
 .like{
