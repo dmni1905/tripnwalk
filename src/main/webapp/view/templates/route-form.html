@@ -2,12 +2,12 @@
   <label class="route-form-header">ADD/EDIT ROUTE</label>
   <input type="text" class="route-name form-control" placeholder="ROUTE NAME" ng-model="curRoute.name">
 
-  <div id="points-list-wrapper">
+  <div id="points-list-wrapper" style="overflow: auto">
     <label>Points:</label>
     <div>
       <div class="panel-group" ng-repeat = "point in curRoute.points">
           <div class = "panel points" ng-controller="MapCtrl">
-            <div style="display: inline-block; width: 210px;">
+            <div style="display: inline-block; width: 200px;">
             <span class="point_position">{{point.position}}. </span>
               <input type="text" id="change-{{point.id}}" class="changePoint" ng-model="point.name"/>
               <span class="point_lattitude" id="span-{{point.id}}">{{point.name}}</span>
