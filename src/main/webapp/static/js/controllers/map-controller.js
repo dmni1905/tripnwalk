@@ -236,6 +236,9 @@ app.controller('MapCtrl', function($scope, $element, $attrs, uiGmapIsReady, MapS
       MapService.create(route0)
         .then(route0 => {
           route.likes = 0;
+          for(var i=0; i<route0.points.length; i++){
+            route.points[i].id = route0.points[i].id;
+          }
           $scope.routes.push(_.extend(route, { id: route0.id }));
 
           cb();
